@@ -1,7 +1,6 @@
 package recommendation_library.domain;
 
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +15,8 @@ public class VideoRecommendation extends Recommendation{
         this.url = url;
     }
     
-    public void addTimestamp() {
-        
+    public void addTimestamp(Timestamp timestamp) {
+        this.timestamps.add(timestamp);
     }
     
     
