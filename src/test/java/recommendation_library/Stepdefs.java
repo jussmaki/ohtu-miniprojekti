@@ -35,7 +35,7 @@ public class Stepdefs {
         this.inputLines = new ArrayList<String>();
     }
 
-    @Given("^command add is selected")
+    @Given("command add is selected")
     public void commandAddSelected() {
         inputLines.add("1");
     }
@@ -49,7 +49,7 @@ public class Stepdefs {
         inputLines.add(pageCount);
     }
     
-    @When("^command list is selected")
+    @When("command list is selected")
     public void commandListSelected() {
         inputLines.add("2");
     }
@@ -63,6 +63,34 @@ public class Stepdefs {
     public void bookTitleIsEntered(String title) {
         inputLines.add(title);
     }
+    
+    /*  FAILS, WHY OH WHY??? 
+    
+    @When("command edit is selected")
+    public void commandEditIsSelected() {
+        inputLines.add("3");
+    }
+    
+    @When("field to edit {string} is entered") 
+    public void fieldToEditIsEntered(String fieldToEdit) {
+        inputLines.add(fieldToEdit);
+    }
+    
+    @When("new value {string} for selected field is entered")
+    public void newValueToEditableFieldIsEntered(String newValue) {
+        inputLines.add(newValue);
+    }
+    
+    @Then("value of the selected field {string} has been changed to {string}")
+    public void editingBookWorks(String fieldName, String newValue) {
+        io = new StubIO(inputLines);
+        dao = new InMemoryRecommendationDao();
+        ui = new UserInterface(io, dao);
+        ui.run();
+        
+        assertTrue(io.getPrints().contains("Field " + fieldName + " succesfully changed to " + newValue + "!"));
+    }
+*/
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {

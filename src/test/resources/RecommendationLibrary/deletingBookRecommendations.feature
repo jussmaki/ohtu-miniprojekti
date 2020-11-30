@@ -1,4 +1,4 @@
-Feature: As a user I can delete a recommendation from the library
+Feature: As a user I can delete a book recommendation from the library
 	
 	@problem
     Scenario: user can delete a book recommendation
