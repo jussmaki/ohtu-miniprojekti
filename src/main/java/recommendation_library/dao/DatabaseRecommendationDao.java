@@ -57,6 +57,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
             stmt.execute(sql);
+            connection.close();
 //            System.out.println("table created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -75,6 +76,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
             stmt.execute(sql);
+            connection.close();
 //            System.out.println("table created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -92,6 +94,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
             stmt.execute(sql);
+            connection.close();
 //            System.out.println("table created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -120,6 +123,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             statement.setInt(5, pageCount);
             statement.setString(6, java.time.LocalDate.now().toString());
             statement.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -134,7 +138,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      */
     @Override
     public void createVideoRecommendation(String url, String title, String description) {
-        String sql = "INSERT INTO books(url, title, description created) "
+        String sql = "INSERT INTO videos (url, title, description, created) "
                 + "VALUES(?,?,?,?)";
         try {
             Connection conn = this.connect();
@@ -144,6 +148,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             statement.setString(3, description);
             statement.setString(4, java.time.LocalDate.now().toString());
             statement.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -167,6 +172,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             statement.setString(2, comment);
             statement.setInt(3, videoId);
             statement.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -190,6 +196,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
                         result.getString("title"), result.getString("description"),
                         result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
             }
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -208,6 +215,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
                         result.getString("title"), result.getString("description"), 
                         result.getString("created")));
             }
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -227,11 +235,13 @@ public class DatabaseRecommendationDao implements RecommendationDao {
                 timestamps.add(new TimeMemory(result.getString("timestamp"),
                         result.getString("comment"), result.getInt("video_id")));
             }
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return timestamps;
     }
+    
     @Override
     public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
         String sql = "UPDATE books SET " + fieldToBeEdited + " = ? WHERE title = ?";
@@ -241,6 +251,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             pstmt.setString(1, newValue);
             pstmt.setString(2, title);
             pstmt.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -255,6 +266,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             preparedstmt.setString(1, newValue);
             preparedstmt.setString(2, title);
             preparedstmt.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -272,6 +284,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             if (result.next()) {
                 id = result.getInt("id");
             }
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -286,6 +299,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, title);
             pstmt.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -294,19 +308,31 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void deleteVideoByTitle(String title) {
         int videoId = searchVideoByTitle(title);
-        String deleteTimeStamps = "DELETE * FROM timestamps WHERE video_id = ?";
-        String deleteVideo = "DELETE * FROM videos WHERE id = ?";
+        String deleteVideo = "DELETE FROM videos WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement stmt = conn.prepareStatement(deleteVideo);
+            stmt.setString(1, title);
+            stmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        deleteVideoTimeStamps(videoId);
+    }
+    
+    public void deleteVideoTimeStamps(int videoId) {
+        String deleteTimeStamps = "DELETE FROM timestamps WHERE video_id = ?";
         try {
             Connection conn = this.connect();
             PreparedStatement stmt = conn.prepareStatement(deleteTimeStamps);
             stmt.setInt(1, videoId);
             stmt.executeUpdate();
-            stmt = conn.prepareStatement(deleteVideo);
-            stmt.setInt(1, videoId);
-            stmt.executeUpdate();    
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        
     }
 
 }

@@ -28,6 +28,7 @@ import recommendation_library.dao.DatabaseRecommendationDao;
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.DatabaseService;
+import recommendation_library.domain.VideoRecommendation;
 import recommendation_library.io.IO;
 import recommendation_library.io.StubIO;
 
@@ -55,6 +56,10 @@ public class UserInterfaceTest {
         List<BookRecommendation> books = db_dao.getAllBookRecommendations();
         for (BookRecommendation b : books) {
             db_dao.deleteBookByTitle(b.getTitle());
+        }
+        List<VideoRecommendation> videos = db_dao.getAllVideoRecommendations();
+        for (VideoRecommendation v : videos) {
+            db_dao.deleteVideoByTitle(v.getTitle());
         }
     }
 

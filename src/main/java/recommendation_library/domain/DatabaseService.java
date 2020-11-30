@@ -84,6 +84,10 @@ public class DatabaseService {
     public void editBookRecommendation(String title, String fieldToChange, String newValue) {
         this.dao.editBookRecommendation(title, fieldToChange, newValue);
     }
+    
+    public void editVideoRecommendation(String title, String fieldToChange, String newValue) {
+        this.dao.editVideoRecommendation(title, fieldToChange, newValue);
+    }
 
     public boolean deleteBookRecommendation(String title) {
         if (bookTitleAlreadyExists(title)) {

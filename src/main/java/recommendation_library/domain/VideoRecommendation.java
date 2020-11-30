@@ -18,6 +18,10 @@ public class VideoRecommendation extends Recommendation{
     public void addTimestamp(TimeMemory timestamp) {
         this.timestamps.add(timestamp);
     }
+
+    public String getUrl() {
+        return url;
+    }
     
     
 
