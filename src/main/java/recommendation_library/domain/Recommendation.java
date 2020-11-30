@@ -11,16 +11,26 @@ package recommendation_library.domain;
  * @author timot
  */
 public class Recommendation implements Comparable<Recommendation> {
+    protected int id;
     protected String title;
     protected Type type;
     protected String description;
     protected String addDate;
     
-    public Recommendation(String title, Type type, String description, String addDate) {
+    public Recommendation(int id, String title, Type type, String description, String addDate) {
+        this.id = id;
         this.title = title;
         this.type = type;
         this.description = description;
         this.addDate = addDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

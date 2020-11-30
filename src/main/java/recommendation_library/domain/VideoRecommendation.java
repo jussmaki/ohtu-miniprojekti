@@ -10,8 +10,8 @@ public class VideoRecommendation extends Recommendation{
     List<TimeMemory> timestamps = new ArrayList<>();
     
     
-    public VideoRecommendation(String url, String title, String description, String addDate) {
-        super(title, Type.VIDEO, description, addDate);
+    public VideoRecommendation(int id, String url, String title, String description, String addDate) {
+        super(id, title, Type.VIDEO, description, addDate);
         this.url = url;
     }
     

@@ -21,16 +21,18 @@ import recommendation_library.domain.VideoRecommendation;
 
 public class InMemoryRecommendationDao implements RecommendationDao {
     private List<BookRecommendation> bookRecommendations;
+    private List<VideoRecommendation> videoRecommendations;
     
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
+        this.videoRecommendations = new ArrayList<>();
     }
 
     @Override
     public void createBookRecommendation(String author, String title, String description, String isbn, int pageCount) {
         String addDate = java.time.LocalDate.now().toString();
-        this.bookRecommendations.add(new BookRecommendation(author, title, description, isbn, pageCount, addDate));
+        this.bookRecommendations.add(new BookRecommendation(this.bookRecommendations.size() + 1, author, title, description, isbn, pageCount, addDate));
     }
 
     @Override
@@ -40,7 +42,11 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (BookRecommendation b : bookRecommendations) {
+            if (b.getTitle().equals(title)) {
+//                logic here
+            }
+        }
     }
 
     @Override
@@ -59,22 +65,32 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void createVideoRecommendation(String url, String title, String description) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String addDate = java.time.LocalDate.now().toString();
+        videoRecommendations.add(new VideoRecommendation(this.videoRecommendations.size() + 1, url, title, description, addDate));
     }
 
     @Override
     public List<VideoRecommendation> getAllVideoRecommendations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.videoRecommendations;
     }
 
     @Override
     public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (VideoRecommendation v : videoRecommendations) {
+            if (v.getTitle().equals(title)) {
+//                logic here
+            }
+        }
     }
 
     @Override
     public int searchVideoByTitle(String title) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (VideoRecommendation v : videoRecommendations) {
+            if (v.getTitle().equals(title)) {
+                return v.getId();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -89,7 +105,16 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void deleteVideoByTitle(String title) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        VideoRecommendation toBeRemoved = null;
+        for (VideoRecommendation v : videoRecommendations) {
+            if (v.getTitle().equals(title)) {
+                toBeRemoved = v;
+                break;
+            }
+        }
+        if (toBeRemoved != null) {
+            videoRecommendations.remove(toBeRemoved);
+        }    
     }
 
 

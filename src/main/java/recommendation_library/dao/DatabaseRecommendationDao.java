@@ -192,7 +192,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM books");
             while (result.next()) {
-                books.add(new BookRecommendation(result.getString("author"),
+                books.add(new BookRecommendation(result.getInt("id"), result.getString("author"),
                         result.getString("title"), result.getString("description"),
                         result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
             }
@@ -211,7 +211,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM videos");
             while (result.next()) {
-                videos.add(new VideoRecommendation(result.getString("url"),
+                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
                         result.getString("title"), result.getString("description"), 
                         result.getString("created")));
             }
@@ -322,7 +322,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         deleteVideoTimeStamps(videoId);
     }
     
-    public void deleteVideoTimeStamps(int videoId) {
+    private void deleteVideoTimeStamps(int videoId) {
         String deleteTimeStamps = "DELETE FROM timestamps WHERE video_id = ?";
         try {
             Connection conn = this.connect();

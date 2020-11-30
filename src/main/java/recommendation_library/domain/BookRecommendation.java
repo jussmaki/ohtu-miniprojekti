@@ -16,8 +16,8 @@ public class BookRecommendation extends Recommendation {
     String isbn;
     int pageCount;
 
-    public BookRecommendation(String author, String title, String description, String isbn, int pageCount, String addDate) {
-        super(title, Type.BOOK, description, addDate);
+    public BookRecommendation(int id, String author, String title, String description, String isbn, int pageCount, String addDate) {
+        super(id, title, Type.BOOK, description, addDate);
         this.author = author;
         this.isbn = isbn;
         this.pageCount = pageCount;
