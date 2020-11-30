@@ -88,4 +88,25 @@ public class DatabaseService {
         }
         return false;
     }
+    
+    public boolean addTimeStampToVideo(String timestamp, String comment, String videoTitle) {
+        int id = dao.searchViedoByTitle(videoTitle);
+        if (id == 0) {
+            return false;
+        }
+        dao.addTimeStampToVideo(id, timestamp, comment);
+        return true;
+    }
+    
+    public List<TimeMemory> getTimetampsForVideo(String videoTitle) {
+        List<TimeMemory> timestamps = new ArrayList<>();
+        int id = dao.searchViedoByTitle(videoTitle);
+        if (id == 0) {
+            return timestamps;
+        }
+        for (TimeMemory timestamp : dao.getAllTimestampsForVideo(id)) {
+            timestamps.add(timestamp);
+        }
+        return timestamps;
+    }
 }

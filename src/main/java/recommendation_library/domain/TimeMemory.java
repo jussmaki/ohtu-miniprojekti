@@ -9,13 +9,13 @@ package recommendation_library.domain;
  *
  * @author anadis
  */
-public class Timestamp {
+public class TimeMemory {
     
     private String timestamp;
     private String comment;
     private int videoId;
     
-    public Timestamp(String timestamp, String comment, int videoId) {
+    public TimeMemory(String timestamp, String comment, int videoId) {
         this.comment = comment;
         this.timestamp = timestamp;
         this.videoId = videoId;
