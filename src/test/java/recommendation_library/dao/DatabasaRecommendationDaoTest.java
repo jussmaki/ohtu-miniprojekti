@@ -21,8 +21,6 @@ import recommendation_library.io.IO;
  */
 public class DatabasaRecommendationDaoTest {
 
-    IO io;
-    UserInterface ui;
     RecommendationDao db_dao;
     DatabaseService service;
 
@@ -33,8 +31,6 @@ public class DatabasaRecommendationDaoTest {
     public void setUp() {
         db_dao = new DatabaseRecommendationDao("src/test/resources/test.db");
         service = new DatabaseService(db_dao);
-        io = mock(IO.class);
-        ui = new UserInterface(io, db_dao);
 
         List<BookRecommendation> books = db_dao.getAllBookRecommendations();
         for (BookRecommendation b : books) {
@@ -44,15 +40,7 @@ public class DatabasaRecommendationDaoTest {
 
     @Test
     public void createRecommendationAddsToTheDatabase() {
-        when(io.nextLine())
-                .thenReturn("Jane")
-                .thenReturn("Hobitti")
-                .thenReturn("Sci-fi thriller")
-                .thenReturn("1234-ABCD")
-                .thenReturn("10");
-
-        ui.addBook();
-        verify(io, times(5)).nextLine();
+        
         service.addBook("Jane", "Hobitti", "Sci-fi thriller", "1234-ABCD", 10);
         assertFalse(service.getAllBookRecommendations().isEmpty());
 

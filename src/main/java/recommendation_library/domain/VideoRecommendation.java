@@ -7,7 +7,7 @@ import java.util.List;
 public class VideoRecommendation extends Recommendation{
 
     String url;
-    List<Timestamp> timestamps = new ArrayList<>();
+    List<TimeMemory> timestamps = new ArrayList<>();
     
     
     public VideoRecommendation(String url, String title, String description, String addDate) {
@@ -15,7 +15,7 @@ public class VideoRecommendation extends Recommendation{
         this.url = url;
     }
     
-    public void addTimestamp(Timestamp timestamp) {
+    public void addTimestamp(TimeMemory timestamp) {
         this.timestamps.add(timestamp);
     }
     

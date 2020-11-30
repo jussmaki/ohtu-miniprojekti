@@ -23,6 +23,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         this.fileName = filename;
         connect();
         createBookTable();
+        createVideoTable();
+        createTimeStampTable();
     }
 
     private Connection connect() {
@@ -154,6 +156,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      * @param timestamp
      * @param comment
      */
+    @Override
     public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
         String sql = "INSERT INTO timestamps(timestamp, comment, video_id) "
                 + "VALUES(?,?,?)";
@@ -212,6 +215,24 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     @Override
+    public List<TimeMemory> getAllTimestampsForVideo(int videId) {
+        ArrayList<TimeMemory> timestamps = new ArrayList<>();
+        String sql = "SELECT * FROM timestamps WHERE video_id = ?";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            pstatement.setInt(1, videId);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                timestamps.add(new TimeMemory(result.getString("timestamp"),
+                        result.getString("comment"), result.getInt("video_id")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return timestamps;
+    }
+    @Override
     public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
         String sql = "UPDATE books SET " + fieldToBeEdited + " = ? WHERE title = ?";
         try {
@@ -224,7 +245,22 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
+    
+    @Override
+    public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
+        String sql = "UPDATE videos SET " + fieldToBeEdited + " = ? WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement preparedstmt = conn.prepareStatement(sql);
+            preparedstmt.setString(1, newValue);
+            preparedstmt.setString(2, title);
+            preparedstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Override
     public int searchVideoByTitle(String title) {
         String sql = "SELECT id FROM videos WHERE title = ?";
         int id = 0;
@@ -249,20 +285,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, title);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    @Override
-    public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
-        String sql = "UPDATE videos SET " + fieldToBeEdited + " = ? WHERE title = ?";
-        try {
-            Connection conn = this.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, newValue);
-            pstmt.setString(2, title);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

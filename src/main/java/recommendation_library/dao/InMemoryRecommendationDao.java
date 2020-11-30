@@ -9,6 +9,7 @@ import recommendation_library.domain.BookRecommendation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.Type;
 import recommendation_library.domain.VideoRecommendation;
 
@@ -68,6 +69,21 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int searchVideoByTitle(String title) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<TimeMemory> getAllTimestampsForVideo(int videId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
