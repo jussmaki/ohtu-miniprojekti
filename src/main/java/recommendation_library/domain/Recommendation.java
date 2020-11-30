@@ -10,7 +10,7 @@ package recommendation_library.domain;
  *
  * @author timot
  */
-public class Recommendation {
+public class Recommendation implements Comparable<Recommendation> {
     protected String title;
     protected Type type;
     protected String description;
@@ -57,6 +57,11 @@ public class Recommendation {
 
     public boolean equals(Recommendation other) {
         return this.title.equals(other.getTitle());
+    }
+
+    @Override
+    public int compareTo(Recommendation other) {
+        return this.addDate.compareToIgnoreCase(other.getAddDate());
     }
     
     
