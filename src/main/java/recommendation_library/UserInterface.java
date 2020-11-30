@@ -71,7 +71,7 @@ public class UserInterface {
         
         this.io.print("Type the title of the book recommendation");
         String title = io.nextLine();
-        if (service.titleAlreadyExists(title)) {
+        if (service.bookTitleAlreadyExists(title)) {
             System.out.println("Title already exists");
             // Do some logic here
         }
@@ -143,7 +143,7 @@ public class UserInterface {
         };      
         String titleToEdit = String.valueOf(io.nextLine());
                 
-        if(this.service.titleAlreadyExists(titleToEdit)) {            
+        if(this.service.bookTitleAlreadyExists(titleToEdit)) {            
             this.io.print("Enter the fieldname of the selected recommendation you wish to edit (author, title, description, isbn, pagecount):");
             String fieldToEdit = String.valueOf(io.nextLine());
             
@@ -178,7 +178,7 @@ public class UserInterface {
         String titleToDelete = String.valueOf(io.nextLine());
                 
 
-        if (this.service.deleteRecommendation(titleToDelete)) {
+        if (this.service.deleteBookRecommendation(titleToDelete)) {
            this.io.print("Recommendation deleted!");                     
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");

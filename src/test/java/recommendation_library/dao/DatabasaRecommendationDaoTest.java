@@ -83,14 +83,14 @@ public class DatabasaRecommendationDaoTest {
         System.out.println(count);
         service.addBook("Bob", "book4", "good", "abc", 10);
         assertEquals(count + 1, service.getAllBookRecommendations().size());
-        service.deleteRecommendation("book4");
+        service.deleteBookRecommendation("book4");
         assertEquals(count, service.getAllBookRecommendations().size());
     }
 
     @Test
     public void existingTitleNotReaddedToDatabase() {
         service.addBook("Bob", "book4", "good", "abc", 10);
-        assertTrue(service.titleAlreadyExists("book4"));
+        assertTrue(service.bookTitleAlreadyExists("book4"));
         int count = service.getAllBookRecommendations().size();
         boolean added = service.addBook("Henri", "book4", "different book same title", "asd", 11);
         assertFalse(added);

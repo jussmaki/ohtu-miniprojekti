@@ -23,32 +23,36 @@ public class DatabaseService {
         this.dao = dao;
     }
 
-    public boolean titleAlreadyExists(String title) {
+    public boolean bookTitleAlreadyExists(String title) {
         List<BookRecommendation> books = dao.getAllBookRecommendations();
         for (BookRecommendation book : books) {
             if (book.getTitle().equals(title)) {
                 return true;
             }
         }
-//        When getAllVideoRecommendations method is implemented in InMemoryDao class
-//        for (Recommendation recommendation : this.getAllBookRecommendations()) {
-//            if (recommendation.getTitle().equals(title)) {
-//                return true;
-//            }
-//        }
+        return false;
+    }
+    
+    public boolean videoTitleAlreadyExists(String title) {
+        List<VideoRecommendation> videos = dao.getAllVideoRecommendations();
+        for (VideoRecommendation video : videos) {
+            if (video.getTitle().equals(title)) {
+                return true;
+            }
+        }
         return false;
     }
 
     public boolean addBook(String author, String title, String description, String isbn, int pageCount) {
-        if (titleAlreadyExists(title)) {
+        if (bookTitleAlreadyExists(title)) {
             return false;
         }
         dao.createBookRecommendation(author, title, description, isbn, pageCount);
         return true;
     }
 
-    public boolean addVIdeo(String url, String title, String description) {
-        if (titleAlreadyExists(title)) {
+    public boolean addVideo(String url, String title, String description) {
+        if (videoTitleAlreadyExists(title)) {
             return false;
         }
         dao.createVideoRecommendation(url, title, description);
@@ -81,9 +85,17 @@ public class DatabaseService {
         this.dao.editBookRecommendation(title, fieldToChange, newValue);
     }
 
-    public boolean deleteRecommendation(String title) {
-        if (titleAlreadyExists(title)) {
+    public boolean deleteBookRecommendation(String title) {
+        if (bookTitleAlreadyExists(title)) {
             dao.deleteBookByTitle(title);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean deleteVideoRecommendation(String title) {
+        if (videoTitleAlreadyExists(title)) {
+            dao.deleteVideoByTitle(title);
             return true;
         }
         return false;
