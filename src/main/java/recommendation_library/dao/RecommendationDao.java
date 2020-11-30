@@ -24,4 +24,7 @@ public interface RecommendationDao {
             
     void editBookRecommendation(String title, String fieldToBeEdited, String newValue);
     void deleteBookByTitle(String title);
+    
+    void editVideoRecommendation(String title, String fieldToBeEdited, String newValue);
+    void deleteVideoByTitle(String title);
 }
