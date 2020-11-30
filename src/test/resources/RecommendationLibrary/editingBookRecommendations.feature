@@ -1,1 +1,1 @@
-Feature: As a user I can edit a recomendation already in the library
+Feature: As a user I can edit a book recomendation already in the library
