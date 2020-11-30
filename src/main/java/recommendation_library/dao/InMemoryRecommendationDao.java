@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import recommendation_library.domain.Type;
+import recommendation_library.domain.VideoRecommendation;
 
 /**
  *
@@ -53,6 +54,16 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         if (toBeRemoved != null) {
             bookRecommendations.remove(toBeRemoved);
         }
+    }
+
+    @Override
+    public void createVideoRecommendation(String url, String title, String description) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<VideoRecommendation> getAllVideoRecommendations() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

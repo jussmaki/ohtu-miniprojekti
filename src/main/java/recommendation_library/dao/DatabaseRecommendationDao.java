@@ -5,7 +5,7 @@
  */
 package recommendation_library.dao;
 
-import recommendation_library.domain.BookRecommendation;
+import recommendation_library.domain.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +61,41 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
     }
 
+    public void createVideoTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS videos (\n"
+                + " id integer PRIMARY KEY,\n"
+                + " url TEXT NOT NULL,\n"
+                + " title TEXT NOT NULL UNIQUE,\n"
+                + " description TEXT,\n"
+                + " created TEXT"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+//            System.out.println("table created");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void createTimeStampTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS timestamps (\n"
+                + " id integer PRIMARY KEY,\n"
+                + " timestamp TEXT NOT NULL,\n"
+                + " comment TEXT,\n"
+                + " video_id INTEGER REFERENCES videos"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+//            System.out.println("table created");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * Insert a new recommendation into the database
      *
@@ -87,9 +122,57 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
+    
+    /**
+     * Insert a new recommendation into the database
+     *
+     * @param url
+     * @param title
+     * @param description
+     */
+    @Override
+    public void createVideoRecommendation(String url, String title, String description) {
+        String sql = "INSERT INTO books(url, title, description created) "
+                + "VALUES(?,?,?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, url);
+            statement.setString(2, title);
+            statement.setString(3, description);
+            statement.setString(4, java.time.LocalDate.now().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * Add a new timestamp into the database
+     *
+     * @param video_id
+     * @param timestamp
+     * @param comment
+     */
+    public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
+        String sql = "INSERT INTO timestamps(timestamp, comment, video_id) "
+                + "VALUES(?,?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, timestamp);
+            statement.setString(2, comment);
+            statement.setInt(3, videoId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
 
     /**
      * Fetch every recommendation from attached database
+     *
      * @return List of recommendations
      */
     @Override
@@ -111,31 +194,61 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
     
     @Override
-    public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
-        String sql = "UPDATE books SET " + fieldToBeEdited + " = ? WHERE title = ?" ;
-        // make sql query;
-        try (Connection conn = this.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    public List<VideoRecommendation> getAllVideoRecommendations() {
+        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM videos");
+            while (result.next()) {
+                videos.add(new VideoRecommendation(result.getString("url"),
+                        result.getString("title"), result.getString("description"), 
+                        result.getString("created")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return videos;
+    }
 
-            // set the corresponding param
+    @Override
+    public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
+        String sql = "UPDATE books SET " + fieldToBeEdited + " = ? WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, newValue);
             pstmt.setString(2, title);
-            // update 
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
+    public int searchViedoByTitle(String title) {
+        String sql = "SELECT id FROM videos WHERE title = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
     
     @Override
     public void deleteBookByTitle(String title) {
         String sql = "DELETE FROM books WHERE title = ?";
-        try (Connection conn = this.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            // set the corresponding param
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, title);
-            // update 
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
