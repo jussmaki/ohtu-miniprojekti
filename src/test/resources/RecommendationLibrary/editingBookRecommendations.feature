@@ -9,16 +9,3 @@
 ##            	And field to edit "author" is entered
 ##		And new value "newAuthor" for selected field is entered
 ##        Then value of the selected field "author" has been changed to "newAuthor"
-
-## Jaana koittaa
-
-Feature: As a user I can edit a book recomendation that already exists in the library
-
-        @problem
-    Scenario: user can edit an existing book recommendations
-        Given command edit is selected
-        When book command edit is selected
-  		And book title "TitleTest" is entered
-              	And field to edit "author" is entered
-                And new value "newAuthor" for selected field is entered
-        Then value of the selected field "author" is "newAuthor"
