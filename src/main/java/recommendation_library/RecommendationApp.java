@@ -10,6 +10,7 @@ import java.util.List;
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.DatabaseService;
+import recommendation_library.domain.VideoRecommendation;
 import recommendation_library.io.IO;
 
 /**
@@ -57,10 +58,7 @@ public class RecommendationApp {
         return service.videoTitleAlreadyExists(title);
     }
 
-    /**
-     * Returns list of all book recommendations contained within the library
-     */
-    public List<String> list() {
+    public List<String> listBooks() {
         List<BookRecommendation> list = service.getAllBookRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
@@ -78,25 +76,7 @@ public class RecommendationApp {
         return recommendationStrings;
     }
 
-    public  List<String> listBooks() {
-        List<BookRecommendation> list = service.getAllBookRecommendations();
-        List<String> recommendationStrings = new ArrayList<>();
-        int i = 1;
-
-        for (BookRecommendation r : list) {
-            recommendationStrings.add("Recommendation " + i++ + System.lineSeparator()
-                    + "Author: " + r.getAuthor() + System.lineSeparator()
-                    + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "Description: " + r.getDescription() + System.lineSeparator()
-                    + "ISBN: " + r.getIsbn() + System.lineSeparator()
-                    + "Page count: " + r.getPageCount() + System.lineSeparator()
-                    + "Added: " + r.getAddDate());
-        }
-
-        return recommendationStrings;
-    }
-
-    public  List<String> listVideos() {
+    public List<String> listVideos() {
         List<VideoRecommendation> list = service.getAllVideoRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
@@ -104,7 +84,7 @@ public class RecommendationApp {
         for (VideoRecommendation r : list) {
             recommendationStrings.add("Recommendation " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "URL: " + r.getUrl() + System.lineSeparator()                    
+                    + "URL: " + r.getUrl() + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
                     + "Added: " + r.getAddDate());
         }
@@ -113,18 +93,31 @@ public class RecommendationApp {
     }
 
     /**
-     * list titles of all book recommendations contained within the library
+     * list titles of all video recommendations contained within the library
      */
-    public List<String> listTitles() {
-        List<BookRecommendation> recommendationList = service.getAllBookRecommendations();
-        List<String> titleList = new ArrayList<>();
-        for (BookRecommendation r : recommendationList) {
-            titleList.add(r.getTitle());
+    public List<String> listVideoTitles() {
+        List<VideoRecommendation> videoRecommendationList = service.getAllVideoRecommendations();
+        List<String> videoTitleList = new ArrayList<>();
+
+        for (VideoRecommendation video : videoRecommendationList) {
+            videoTitleList.add(video.getTitle());
         }
-        return titleList;
+
+        return videoTitleList;
     }
 
-    public boolean edit(String titleToEdit, String fieldToEdit, String newValue) {
+    public List<String> listBookTitles() {
+        List<BookRecommendation> bookRecommendationList = service.getAllBookRecommendations();
+        List<String> bookTitleList = new ArrayList<>();
+
+        for (BookRecommendation book : bookRecommendationList) {
+            bookTitleList.add(book.getTitle());
+        }
+
+        return bookTitleList;
+    }
+
+    public boolean editBook(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {
             this.service.editBookRecommendation(titleToEdit, fieldToEdit, newValue);
@@ -137,6 +130,18 @@ public class RecommendationApp {
 
     public boolean delete(String titleToDelete) {
         return this.service.deleteBookRecommendation(titleToDelete);
+    }
+
+    
+    public boolean editVideo(String titleToEdit, String fieldToEdit, String newValue) {
+
+        try {
+            this.service.editVideoRecommendation(titleToEdit, fieldToEdit, newValue);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
 }

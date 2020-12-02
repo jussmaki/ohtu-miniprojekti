@@ -56,9 +56,20 @@ public class UserInterface {
         } else if (input == 3) {
             edit();
         } else if (input == 4) {
-            delete();
+           // delete();
         } else {
             this.io.print("Unknown command");
+        }
+    }
+
+    public void edit() {
+        this.io.print("[1] Edit book, [2] Edit video");
+        int input = Integer.valueOf(io.nextLine());
+
+        if (input == 1) {
+            editBook();
+        } else if (input == 2) {
+            editVideo();
         }
     }
 
@@ -136,36 +147,33 @@ public class UserInterface {
             listAll();
         } else if (input == 2) {
             listBooks();
-        } else if(input == 3){
+        } else if (input == 3) {
             listVideos();
         }
     }
-    
-    public void listBooks(){
+
+    public void listBooks() {
         List<String> bookRecommendations = recommendationApp.listBooks();
-        
-        for(String bookRecommendation : bookRecommendations){
+
+        for (String bookRecommendation : bookRecommendations) {
             this.io.print(bookRecommendation);
         }
     }
 
-    public void listVideos(){
+    public void listVideos() {
         List<String> videoRecommendations = recommendationApp.listVideos();
-        
-        for(String videoRecommendation : videoRecommendations){
+
+        for (String videoRecommendation : videoRecommendations) {
             this.io.print(videoRecommendation);
         }
     }
 
     /**
-     * list all book recommendations contained within the library
+     * list all recommendations contained within the library
      */
     public void listAll() {
-        List<String> recommendations = recommendationApp.list();
-
-        for (String recommendation : recommendations) {
-            this.io.print(recommendation);
-        }
+        listBooks();
+        listVideos();
     }
 
     /**
@@ -175,12 +183,12 @@ public class UserInterface {
      * if given title or fieldname doesn't exist, and perhaps an option to list
      * recommendations(?)
      */
-    public void edit() {
+    public void editBook() {
         List<String> stringFieldNames = Arrays.asList("author", "title", "description", "isbn");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
-        List<String> allTitles = recommendationApp.listTitles();
-        for (String title : allTitles) {
+        List<String> allBookTitles = recommendationApp.listBookTitles();
+        for (String title : allBookTitles) {
             this.io.print(title);
         };
         String titleToEdit = String.valueOf(io.nextLine());
@@ -197,7 +205,7 @@ public class UserInterface {
             this.io.print("Enter a new value to insert into the selected field:");
             String newValue = String.valueOf(io.nextLine());
 
-            if (recommendationApp.edit(titleToEdit, fieldToEdit, newValue)) {
+            if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
                 this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
@@ -208,6 +216,40 @@ public class UserInterface {
         }
     }
 
+    public void editVideo() {
+        List<String> stringFieldNames = Arrays.asList("title", "URL", "description");
+
+        this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
+        List<String> allVideoTitles = recommendationApp.listVideoTitles();
+        for (String title : allVideoTitles) {
+            this.io.print(title);
+        };
+        String titleToEdit = String.valueOf(io.nextLine());
+
+        if (recommendationApp.videoAlreadyExists(titleToEdit)) {
+            this.io.print("Enter the fieldname of the selected recommendation you wish to edit (title, URL, description):");
+            String fieldToEdit = String.valueOf(io.nextLine());
+
+            while (!stringFieldNames.contains(fieldToEdit)) {
+                this.io.print("Given fieldname doesn't exist! Enter a valid fieldname (title, URL, description):");
+                fieldToEdit = String.valueOf(io.nextLine());
+            }
+
+            this.io.print("Enter a new value to insert into the selected field:");
+            String newValue = String.valueOf(io.nextLine());
+
+            if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
+                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+            } else {
+                this.io.print("Failed!");
+            }
+
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
+
+    /**
     public void delete() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
         List<String> allTitles = recommendationApp.listTitles();
@@ -222,5 +264,6 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
+    * */
 
 }
