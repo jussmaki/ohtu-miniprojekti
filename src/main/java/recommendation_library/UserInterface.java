@@ -7,15 +7,17 @@ package recommendation_library;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import recommendation_library.io.IO;
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
+
 import java.util.List;
+
 import recommendation_library.domain.DatabaseService;
 import recommendation_library.RecommendationApp;
 
 /**
- *
  * @author jhku
  */
 public class UserInterface {
@@ -23,9 +25,23 @@ public class UserInterface {
     private IO io;
     private RecommendationApp recommendationApp;
 
+    /**
+     * 
+     * @param io
+     * @param dao
+     */
     public UserInterface(IO io, RecommendationDao dao) {
+        this(io, new RecommendationApp(io, dao));
+    }
+
+    /**
+     *
+     * @param io
+     * @param app 
+     */
+    public UserInterface(IO io, RecommendationApp app) {
         this.io = io;
-        this.recommendationApp = new RecommendationApp(io, dao);
+        this.recommendationApp = app;
     }
 
     /**
@@ -44,9 +60,8 @@ public class UserInterface {
     }
 
     /**
-     *
      * @param input number given from user. 1 for "add", 2 for "list", 3 for
-     * "edit", 4 for "exit"
+     *              "edit", 4 for "exit"
      */
     public void checkInput(int input) {
         if (input == 1) {
@@ -114,7 +129,7 @@ public class UserInterface {
                 this.io.print("Addition failed");
             }
         } else {
-            System.out.println("Title already exists");
+            io.print("Title already exists");
         }
     }
 
@@ -145,7 +160,7 @@ public class UserInterface {
                 this.io.print("Addition failed");
             }
         } else {
-            System.out.println("Title already exists");
+            io.print("Title already exists");
         }
 
     }
@@ -201,7 +216,8 @@ public class UserInterface {
         List<String> allBookTitles = recommendationApp.listBookTitles();
         for (String title : allBookTitles) {
             this.io.print(title);
-        };
+        }
+        ;
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.bookAlreadyExists(titleToEdit)) {
@@ -234,7 +250,8 @@ public class UserInterface {
         List<String> allVideoTitles = recommendationApp.listVideoTitles();
         for (String title : allVideoTitles) {
             this.io.print(title);
-        };
+        }
+        ;
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.videoAlreadyExists(titleToEdit)) {
@@ -266,7 +283,8 @@ public class UserInterface {
         List<String> allBookTitles = recommendationApp.listBookTitles();
         for (String title : allBookTitles) {
             this.io.print(title);
-        };
+        }
+        ;
         String titleToDelete = String.valueOf(io.nextLine());
 
         if (recommendationApp.deleteBook(titleToDelete)) {
@@ -281,7 +299,8 @@ public class UserInterface {
         List<String> allVideoTitles = recommendationApp.listVideoTitles();
         for (String title : allVideoTitles) {
             this.io.print(title);
-        };
+        }
+        ;
         String titleToDelete = String.valueOf(io.nextLine());
 
         if (recommendationApp.deleteVideo(titleToDelete)) {

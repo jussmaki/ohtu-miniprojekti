@@ -115,6 +115,188 @@ public class UserInterfaceTest {
     }
 
     @Test
+    public void addBookAlreadyExistsWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.bookAlreadyExists(anyString()))
+            .thenReturn(true);
+
+        when(input.nextLine())
+            .thenReturn(anyString());
+
+        ui.addBook();
+
+        verify(input).print("Title already exists");
+    }
+
+    @Test
+    public void addBookAdditionFailedWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.bookAlreadyExists(anyString()))
+            .thenReturn(false);
+        
+        when(app.addBook(anyString(), anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(false);
+
+        when(input.nextLine())
+            .thenReturn(anyString());
+
+        ui.addBook();
+
+        verify(input).print("Addition failed");
+    }
+
+    @Test
+    public void addVideoAlreadyExistsWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.videoAlreadyExists(anyString()))
+            .thenReturn(true);
+
+        when(input.nextLine())
+            .thenReturn(anyString());
+
+        ui.addVideo();
+
+        verify(input).print("Title already exists");
+    }
+
+    @Test
+    public void addVideoAdditionFailedWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.videoAlreadyExists(anyString()))
+            .thenReturn(false);
+
+        when(app.addVideo(anyString(), anyString(), anyString()))
+            .thenReturn(false);
+
+        when(input.nextLine())
+            .thenReturn(anyString());
+
+        ui.addVideo();
+
+        verify(input).print("Addition failed");
+    }
+
+    @Test
+    public void editBookFieldnameDoesNotExistWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // imaginary book titles
+        when(app.listBookTitles())
+            .thenReturn(Arrays.asList("A", "B", "C"));
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.bookAlreadyExists(anyString()))
+            .thenReturn(true);
+
+        when(input.nextLine())
+            // titleToEdit
+            .thenReturn("A")
+            // fieldToEdit
+            .thenReturn("FieldThatDoesNotExist")
+            // correct field
+            .thenReturn("title")
+            // new value
+            .thenReturn("D");
+
+        ui.editBook();
+
+        verify(input).print("Given fieldname doesn't exist! Enter a valid fieldname (author, title, description, isbn, pagecount):");
+    }
+
+    @Test
+    public void editBookTitleDoesNotExistWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // imaginary book titles
+        when(app.listBookTitles())
+            .thenReturn(Arrays.asList("A", "B", "C"));
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.bookAlreadyExists(anyString()))
+            .thenReturn(false);
+
+        when(input.nextLine())
+            // titleToEdit
+            .thenReturn("A");
+
+        ui.editBook();
+
+        verify(input).print("Recommendation with the given title doesn't exist! Try again: ");
+    }
+
+    @Test
+    public void editVideoFieldnameDoesNotExistWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // imaginary book titles
+        when(app.listVideoTitles())
+            .thenReturn(Arrays.asList("A", "B", "C"));
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.videoAlreadyExists(anyString()))
+            .thenReturn(true);
+
+        when(input.nextLine())
+            // titleToEdit
+            .thenReturn("A")
+            // fieldToEdit
+            .thenReturn("FieldThatDoesNotExist")
+            // correct fieldToEdit
+            .thenReturn("title")
+            // new value
+            .thenReturn("D");
+
+        ui.editVideo();
+
+        verify(input).print("Given fieldname doesn't exist! Enter a valid fieldname (title, URL, description):");
+    }
+
+    @Test
+    public void editVideoTitleDoesNotExistWorks() {
+        RecommendationApp app = mock(RecommendationApp.class);
+        UserInterface ui = new UserInterface(input, app);
+
+        // imaginary book titles
+        when(app.listVideoTitles())
+            .thenReturn(Arrays.asList("A", "B", "C"));
+
+        // no need to test app's bookAlreadyExists implementation here, 
+        // just return true to enter the if block
+        when(app.videoAlreadyExists(anyString()))
+            .thenReturn(false);
+
+        when(input.nextLine())
+            // titleToEdit
+            .thenReturn("A");
+
+        ui.editVideo();
+
+        verify(input).print("Recommendation with the given title doesn't exist! Try again: ");
+    }
+
+    @Test
     public void checkInputCallsListAll() {
         when(input.nextLine())
             .thenReturn("1");
@@ -128,7 +310,7 @@ public class UserInterfaceTest {
 
     @Test
     public void listingRecommendationsReturnsList() {
-        List<String> inputLines = Arrays.asList(new String[]{"1", "1", "Jeff VanderMeer", "Annihilation", "Good book", "ABCD", "777", "2", "2"});
+        List<String> inputLines = Arrays.asList("1", "1", "Jeff VanderMeer", "Annihilation", "Good book", "ABCD", "777", "2", "2");
 
         db_io = new StubIO(inputLines);
         db_ui = new UserInterface(db_io, db_dao);
