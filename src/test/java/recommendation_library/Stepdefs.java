@@ -64,7 +64,7 @@ public class Stepdefs {
         inputLines.add(title);
     }
     
-    /*  FAILS, WHY OH WHY??? 
+//    /*  FAILS, WHY OH WHY??? 
     
     @When("command edit is selected")
     public void commandEditIsSelected() {
@@ -90,7 +90,7 @@ public class Stepdefs {
         
         assertTrue(io.getPrints().contains("Field " + fieldName + " succesfully changed to " + newValue + "!"));
     }
-*/
+//*/
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
