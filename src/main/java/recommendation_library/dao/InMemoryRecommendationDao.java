@@ -7,9 +7,8 @@ package recommendation_library.dao;
 
 import recommendation_library.domain.BookRecommendation;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 
 import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.Type;
@@ -49,26 +48,21 @@ public class InMemoryRecommendationDao implements RecommendationDao {
             }
         }
     }
-    
+
     private void editBookMatchingField(BookRecommendation b, String fieldToBeEdited, String newValue) {
-        switch (fieldToBeEdited.toLowerCase()){
-            case "author":
-                b.setAuthor(newValue);
-                break;
-            case "title":
-                b.setTitle(newValue);
-                break;
-            case "description":
-                b.setDescription(newValue);
-                break;
-            case "isbn":
-                b.setIsbn(newValue);
-                break;
-            case "pagecount":
-                b.setPageCount(Integer.parseInt(newValue));
-                break;
-        }
+        fieldToBeEdited = fieldToBeEdited.toLowerCase();
+
+        Map<String, Function<String, Boolean>> map = new HashMap<>();
+
+        map.put("author", b::setAuthor);
+        map.put("title", b::setTitle);
+        map.put("description", b::setDescription);
+        map.put("isbn", b::setIsbn);
+        map.put("pagecount", s -> b.setPageCount(Integer.parseInt(s)));
+
+        map.get(fieldToBeEdited).apply(newValue);
     }
+
 
     @Override
     public void deleteBookByTitle(String title) {
@@ -103,25 +97,15 @@ public class InMemoryRecommendationDao implements RecommendationDao {
             }
         }
     }
-    
+
     private void editVideoMatchingField(VideoRecommendation v, String fieldToBeEdited, String newValue) {
-        System.err.println(v.getTitle());
-        System.err.println(v.getUrl());
+        fieldToBeEdited = fieldToBeEdited.toLowerCase();
+        Map<String, Function<String, Boolean>> map = new HashMap<>();
+        map.put("title", v::setTitle);
+        map.put("url", v::setUrl);
+        map.put("description", v::setDescription);
         System.err.println(fieldToBeEdited);
-        System.err.println(newValue);
-        System.err.println();
-        System.err.println();
-        switch (fieldToBeEdited.toLowerCase()){
-            case "title":
-                v.setTitle(newValue);
-                break;
-            case "url":
-                v.setUrl(newValue);
-                break;
-            case "description":
-                v.setDescription(newValue);
-                break;
-        }
+        map.get(fieldToBeEdited).apply(newValue);
     }
 
     @Override

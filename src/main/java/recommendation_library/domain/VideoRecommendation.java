@@ -23,8 +23,9 @@ public class VideoRecommendation extends Recommendation{
         return url;
     }
     
-    public void setUrl(String newUrl) {
+    public boolean setUrl(String newUrl) {
         url = newUrl;
+        return true;
     }
     
     

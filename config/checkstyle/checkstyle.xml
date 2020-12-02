@@ -18,7 +18,7 @@
 		  <property name="max" value="1"/>
 		</module>
 		<module name="Indentation">
-		  <property name="caseIndent" value="0"/>
+		  <property name="caseIndent" value="4"/>
 		</module>
 		<module name="LeftCurly">
 		</module>

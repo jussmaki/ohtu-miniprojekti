@@ -27,24 +27,27 @@ public class BookRecommendation extends Recommendation {
         return pageCount;
     }
 
-    public void setPageCount(int pageCount) {
+    public boolean setPageCount(int pageCount) {
         this.pageCount = pageCount;
+        return true;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public boolean setAuthor(String author) {
         this.author = author;
+        return true;
     }
 
     public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public boolean setIsbn(String isbn) {
         this.isbn = isbn;
+        return true;
     }
     
 }

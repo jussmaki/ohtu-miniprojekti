@@ -29,40 +29,45 @@ public class Recommendation implements Comparable<Recommendation> {
         return id;
     }
 
-    public void setId(int id) {
+    public boolean setId(int id) {
         this.id = id;
+        return true;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public boolean setTitle(String title) {
         this.title = title;
+        return true;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public boolean setType(Type type) {
         this.type = type;
+        return true;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public boolean setDescription(String description) {
         this.description = description;
+        return true;
     }
 
     public String getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(String addDate) {
+    public boolean setAddDate(String addDate) {
         this.addDate = addDate;
+        return true;
     }
 
     public boolean equals(Recommendation other) {
