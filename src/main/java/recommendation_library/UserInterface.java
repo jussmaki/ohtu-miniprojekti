@@ -50,7 +50,7 @@ public class UserInterface {
      */
     public void checkInput(int input) {
         if (input == 1) {
-            addBook();
+            add();
         } else if (input == 2) {
             list();
         } else if (input == 3) {
@@ -59,6 +59,40 @@ public class UserInterface {
             delete();
         } else {
             this.io.print("Unknown command");
+        }
+    }
+
+    public void add() {
+        this.io.print("[1] Add book, [2] Add video");
+        int input = Integer.valueOf(io.nextLine());
+
+        if (input == 1) {
+            addBook();
+        } else if (input == 2) {
+            addVideo();
+        }
+
+    }
+
+    public void addVideo() {
+
+        this.io.print("Type the title of the video recommendation");
+        String title = io.nextLine();
+
+        if (!recommendationApp.videoAlreadyExists(title)) {
+            this.io.print("Type the description of the video recommendation");
+            String description = io.nextLine();
+
+            this.io.print("Type the url of the video recommendation");
+            String url = io.nextLine();
+
+            if (recommendationApp.addVideo(title, description, url)) {
+                this.io.print("Recommendation added");
+            } else {
+                this.io.print("Addition failed");
+            }
+        } else {
+            System.out.println("Title already exists");
         }
     }
 
@@ -92,13 +126,33 @@ public class UserInterface {
             System.out.println("Title already exists");
         }
 
+    }
 
+    public void list() {
+        this.io.print("[1] List all, [2] List books, [3] List videos");
+        int input = Integer.valueOf(io.nextLine());
+
+        if (input == 1) {
+            listAll();
+        } else if (input == 2) {
+            listBooks();
+        } else if(input == 3){
+            listVideos();
+        }
+    }
+    
+    public void listBooks(){
+        List<String> bookRecommendations = recommendationApp.listBooks();
+        
+        for(String bookRecommendation : bookRecommendations){
+            this.io.print(bookRecommendation);
+        }
     }
 
     /**
      * list all book recommendations contained within the library
      */
-    public void list() {
+    public void listAll() {
         List<String> recommendations = recommendationApp.list();
 
         for (String recommendation : recommendations) {
@@ -134,9 +188,8 @@ public class UserInterface {
 
             this.io.print("Enter a new value to insert into the selected field:");
             String newValue = String.valueOf(io.nextLine());
-            
-            
-            if(recommendationApp.edit(titleToEdit, fieldToEdit, newValue)){
+
+            if (recommendationApp.edit(titleToEdit, fieldToEdit, newValue)) {
                 this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
@@ -154,8 +207,8 @@ public class UserInterface {
             this.io.print(title);
         };
         String titleToDelete = String.valueOf(io.nextLine());
-        
-        if(recommendationApp.delete(titleToDelete)){
+
+        if (recommendationApp.delete(titleToDelete)) {
             this.io.print("Recommendation deleted!");
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
