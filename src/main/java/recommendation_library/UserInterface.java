@@ -73,25 +73,25 @@ public class UserInterface {
         this.io.print("Type the title of the book recommendation");
         String title = io.nextLine();
 
-        if (recommendationApp.bookAlreadyExists(title)) {
-            System.out.println("Title already exists");
-            run();
-        }
+        if (!recommendationApp.bookAlreadyExists(title)) {
+            this.io.print("Type the description of the book recommendation");
+            String description = io.nextLine();
 
-        this.io.print("Type the description of the book recommendation");
-        String description = io.nextLine();
+            this.io.print("Type the ISBN of the book recommendation");
+            String isbn = io.nextLine();
 
-        this.io.print("Type the ISBN of the book recommendation");
-        String isbn = io.nextLine();
+            this.io.print("Type the page count of the book recommendation");
+            String pageCount = io.nextLine();
 
-        this.io.print("Type the page count of the book recommendation");
-        String pageCount = io.nextLine();
-
-        if (recommendationApp.addBook(author, title, description, isbn, pageCount)) {
-            this.io.print("Recommendation added");
+            if (recommendationApp.addBook(author, title, description, isbn, pageCount)) {
+                this.io.print("Recommendation added");
+            } else {
+                this.io.print("Addition failed");
+            }
         } else {
-            this.io.print("Addition failed");
+            System.out.println("Title already exists");
         }
+
 
     }
 
