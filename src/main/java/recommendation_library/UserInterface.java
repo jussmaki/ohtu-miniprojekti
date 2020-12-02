@@ -144,7 +144,6 @@ public class UserInterface {
 
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
-            edit();
         }
     }
 
@@ -160,7 +159,6 @@ public class UserInterface {
             this.io.print("Recommendation deleted!");
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
-            run();
         }
     }
 
