@@ -10,6 +10,7 @@ package recommendation_library;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -127,17 +128,8 @@ public class UserInterfaceTest {
 
     @Test
     public void listingRecommendationsReturnsList() {
-        List<String> inputLines = new ArrayList<>();
-        inputLines.add("1");
-        inputLines.add("1");
-        inputLines.add("Jeff VanderMeer");
-        inputLines.add("Annihilation");
-        inputLines.add("Good book");
-        inputLines.add("ABCD");
-        inputLines.add("777");
-        inputLines.add("2");
-        inputLines.add("2");
-        
+        List<String> inputLines = Arrays.asList(new String[]{"1", "1", "Jeff VanderMeer", "Annihilation", "Good book", "ABCD", "777", "2", "2"});
+
         db_io = new StubIO(inputLines);
         db_ui = new UserInterface(db_io, db_dao);
         db_ui.run();
