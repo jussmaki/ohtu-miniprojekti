@@ -66,7 +66,7 @@ public class Recommendation implements Comparable<Recommendation> {
     }
 
     public boolean equals(Recommendation other) {
-        return this.title.equals(other.getTitle());
+        return this.title.equals(other.getTitle()) && this.type == other.type;
     }
 
     @Override

@@ -6,15 +6,16 @@
 package recommendation_library.dao;
 
 import recommendation_library.domain.BookRecommendation;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.Type;
 import recommendation_library.domain.VideoRecommendation;
 
 /**
- *
  * @author jenni.makinen
  */
 
@@ -22,7 +23,7 @@ import recommendation_library.domain.VideoRecommendation;
 public class InMemoryRecommendationDao implements RecommendationDao {
     private List<BookRecommendation> bookRecommendations;
     private List<VideoRecommendation> videoRecommendations;
-    
+
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
@@ -44,8 +45,28 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
         for (BookRecommendation b : bookRecommendations) {
             if (b.getTitle().equals(title)) {
-//                logic here
+                editBookMatchingField(b, fieldToBeEdited, newValue);
             }
+        }
+    }
+    
+    private void editBookMatchingField(BookRecommendation b, String fieldToBeEdited, String newValue) {
+        switch (fieldToBeEdited.toLowerCase()){
+            case "author":
+                b.setAuthor(newValue);
+                break;
+            case "title":
+                b.setTitle(newValue);
+                break;
+            case "description":
+                b.setDescription(newValue);
+                break;
+            case "isbn":
+                b.setIsbn(newValue);
+                break;
+            case "pagecount":
+                b.setPageCount(Integer.parseInt(newValue));
+                break;
         }
     }
 
@@ -78,8 +99,28 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
         for (VideoRecommendation v : videoRecommendations) {
             if (v.getTitle().equals(title)) {
-//                logic here
+                editVideoMatchingField(v, fieldToBeEdited, newValue);
             }
+        }
+    }
+    
+    private void editVideoMatchingField(VideoRecommendation v, String fieldToBeEdited, String newValue) {
+        System.err.println(v.getTitle());
+        System.err.println(v.getUrl());
+        System.err.println(fieldToBeEdited);
+        System.err.println(newValue);
+        System.err.println();
+        System.err.println();
+        switch (fieldToBeEdited.toLowerCase()){
+            case "title":
+                v.setTitle(newValue);
+                break;
+            case "url":
+                v.setUrl(newValue);
+                break;
+            case "description":
+                v.setDescription(newValue);
+                break;
         }
     }
 
@@ -114,9 +155,8 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         }
         if (toBeRemoved != null) {
             videoRecommendations.remove(toBeRemoved);
-        }    
+        }
     }
-
 
 
 }

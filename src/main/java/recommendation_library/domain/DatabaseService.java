@@ -114,7 +114,7 @@ public class DatabaseService {
         return true;
     }
     
-    public List<TimeMemory> getTimetampsForVideo(String videoTitle) {
+    public List<TimeMemory> getTimestampsForVideo(String videoTitle) {
         List<TimeMemory> timestamps = new ArrayList<>();
         int id = dao.searchVideoByTitle(videoTitle);
         if (id == 0) {

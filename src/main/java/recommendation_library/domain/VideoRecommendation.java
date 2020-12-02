@@ -23,6 +23,10 @@ public class VideoRecommendation extends Recommendation{
         return url;
     }
     
+    public void setUrl(String newUrl) {
+        url = newUrl;
+    }
+    
     
 
 

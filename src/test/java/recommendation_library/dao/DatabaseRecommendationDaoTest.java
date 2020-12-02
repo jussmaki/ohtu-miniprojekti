@@ -16,12 +16,10 @@ import recommendation_library.domain.VideoRecommendation;
  *
  * @author anadis
  */
-public class DatabasaRecommendationDaoTest {
+public class DatabaseRecommendationDaoTest {
 
     RecommendationDao db_dao;
-    public DatabasaRecommendationDaoTest() {
-    }
-
+    
     @Before
     public void setUp() {
         db_dao = new DatabaseRecommendationDao("src/test/resources/test.db");

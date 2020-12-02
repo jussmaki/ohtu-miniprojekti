@@ -244,7 +244,7 @@ public class UserInterface {
     }
 
     public void editVideo() {
-        List<String> stringFieldNames = Arrays.asList("title", "URL", "description");
+        List<String> stringFieldNames = Arrays.asList("title", "url", "description");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allVideoTitles = recommendationApp.listVideoTitles();
@@ -256,11 +256,11 @@ public class UserInterface {
 
         if (recommendationApp.videoAlreadyExists(titleToEdit)) {
             this.io.print("Enter the fieldname of the selected recommendation you wish to edit (title, URL, description):");
-            String fieldToEdit = String.valueOf(io.nextLine());
+            String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
                 this.io.print("Given fieldname doesn't exist! Enter a valid fieldname (title, URL, description):");
-                fieldToEdit = String.valueOf(io.nextLine());
+                fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
 
             this.io.print("Enter a new value to insert into the selected field:");

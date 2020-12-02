@@ -9,32 +9,22 @@ package recommendation_library;
  * @author jhku
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import recommendation_library.dao.DatabaseRecommendationDao;
-
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.DatabaseService;
 import recommendation_library.domain.VideoRecommendation;
 import recommendation_library.io.IO;
 import recommendation_library.io.StubIO;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class UserInterfaceTest {
 
