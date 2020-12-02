@@ -11,8 +11,10 @@ package recommendation_library;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import recommendation_library.dao.DatabaseRecommendationDao;
 
 import recommendation_library.dao.RecommendationDao;
@@ -49,10 +52,10 @@ public class UserInterfaceTest {
         test_dao = mock(RecommendationDao.class);
         service = mock(DatabaseService.class);
         UI = new UserInterface(input, test_dao);
-        
+
         db_dao = new DatabaseRecommendationDao("src/test/resources/test.db");
         db_service = new DatabaseService(db_dao);
-        
+
         List<BookRecommendation> books = db_dao.getAllBookRecommendations();
         for (BookRecommendation b : books) {
             db_dao.deleteBookByTitle(b.getTitle());
@@ -66,19 +69,20 @@ public class UserInterfaceTest {
     @Test
     public void checkInputCallsAdd() {
         when(input.nextLine())
+            .thenReturn("1")
             .thenReturn("Jane")
             .thenReturn("Hobitti")
             .thenReturn("Sci-fi thriller")
             .thenReturn("1234-ABCD")
             .thenReturn("10");
-        
+
 
         UI.checkInput(1);
 
 
-        verify(input, times(5)).nextLine();
+        verify(input, times(6)).nextLine();
         verify(test_dao, times(1)).createBookRecommendation("Jane", "Hobitti", "Sci-fi thriller", "1234-ABCD", 10);
-        verify(input, times(6)).print(anyString());
+        verify(input, times(7)).print(anyString());
 
     }
 
@@ -88,17 +92,43 @@ public class UserInterfaceTest {
 
         verify(input, times(1)).print("Unknown command");
     }
-    
+
     @Test
-    public void checkInputCallsList() {
+    public void checkInputCallsListBooks() {
+        when(input.nextLine())
+            .thenReturn("2");
+
         UI.checkInput(2);
 
         verify(test_dao, times(1)).getAllBookRecommendations();
     }
-    
+
+    @Test
+    public void checkInputCallsListVideos() {
+        when(input.nextLine())
+            .thenReturn("3");
+
+        UI.checkInput(2);
+
+        verify(test_dao, times(1)).getAllVideoRecommendations();
+    }
+
+    @Test
+    public void checkInputCallsListAll() {
+        when(input.nextLine())
+            .thenReturn("1");
+
+        UI.checkInput(2);
+
+        verify(test_dao, times(1)).getAllVideoRecommendations();
+        verify(test_dao, times(1)).getAllBookRecommendations();
+
+    }
+
     @Test
     public void listingRecommendationsReturnsList() {
         List<String> inputLines = new ArrayList<>();
+        inputLines.add("1");
         inputLines.add("1");
         inputLines.add("Jeff VanderMeer");
         inputLines.add("Annihilation");
@@ -106,20 +136,19 @@ public class UserInterfaceTest {
         inputLines.add("ABCD");
         inputLines.add("777");
         inputLines.add("2");
+        inputLines.add("2");
         
         db_io = new StubIO(inputLines);
         db_ui = new UserInterface(db_io, db_dao);
         db_ui.run();
 
         assertTrue(db_io.getPrints().contains("Recommendation 1" + System.lineSeparator()
-                        + "Author: Jeff VanderMeer" + System.lineSeparator()
-                        + "Title: Annihilation" + System.lineSeparator()
-                        + "Description: Good book" + System.lineSeparator()
-                        + "ISBN: ABCD" + System.lineSeparator()
-                        + "Page count: 777" + System.lineSeparator()
-                        + "Added: " + java.time.LocalDate.now().toString()));
-
-
+            + "Author: Jeff VanderMeer" + System.lineSeparator()
+            + "Title: Annihilation" + System.lineSeparator()
+            + "Description: Good book" + System.lineSeparator()
+            + "ISBN: ABCD" + System.lineSeparator()
+            + "Page count: 777" + System.lineSeparator()
+            + "Added: " + java.time.LocalDate.now().toString()));
     }
 
 }

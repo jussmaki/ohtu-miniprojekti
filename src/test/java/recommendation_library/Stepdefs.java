@@ -12,26 +12,30 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import recommendation_library.domain.BookRecommendation;
 
 
 /**
- *
  * @author jenni.makinen
  */
 public class Stepdefs {
-    
+
+    final String separator = System.lineSeparator();
+
     List<String> inputLines;
     StubIO io;
     UserInterface ui;
     RecommendationDao dao;
-    
+
     @Before
-    public void setup(){
+    public void setup() {
         this.inputLines = new ArrayList<String>();
     }
 
@@ -39,7 +43,47 @@ public class Stepdefs {
     public void commandAddSelected() {
         inputLines.add("1");
     }
+
+    @When("command list is selected")
+    public void commandListSelected() {
+        inputLines.add("2");
+    }
+
+    @When("command delete is selected")
+    public void commandDeleteSelected() {
+        inputLines.add("4");
+    }
+
+    @When("command edit is selected")
+    public void commandEditIsSelected() {
+        inputLines.add("3");
+    }
     
+    @When("command book is selected")
+    public void commandBookSelected() {
+        inputLines.add("1");
+    }
+    
+    @When("command list all is selected")
+    public void commandAllListingSelected() {
+        inputLines.add("1");
+    }
+
+    @When("command list books is selected")
+    public void commandBookListingSelected() {
+        inputLines.add("2");
+    }
+
+    @When("command list videos is selected")
+    public void commandVideosListingSelected() {
+        inputLines.add("3");
+    }
+
+    @When("command video is selected")
+    public void commandVideoSelected() {
+        inputLines.add("2");
+    }
+
     @When("book recommendation with author {string}, title {string}, description {string}, isbn {string} and page count {string} is added")
     public void addBookRecommendation(String author, String title, String description, String isbn, String pageCount) {
         inputLines.add(author);
@@ -48,46 +92,40 @@ public class Stepdefs {
         inputLines.add(isbn);
         inputLines.add(pageCount);
     }
-    
-    @When("command list is selected")
-    public void commandListSelected() {
-        inputLines.add("2");
+
+    @When("video recommendation with title {string}, description {string} and url {string} is added")
+    public void addVideoRecommendation(String title, String description, String url) {
+        inputLines.add(title);
+        inputLines.add(description);
+        inputLines.add(url);
     }
-    
-    @When("command delete is selected")
-    public void commandDeleteSelected() {
-        inputLines.add("4");
-    }
-    
-    @When("book title {string} is entered")
+
+
+    @When("title {string} is entered")
     public void bookTitleIsEntered(String title) {
         inputLines.add(title);
     }
-    
+
 //    /*  FAILS, WHY OH WHY??? 
-    
-    @When("command edit is selected")
-    public void commandEditIsSelected() {
-        inputLines.add("3");
-    }
-    
-    @When("field to edit {string} is entered") 
+
+
+    @When("field to edit {string} is entered")
     public void fieldToEditIsEntered(String fieldToEdit) {
         inputLines.add(fieldToEdit);
     }
-    
+
     @When("new value {string} for selected field is entered")
     public void newValueToEditableFieldIsEntered(String newValue) {
         inputLines.add(newValue);
     }
-    
+
     @Then("value of the selected field {string} has been changed to {string}")
     public void editingBookWorks(String fieldName, String newValue) {
         io = new StubIO(inputLines);
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-        
+
         assertTrue(io.getPrints().contains("Field " + fieldName + " succesfully changed to " + newValue + "!"));
     }
 //*/
@@ -100,42 +138,63 @@ public class Stepdefs {
         ui.run();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
-    
+
     @Then("app lists a recommendation with author {string}, title {string}, description {string}, isbn {string}, and page count {string}")
-    public void listingAddedRecommendation(String author, String title, String description, String isbn, String pageCount) {
+    public void listingAddedBookRecommendation(String author, String title, String description, String isbn, String pageCount) {
         io = new StubIO(inputLines);
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-        
+
         String addDate = java.time.LocalDate.now().toString();
-        
-        assertTrue(io.getPrints().contains("Recommendation 1" + System.lineSeparator() +
-                    "Author: " + author + System.lineSeparator() +
-                    "Title: " + title + System.lineSeparator() +
-                    "Description: " + description + System.lineSeparator() +
-                    "ISBN: " + isbn + System.lineSeparator() +
-                    "Page count: " + pageCount + System.lineSeparator() +
-                    "Added: " + addDate));
+
+
+        assertTrue(io.getPrints().contains("Recommendation 1" + separator +
+            "Author: " + author + separator +
+            "Title: " + title + separator +
+            "Description: " + description + separator +
+            "ISBN: " + isbn + separator +
+            "Page count: " + pageCount + separator +
+            "Added: " + addDate));
     }
-    
+
+    @Then("app lists a recommendation with title {string}, description {string} and url {string}")
+    public void listingAddedVideoRecommendation(String title, String description, String url) {
+        io = new StubIO(inputLines);
+        dao = new InMemoryRecommendationDao();
+        ui = new UserInterface(io, dao);
+        ui.run();
+
+        String tulostus = String.join("", io.getPrints());
+        assertTrue(tulostus.contains(
+            "Title: " + title
+        ));
+
+        assertTrue(tulostus.contains(
+            "URL: " + url
+        ));
+        assertTrue(tulostus.contains(
+            "Description: " + description
+        ));
+    }
+
     @Then("app deletes a recommendation with the title {string}")
     public void deletingBookWorks(String deletedTitle) {
         io = new StubIO(inputLines);
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-        
+
         assertTrue(io.getPrints().contains("Recommendation added"));
         assertTrue(io.getPrints().contains("Recommendation deleted!"));
-        
+
         for (BookRecommendation b : dao.getAllBookRecommendations()) {
             assertFalse(b.getTitle().equals(deletedTitle));
         }
-        
+
         assertTrue(dao.getAllBookRecommendations().isEmpty());
     }
-    
+
     @Then("app doesn't delete a recommendation with the title {string}")
     public void failingToDeleteWorks(String title) {
         inputLines.add("5");
@@ -143,7 +202,7 @@ public class Stepdefs {
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-        
+
         assertTrue(io.getPrints().contains("Recommendation added"));
         assertTrue(io.getPrints().contains("Recommendation with the given title doesn't exist! Try again: "));
     }
