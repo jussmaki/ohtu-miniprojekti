@@ -128,9 +128,14 @@ public class RecommendationApp {
         return true;
     }
 
-    public boolean delete(String titleToDelete) {
+    public boolean deleteBook(String titleToDelete) {
         return this.service.deleteBookRecommendation(titleToDelete);
     }
+
+    public boolean deleteVideo(String titleToDelete) {
+        return this.service.deleteVideoRecommendation(titleToDelete);
+    }
+
 
     
     public boolean editVideo(String titleToEdit, String fieldToEdit, String newValue) {

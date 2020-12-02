@@ -56,7 +56,7 @@ public class UserInterface {
         } else if (input == 3) {
             edit();
         } else if (input == 4) {
-           // delete();
+            delete();
         } else {
             this.io.print("Unknown command");
         }
@@ -70,6 +70,17 @@ public class UserInterface {
             editBook();
         } else if (input == 2) {
             editVideo();
+        }
+    }
+
+    public void delete() {
+        this.io.print("[1] Delete book, [2] Delete video");
+        int input = Integer.valueOf(io.nextLine());
+
+        if (input == 1) {
+            deleteBook();
+        } else if (input == 2) {
+            deleteVideo();
         }
     }
 
@@ -249,21 +260,35 @@ public class UserInterface {
         }
     }
 
-    /**
-    public void delete() {
+
+    public void deleteBook() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
-        List<String> allTitles = recommendationApp.listTitles();
-        for (String title : allTitles) {
+        List<String> allBookTitles = recommendationApp.listBookTitles();
+        for (String title : allBookTitles) {
             this.io.print(title);
         };
         String titleToDelete = String.valueOf(io.nextLine());
 
-        if (recommendationApp.delete(titleToDelete)) {
+        if (recommendationApp.deleteBook(titleToDelete)) {
             this.io.print("Recommendation deleted!");
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-    * */
+
+    public void deleteVideo() {
+        this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
+        List<String> allVideoTitles = recommendationApp.listVideoTitles();
+        for (String title : allVideoTitles) {
+            this.io.print(title);
+        };
+        String titleToDelete = String.valueOf(io.nextLine());
+
+        if (recommendationApp.deleteVideo(titleToDelete)) {
+            this.io.print("Recommendation deleted!");
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
 
 }
