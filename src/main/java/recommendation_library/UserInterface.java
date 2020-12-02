@@ -149,6 +149,14 @@ public class UserInterface {
         }
     }
 
+    public void listVideos(){
+        List<String> videoRecommendations = recommendationApp.listVideos();
+        
+        for(String videoRecommendation : videoRecommendations){
+            this.io.print(videoRecommendation);
+        }
+    }
+
     /**
      * list all book recommendations contained within the library
      */

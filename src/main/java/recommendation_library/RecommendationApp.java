@@ -96,6 +96,22 @@ public class RecommendationApp {
         return recommendationStrings;
     }
 
+    public  List<String> listVideos() {
+        List<VideoRecommendation> list = service.getAllVideoRecommendations();
+        List<String> recommendationStrings = new ArrayList<>();
+        int i = 1;
+
+        for (VideoRecommendation r : list) {
+            recommendationStrings.add("Recommendation " + i++ + System.lineSeparator()
+                    + "Title: " + r.getTitle() + System.lineSeparator()
+                    + "URL: " + r.getUrl() + System.lineSeparator()                    
+                    + "Description: " + r.getDescription() + System.lineSeparator()
+                    + "Added: " + r.getAddDate());
+        }
+
+        return recommendationStrings;
+    }
+
     /**
      * list titles of all book recommendations contained within the library
      */
