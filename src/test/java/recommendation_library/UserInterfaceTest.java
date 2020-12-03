@@ -202,13 +202,13 @@ public class UserInterfaceTest {
             // fieldToEdit
             .thenReturn("FieldThatDoesNotExist")
             // correct field
-            .thenReturn("title")
+            .thenReturn("1")
             // new value
             .thenReturn("D");
 
         ui.editBook();
 
-        verify(input).print("Given fieldname doesn't exist! Enter a valid fieldname (author, title, description, isbn, pagecount):");
+        verify(input).print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Pagecount");
     }
 
     @Test
@@ -254,13 +254,13 @@ public class UserInterfaceTest {
             // fieldToEdit
             .thenReturn("FieldThatDoesNotExist")
             // correct fieldToEdit
-            .thenReturn("title")
+            .thenReturn("1")
             // new value
             .thenReturn("D");
 
         ui.editVideo();
 
-        verify(input).print("Given fieldname doesn't exist! Enter a valid fieldname (title, URL, description):");
+        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description");
     }
 
     @Test
