@@ -201,37 +201,48 @@ public class UserInterface {
         listBooks();
         listVideos();
     }
-
-    /**
-     * edit a book recommendation TODO: pagecount is integer, so now this can
-     * only edit string fields -> should we change the field "pagecount" into
-     * String in database to ease the job? TODO: should offer an option to exit
-     * if given title or fieldname doesn't exist, and perhaps an option to list
-     * recommendations(?)
-     */
+    
     public void editBook() {
-        List<String> stringFieldNames = Arrays.asList("author", "title", "description", "isbn");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allBookTitles = recommendationApp.listBookTitles();
         for (String title : allBookTitles) {
             this.io.print(title);
-        }
-        ;
+        };
+        
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.bookAlreadyExists(titleToEdit)) {
-            this.io.print("Enter the fieldname of the selected recommendation you wish to edit (author, title, description, isbn, pagecount):");
+            this.io.print("Choose a field to edit \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Pagecount");
             String fieldToEdit = String.valueOf(io.nextLine());
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Given fieldname doesn't exist! Enter a valid fieldname (author, title, description, isbn, pagecount):");
+                this.io.print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Pagecount");
                 fieldToEdit = String.valueOf(io.nextLine());
             }
 
-            this.io.print("Enter a new value to insert into the selected field:");
+            this.io.print("Enter a new value to insert into the selected field");
             String newValue = String.valueOf(io.nextLine());
-
+        
+            switch(fieldToEdit){
+                case "1": 
+                    fieldToEdit = "author";
+                    break;
+                case "2": 
+                    fieldToEdit = "title";
+                    break;
+                case "3": 
+                    fieldToEdit = "description";
+                    break;
+                case "4": 
+                    fieldToEdit = "isbn";
+                    break;
+                case "5": 
+                    fieldToEdit = "pagecount";
+                    break;
+            }
+            
             if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
                 this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
             } else {
@@ -244,7 +255,7 @@ public class UserInterface {
     }
 
     public void editVideo() {
-        List<String> stringFieldNames = Arrays.asList("title", "url", "description");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allVideoTitles = recommendationApp.listVideoTitles();
@@ -255,17 +266,29 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.videoAlreadyExists(titleToEdit)) {
-            this.io.print("Enter the fieldname of the selected recommendation you wish to edit (title, URL, description):");
+            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description");
             String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Given fieldname doesn't exist! Enter a valid fieldname (title, URL, description):");
+                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description");
                 fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
 
-            this.io.print("Enter a new value to insert into the selected field:");
+            this.io.print("Enter a new value to insert into the selected field");
             String newValue = String.valueOf(io.nextLine());
 
+            switch(fieldToEdit){
+                case "1": 
+                    fieldToEdit = "title";
+                    break;
+                case "2": 
+                    fieldToEdit = "url";
+                    break;
+                case "3": 
+                    fieldToEdit = "description";
+                    break;                
+            }
+            
             if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
                 this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
             } else {
