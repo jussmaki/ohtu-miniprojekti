@@ -186,4 +186,9 @@ public class DatabaseRecommendationDaoTest {
         db_dao.createPodcastRecommendation("author", "title", "description", "name");
         assertFalse(db_dao.getAllPodcastRecommendations().isEmpty());
     }
+    
+    @Test
+    public void searchingForNonexistingVideoReturnsZero() {
+        assertTrue(db_dao.searchVideoByTitle("Nonexistent") == 0);
+    }
 }
