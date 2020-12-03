@@ -9,7 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
+import recommendation_library.domain.PodcastRecommendation;
 import recommendation_library.domain.VideoRecommendation;
 
 /**
@@ -158,4 +160,30 @@ public class InMemoryRecommendationDaoTest {
 //        assertFalse(added);
 //        assertEquals(count, db_dao.getAllVideoRecommendations().size());
 //    }
+    
+    @Test
+    public void createBlogRecommendationAddsToTheDatabase() {
+        dao.createBlogRecommendation("www.blog.com", "my blog", "bob", "description");
+        assertFalse(dao.getAllBlogRecommendations().isEmpty());
+
+        BlogRecommendation addedRecommendation = dao.getAllBlogRecommendations().get(0);
+        assertEquals("bob", addedRecommendation.getAuthor());
+        assertEquals("my blog", addedRecommendation.getTitle());
+        assertEquals("description", addedRecommendation.getDescription());
+        assertEquals("www.blog.com", addedRecommendation.getUrl());
+        assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+    }
+    
+    @Test
+    public void createPodcastRecommendationAddsToTheDatabase() {
+        dao.createPodcastRecommendation("author", "title", "description", "podcastName");
+        assertFalse(dao.getAllPodcastRecommendations().isEmpty());
+
+        PodcastRecommendation addedRecommendation = dao.getAllPodcastRecommendations().get(0);
+        assertEquals("author", addedRecommendation.getAuthor());
+        assertEquals("title", addedRecommendation.getTitle());
+        assertEquals("description", addedRecommendation.getDescription());
+        assertEquals("podcastName", addedRecommendation.getPodcastName());
+        assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+    }
 }

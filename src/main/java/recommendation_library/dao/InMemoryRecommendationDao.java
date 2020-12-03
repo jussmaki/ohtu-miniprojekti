@@ -197,16 +197,6 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         this.blogs.add(new BlogRecommendation(this.blogs.size() + 1, author, url, title, description, addDate));
     }
 
-    /**
-     * Create podcast object
-     *
-     * @param id
-     * @param author
-     * @param title
-     * @param description
-     * @param podcastName
-     * @param addDate
-     */
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String podcastName) {
         String addDate = java.time.LocalDate.now().toString();
