@@ -43,6 +43,29 @@ public class DatabaseService {
         return false;
     }
 
+/*  ON HOLD FOR dao.
+    
+    public boolean blogTitleAlreadyExists(String title) {
+        List<BlogRecommendation> videos = dao.getAllBlogRecommendations();
+        for (BlogRecommendation blog : blogs) {
+            if (blog.getTitle().equals(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean podcastTitleAlreadyExists(String title) {
+        List<PodcastRecommendation> videos = dao.getAllPodcastRecommendations();
+        for (PodcastRecommendation podcast : podcasts) {
+            if (podcast.getTitle().equals(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+*/
+    
     public boolean addBook(String author, String title, String description, String isbn, int pageCount) {
         if (bookTitleAlreadyExists(title)) {
             return false;
