@@ -202,4 +202,30 @@ public class DatabaseService {
         return timestamps;
     }
     
+    public boolean editTimeStamp(String videoTitle, String timeStamp, String fieldToChange, String newValue) {
+        int videoId = dao.searchVideoByTitle(videoTitle);
+        if (videoId == 0) {
+            return false;
+        }
+        int timestampId = dao.findTimeStampId(videoId, timeStamp);
+        if (timestampId == 0) {
+            return false;
+        }
+        dao.editTimestampForVideo(videoId, timestampId, fieldToChange, newValue);
+        return true;
+    }
+    
+    public boolean deleteTimeStamp(String videoTitle, String timeStamp) {
+        int videoId = dao.searchVideoByTitle(videoTitle);
+        if (videoId == 0) {
+            return false;
+        }
+        int timestampId = dao.findTimeStampId(videoId, timeStamp);
+        if (timestampId == 0) {
+            return false;
+        }
+        dao.deleteTimestamp(videoId, timestampId);
+        return true;
+    }
+    
 }

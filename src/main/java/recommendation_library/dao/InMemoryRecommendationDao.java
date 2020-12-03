@@ -173,22 +173,16 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void deleteTimestamp(int videoId, int timeStampId) {
-        TimeMemory toBeRemoved = findTimestamp(videoId, timeStampId);
+        TimeMemory toBeRemoved = null;
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId && t.getId() == timeStampId) {
+                toBeRemoved = t;
+            }
+        }
 
         if (toBeRemoved != null) {
             timeStamps.remove(toBeRemoved);
         }
-    }
-
-    private TimeMemory findTimestamp(int videoId, int timestampId) {
-        TimeMemory toBeRemoved = null;
-        for (TimeMemory t : this.timeStamps) {
-            if (t.getVideoId() == videoId && t.getId() == timestampId) {
-                toBeRemoved = t;
-                return toBeRemoved;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -211,6 +205,16 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     @Override
     public List<PodcastRecommendation> getAllPodcastRecommendations() {
         return this.podcasts;
+    }
+
+    @Override
+    public int findTimeStampId(int videoId, String timestamp) {
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId && t.getTimestamp() == timestamp) {
+                return t.getId();
+            }
+        }
+        return 0;
     }
 
 }

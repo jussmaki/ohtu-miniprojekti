@@ -41,4 +41,6 @@ public interface RecommendationDao {
     int searchVideoByTitle(String title);
     
     void deleteTimestamp(int videoId, int timeStampId);
+    
+    public int findTimeStampId(int videoId, String timestamp);
 }

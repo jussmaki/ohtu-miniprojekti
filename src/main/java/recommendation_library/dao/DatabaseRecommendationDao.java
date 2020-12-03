@@ -496,5 +496,25 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
+    
+    @Override
+    public int findTimeStampId(int videoId, String timestamp) {
+        String sql = "SELECT id FROM timestamps WHERE video_id = ? AND timestamp = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, videoId);
+            pstmt.setString(2, timestamp);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
 
 }
