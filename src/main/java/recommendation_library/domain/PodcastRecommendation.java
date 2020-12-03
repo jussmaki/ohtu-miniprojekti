@@ -14,6 +14,16 @@ public class PodcastRecommendation extends Recommendation {
     String author;
     String podcastName;
     
+    /**
+     * Create podcast object
+     *
+     * @param id
+     * @param author
+     * @param title
+     * @param description
+     * @param podcastName
+     * @param addDate
+     */
     public PodcastRecommendation(int id, String author, String title, String description, String podcastName, String addDate) {
         super(id, title, Type.PODCAST, description, addDate);
         this.author = author;

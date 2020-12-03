@@ -18,18 +18,20 @@ import recommendation_library.domain.VideoRecommendation;
 /**
  * @author jenni.makinen
  */
-
-
 public class InMemoryRecommendationDao implements RecommendationDao {
+
     private List<BookRecommendation> bookRecommendations;
     private List<VideoRecommendation> videoRecommendations;
     private List<TimeMemory> timeStamps;
-
+    private List<BlogRecommendation> blogs;
+    private List<PodcastRecommendation> podcasts;
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
         this.videoRecommendations = new ArrayList<>();
         this.timeStamps = new ArrayList<>();
+        this.blogs = new ArrayList<>();
+        this.podcasts = new ArrayList<>();
     }
 
     @Override
@@ -65,7 +67,6 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
         map.get(fieldToBeEdited).apply(newValue);
     }
-
 
     @Override
     public void deleteBookByTitle(String title) {
@@ -173,7 +174,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     @Override
     public void deleteTimestamp(int videoId, int timeStampId) {
         TimeMemory toBeRemoved = findTimestamp(videoId, timeStampId);
-        
+
         if (toBeRemoved != null) {
             timeStamps.remove(toBeRemoved);
         }
@@ -189,26 +190,37 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         }
         return null;
     }
-    
-    @Override
-    public void createBlogRecommendation(String url, String title, String author, String description) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
-    public void createPodcastRecommendation(String author, String title, String description, String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void createBlogRecommendation(String url, String title, String author, String description) {
+        String addDate = java.time.LocalDate.now().toString();
+        this.blogs.add(new BlogRecommendation(this.blogs.size() + 1, author, url, title, description, addDate));
+    }
+
+    /**
+     * Create podcast object
+     *
+     * @param id
+     * @param author
+     * @param title
+     * @param description
+     * @param podcastName
+     * @param addDate
+     */
+    @Override
+    public void createPodcastRecommendation(String author, String title, String description, String podcastName) {
+        String addDate = java.time.LocalDate.now().toString();
+        this.podcasts.add(new PodcastRecommendation(this.podcasts.size() + 1, author, title, description, podcastName, addDate));
     }
 
     @Override
     public List<BlogRecommendation> getAllBlogRecommendations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.blogs;
     }
 
     @Override
     public List<PodcastRecommendation> getAllPodcastRecommendations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.podcasts;
     }
-
 
 }

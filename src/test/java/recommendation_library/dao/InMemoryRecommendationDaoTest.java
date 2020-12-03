@@ -148,6 +148,7 @@ public class InMemoryRecommendationDaoTest {
         assertEquals(1, dao.getAllVideoRecommendations().size());
     }
 
+//    belongs to DatabaseService testing 
 //    @Test
 //    public void existingVideoTitleNotReaddedToDatabase() {
 //        db_dao.addVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
