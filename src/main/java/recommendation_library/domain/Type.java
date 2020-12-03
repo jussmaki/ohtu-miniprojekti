@@ -11,6 +11,6 @@ package recommendation_library.domain;
  */
 public enum Type {
     
-    BOOK, VIDEO;
+    BOOK, VIDEO, BLOG, PODCAST;
     
 }
