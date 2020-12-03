@@ -316,6 +316,44 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     @Override
+    public List<VideoRecommendation> getAllBlogRecommendations() {
+        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM videos");
+            while (result.next()) {
+                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
+                        result.getString("title"), result.getString("description"),
+                        result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return videos;
+    }
+    
+    @Override
+    public List<VideoRecommendation> getAllPodcastRecommendations() {
+        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM videos");
+            while (result.next()) {
+                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
+                        result.getString("title"), result.getString("description"),
+                        result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return videos;
+    }
+    
+    @Override
     public List<TimeMemory> getAllTimestampsForVideo(int videId) {
         ArrayList<TimeMemory> timestamps = new ArrayList<>();
         String sql = "SELECT * FROM timestamps WHERE video_id = ?";

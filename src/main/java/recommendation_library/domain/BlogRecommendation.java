@@ -13,26 +13,26 @@ import java.util.List;
  * @author jenni.makinen
  */
 public class BlogRecommendation extends Recommendation {
-    
+
     String url;
     String author;
-    
+
     public BlogRecommendation(int id, String author, String url, String title, String description, String addDate) {
         super(id, title, Type.BLOG, description, addDate);
         this.url = url;
         this.author = author;
     }
-    
+
     public String getUrl() {
         return url;
     }
-    
+
     public boolean setUrl(String newUrl) {
         url = newUrl;
         return true;
     }
-    
-     public String getAuthor() {
+
+    public String getAuthor() {
         return author;
     }
 
@@ -40,5 +40,5 @@ public class BlogRecommendation extends Recommendation {
         this.author = author;
         return true;
     }
-    
+
 }

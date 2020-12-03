@@ -170,18 +170,24 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void deleteTimestamp(int videoId, int timeStampId) {
-        TimeMemory toBeRemoved = null;
-        for (TimeMemory t : this.timeStamps) {
-            if (t.getVideoId() == videoId && t.getId() == timeStampId) {
-                toBeRemoved = t;
-                break;
-            }
-        }
+        TimeMemory toBeRemoved = findTimestamp(videoId, timeStampId);
+        
         if (toBeRemoved != null) {
             timeStamps.remove(toBeRemoved);
         }
     }
 
+    private TimeMemory findTimestamp(int videoId, int timestampId) {
+        TimeMemory toBeRemoved = null;
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId && t.getId() == timestampId) {
+                toBeRemoved = t;
+                return toBeRemoved;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public void createBlogRecommendation(String url, String title, String author, String description) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -189,6 +195,16 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<VideoRecommendation> getAllBlogRecommendations() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<VideoRecommendation> getAllPodcastRecommendations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

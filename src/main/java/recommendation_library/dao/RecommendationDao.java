@@ -25,6 +25,8 @@ public interface RecommendationDao {
     
     List<BookRecommendation> getAllBookRecommendations();
     List<VideoRecommendation> getAllVideoRecommendations();
+    List<VideoRecommendation> getAllBlogRecommendations();
+    List<VideoRecommendation> getAllPodcastRecommendations();
     List<TimeMemory> getAllTimestampsForVideo(int videoId);
             
     void editBookRecommendation(String title, String fieldToBeEdited, String newValue);
