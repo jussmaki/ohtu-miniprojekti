@@ -81,4 +81,14 @@ public class DatabaseServiceTest {
         assertTrue(r.contains(v));
     }
     
+    @Test
+    public void existingBookTitleNotReaddedToDatabase() {
+        service.addBook("Bob", "book4", "good", "abc", 10);
+        assertTrue(service.bookTitleAlreadyExists("book4"));
+        int count = service.getAllBookRecommendations().size();
+        boolean added = service.addBook("Henri", "book4", "different book same title", "asd", 11);
+        assertFalse(added);
+        assertEquals(count, service.getAllBookRecommendations().size());
+    }
+    
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.VideoRecommendation;
 
@@ -84,16 +85,6 @@ public class DatabaseRecommendationDaoTest {
         assertEquals(count, db_dao.getAllBookRecommendations().size());
     }
 
-//    Should be moved to DatabaseServiceTest class
-//    @Test
-//    public void existingBookTitleNotReaddedToDatabase() {
-//        db_dao.createBookRecommendation("Bob", "book4", "good", "abc", 10);
-//        assertTrue(db_dao.bookTitleAlreadyExists("book4"));
-//        int count = db_dao.getAllBookRecommendations().size();
-//        boolean added = db_dao.createBookRecommendation("Henri", "book4", "different book same title", "asd", 11);
-//        assertFalse(added);
-//        assertEquals(count, db_dao.getAllBookRecommendations().size());
-//    }
     
     @Test
     public void createVideoRecommendationAddsToTheDatabase() {
@@ -140,6 +131,7 @@ public class DatabaseRecommendationDaoTest {
         assertEquals(0, db_dao.getAllVideoRecommendations().size());
     }
 
+//    This test does not belong to this class since databse does not check for existing title
 //    @Test
 //    public void existingVideoTitleNotReaddedToDatabase() {
 //        db_dao.addVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
@@ -180,5 +172,18 @@ public class DatabaseRecommendationDaoTest {
         db_dao.deleteTimestamp(1, 1);
         assertEquals(0, db_dao.getAllTimestampsForVideo(1).size());       
         assertEquals(1, db_dao.getAllTimestampsForVideo(2).size());       
+    }
+    
+    @Test
+    public void addingBlogAddsNewBlogToDatabase() {
+        db_dao.createBlogRecommendation("url", "title", "author", "description");
+        assertFalse(db_dao.getAllBlogRecommendations().isEmpty());
+        assertEquals("title", db_dao.getAllBlogRecommendations().get(0).getTitle());
+    }
+    
+    @Test
+    public void addingPodcastAddsNewPodcastAndReturnsItAsPartOfTheList() {
+        db_dao.createPodcastRecommendation("author", "title", "description", "name");
+        assertFalse(db_dao.getAllPodcastRecommendations().isEmpty());
     }
 }

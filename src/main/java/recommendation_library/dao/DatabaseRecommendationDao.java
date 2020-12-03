@@ -340,7 +340,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         try {
             Connection connection = this.connect();
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM videos");
+            ResultSet result = statement.executeQuery("SELECT * FROM podcasts");
             while (result.next()) {
                 podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
                         result.getString("title"), result.getString("description"),
