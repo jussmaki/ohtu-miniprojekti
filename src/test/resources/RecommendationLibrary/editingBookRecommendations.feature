@@ -7,6 +7,6 @@ Feature: As a user I can edit a book recomendation already in the library
 		And command edit is selected
         And command book is selected
 		And title "TitleTest" is entered
-       	And field to edit "author" is entered
+       	And field to edit "1" is entered
 		And new value "newAuthor" for selected field is entered
 		Then value of the selected field "author" has been changed to "newAuthor"
