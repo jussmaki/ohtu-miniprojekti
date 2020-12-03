@@ -106,9 +106,6 @@ public class Stepdefs {
         inputLines.add(title);
     }
 
-//    /*  FAILS, WHY OH WHY??? 
-
-
     @When("field to edit {string} is entered")
     public void fieldToEditIsEntered(String fieldToEdit) {
         inputLines.add(fieldToEdit);
@@ -128,7 +125,6 @@ public class Stepdefs {
 
         assertTrue(io.getPrints().contains("Field " + fieldName + " succesfully changed to " + newValue + "!"));
     }
-//*/
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
