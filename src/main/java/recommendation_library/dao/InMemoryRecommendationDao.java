@@ -9,6 +9,8 @@ import recommendation_library.domain.BookRecommendation;
 
 import java.util.*;
 import java.util.function.Function;
+import recommendation_library.domain.BlogRecommendation;
+import recommendation_library.domain.PodcastRecommendation;
 
 import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.VideoRecommendation;
@@ -199,12 +201,12 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     }
 
     @Override
-    public List<VideoRecommendation> getAllBlogRecommendations() {
+    public List<BlogRecommendation> getAllBlogRecommendations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<VideoRecommendation> getAllPodcastRecommendations() {
+    public List<PodcastRecommendation> getAllPodcastRecommendations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

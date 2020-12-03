@@ -17,6 +17,16 @@ public class BlogRecommendation extends Recommendation {
     String url;
     String author;
 
+    /**
+     * Create blog object
+     *
+     * @param id
+     * @param author
+     * @param url
+     * @param title
+     * @param description
+     * @param addDate
+     */
     public BlogRecommendation(int id, String author, String url, String title, String description, String addDate) {
         super(id, title, Type.BLOG, description, addDate);
         this.url = url;

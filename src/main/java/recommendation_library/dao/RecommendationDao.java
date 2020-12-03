@@ -7,6 +7,8 @@ package recommendation_library.dao;
 
 import recommendation_library.domain.BookRecommendation;
 import java.util.List;
+import recommendation_library.domain.BlogRecommendation;
+import recommendation_library.domain.PodcastRecommendation;
 import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.Type;
 import recommendation_library.domain.VideoRecommendation;
@@ -25,8 +27,8 @@ public interface RecommendationDao {
     
     List<BookRecommendation> getAllBookRecommendations();
     List<VideoRecommendation> getAllVideoRecommendations();
-    List<VideoRecommendation> getAllBlogRecommendations();
-    List<VideoRecommendation> getAllPodcastRecommendations();
+    List<BlogRecommendation> getAllBlogRecommendations();
+    List<PodcastRecommendation> getAllPodcastRecommendations();
     List<TimeMemory> getAllTimestampsForVideo(int videoId);
             
     void editBookRecommendation(String title, String fieldToBeEdited, String newValue);

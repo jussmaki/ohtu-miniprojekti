@@ -42,11 +42,9 @@ public class DatabaseService {
         }
         return false;
     }
-
-/*  ON HOLD FOR dao.
     
     public boolean blogTitleAlreadyExists(String title) {
-        List<BlogRecommendation> videos = dao.getAllBlogRecommendations();
+        List<BlogRecommendation> blogs = dao.getAllBlogRecommendations();
         for (BlogRecommendation blog : blogs) {
             if (blog.getTitle().equals(title)) {
                 return true;
@@ -56,7 +54,7 @@ public class DatabaseService {
     }
     
     public boolean podcastTitleAlreadyExists(String title) {
-        List<PodcastRecommendation> videos = dao.getAllPodcastRecommendations();
+        List<PodcastRecommendation> podcasts = dao.getAllPodcastRecommendations();
         for (PodcastRecommendation podcast : podcasts) {
             if (podcast.getTitle().equals(title)) {
                 return true;
@@ -64,7 +62,7 @@ public class DatabaseService {
         }
         return false;
     }
-*/
+
     /**
      * Create book recommendation
      *
@@ -112,7 +110,9 @@ public class DatabaseService {
      * @return success/failure
      */
     public boolean addBlog(String url, String title, String author, String description) {
-//        if 
+        if (this.blogTitleAlreadyExists(title)) {
+            return false;
+        }
         dao.createBlogRecommendation(url, title, author, description);
         return true;
     }
@@ -128,9 +128,9 @@ public class DatabaseService {
      * @return success/failure
      */
     public boolean addPodcast(String author, String title, String description, String name) {
-//        if (this) {
-//            return false;
-//        }
+        if (this.podcastTitleAlreadyExists(title)) {
+            return false;
+        }
         dao.createPodcastRecommendation(author, title, description, name);
         return true;
     }

@@ -316,41 +316,41 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     @Override
-    public List<VideoRecommendation> getAllBlogRecommendations() {
-        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+    public List<BlogRecommendation> getAllBlogRecommendations() {
+        ArrayList<BlogRecommendation> blogs = new ArrayList<>();
         try {
             Connection connection = this.connect();
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM videos");
+            ResultSet result = statement.executeQuery("SELECT * FROM blogs");
             while (result.next()) {
-                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
-                        result.getString("title"), result.getString("description"),
-                        result.getString("created")));
+                blogs.add(new BlogRecommendation(result.getInt("id"), result.getString("author"),
+                        result.getString("url"), result.getString("title"), 
+                        result.getString("description"), result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return videos;
+        return blogs;
     }
     
     @Override
-    public List<VideoRecommendation> getAllPodcastRecommendations() {
-        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+    public List<PodcastRecommendation> getAllPodcastRecommendations() {
+        ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
         try {
             Connection connection = this.connect();
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM videos");
             while (result.next()) {
-                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
+                podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
                         result.getString("title"), result.getString("description"),
-                        result.getString("created")));
+                        result.getString("name"), result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return videos;
+        return podcasts;
     }
     
     @Override
