@@ -24,8 +24,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         createBookTable();
         createVideoTable();
         createTimeStampTable();
-        this.createBlogTable();
-        this.createPodcastTable();
+        createBlogTable();
+        createPodcastTable();
     }
 
     private Connection connect() {
@@ -404,7 +404,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     @Override
-    public int searchVideoByTitle(String title) {
+    public int getVideoIdByTitle(String title) {
         String sql = "SELECT id FROM videos WHERE title = ?";
         int id = 0;
         try {
@@ -438,7 +438,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void deleteVideoByTitle(String title) {
-        int videoId = searchVideoByTitle(title);
+        int videoId = getVideoIdByTitle(title);
 
         String deleteVideo = "DELETE FROM videos WHERE title = ?";
         try {
@@ -464,7 +464,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
@@ -498,7 +497,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
     
     @Override
-    public int findTimeStampId(int videoId, String timestamp) {
+    public int getTimestampIdByTitle(int videoId, String timestamp) {
         String sql = "SELECT id FROM timestamps WHERE video_id = ? AND timestamp = ?";
         int id = 0;
         try {
@@ -516,5 +515,60 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
+
+    @Override
+    public void editBlogRecommendation(String title, String fieldToBeEdited, String newValue) {
+        String sql = "UPDATE blogs SET " + fieldToBeEdited + " = ? WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, newValue);
+            pstmt.setString(2, title);
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }    }
+
+    @Override
+    public void editPodcastRecommendation(String title, String fieldToBeEdited, String newValue) {
+        String sql = "UPDATE podcasts SET " + fieldToBeEdited + " = ? WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, newValue);
+            pstmt.setString(2, title);
+            pstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }    }
+
+    @Override
+    public void deleteBlogByTitle(String title) {
+        String deleteBlog = "DELETE FROM blogss WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement stmt = conn.prepareStatement(deleteBlog);
+            stmt.setString(1, title);
+            stmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deletePodcastByTitle(String title) {
+        String deletePodcast = "DELETE FROM podcasts WHERE title = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement stmt = conn.prepareStatement(deletePodcast);
+            stmt.setString(1, title);
+            stmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }    }
 
 }

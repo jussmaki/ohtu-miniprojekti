@@ -23,7 +23,6 @@ public interface RecommendationDao {
     void createVideoRecommendation(String url, String title, String description);
     void createBlogRecommendation(String url, String title, String author, String description);
     void createPodcastRecommendation(String author, String title, String description, String name);
-    void addTimeStampToVideo(int videoId, String timestamp, String comment);
     
     List<BookRecommendation> getAllBookRecommendations();
     List<VideoRecommendation> getAllVideoRecommendations();
@@ -34,13 +33,16 @@ public interface RecommendationDao {
     void editBookRecommendation(String title, String fieldToBeEdited, String newValue);
     void editVideoRecommendation(String title, String fieldToBeEdited, String newValue);
     void editTimestampForVideo(int videoId, int timeStampId, String fieldToBeEdited, String newValue);
+    void editBlogRecommendation(String title, String fieldToBeEdited, String newValue);
+    void editPodcastRecommendation(String title, String fieldToBeEdited, String newValue);
     
     void deleteBookByTitle(String title);
-    
-    void deleteVideoByTitle(String title);
-    int searchVideoByTitle(String title);
-    
     void deleteTimestamp(int videoId, int timeStampId);
+    void deleteVideoByTitle(String title);    
+    void deleteBlogByTitle(String title);
+    void deletePodcastByTitle(String title);
     
-    public int findTimeStampId(int videoId, String timestamp);
+    int getVideoIdByTitle(String title);
+    int getTimestampIdByTitle(int videoId, String timestamp);
+    void addTimeStampToVideo(int videoId, String timestamp, String comment);
 }

@@ -143,6 +143,12 @@ public class DatabaseService {
         for (Recommendation r : getAllVideoRecommendations()) {
             recommendations.add(r);
         }
+        for (Recommendation r : getAllBlogRecommendations()) {
+            recommendations.add(r);
+        }
+        for (Recommendation r : getAllPodcastRecommendations()) {
+            recommendations.add(r);
+        }
         Collections.sort(recommendations);
         return recommendations;
     }
@@ -156,6 +162,16 @@ public class DatabaseService {
         List<VideoRecommendation> videos = dao.getAllVideoRecommendations();
         return videos;
     }
+    
+    public List<BlogRecommendation> getAllBlogRecommendations() {
+        List<BlogRecommendation> blogs = dao.getAllBlogRecommendations();
+        return blogs;
+    }
+    
+    public List<PodcastRecommendation> getAllPodcastRecommendations() {
+        List<PodcastRecommendation> pods = dao.getAllPodcastRecommendations();
+        return pods;
+    }
 
     public void editBookRecommendation(String title, String fieldToChange, String newValue) {
         this.dao.editBookRecommendation(title, fieldToChange, newValue);
@@ -163,6 +179,14 @@ public class DatabaseService {
     
     public void editVideoRecommendation(String title, String fieldToChange, String newValue) {
         this.dao.editVideoRecommendation(title, fieldToChange, newValue);
+    }
+    
+    public void editBlogRecommendation(String title, String fieldToChange, String newValue) {
+        this.dao.editBlogRecommendation(title, fieldToChange, newValue);
+    }
+    
+    public void editPodcastRecommendation(String title, String fieldToChange, String newValue) {
+        this.dao.editPodcastRecommendation(title, fieldToChange, newValue);
     }
 
     public boolean deleteBookRecommendation(String title) {
@@ -181,8 +205,24 @@ public class DatabaseService {
         return false;
     }
     
+    public boolean deleteBlogRecommendation(String title) {
+        if (blogTitleAlreadyExists(title)) {
+            dao.deleteBlogByTitle(title);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean deletePodcastRecommendation(String title) {
+        if (podcastTitleAlreadyExists(title)) {
+            dao.deletePodcastByTitle(title);
+            return true;
+        }
+        return false;
+    }
+    
     public boolean addTimeStampToVideo(String timestamp, String comment, String videoTitle) {
-        int id = dao.searchVideoByTitle(videoTitle);
+        int id = dao.getVideoIdByTitle(videoTitle);
         if (id == 0) {
             return false;
         }
@@ -192,7 +232,7 @@ public class DatabaseService {
     
     public List<TimeMemory> getTimestampsForVideo(String videoTitle) {
         List<TimeMemory> timestamps = new ArrayList<>();
-        int id = dao.searchVideoByTitle(videoTitle);
+        int id = dao.getVideoIdByTitle(videoTitle);
         if (id == 0) {
             return timestamps;
         }
@@ -203,11 +243,11 @@ public class DatabaseService {
     }
     
     public boolean editTimeStamp(String videoTitle, String timeStamp, String fieldToChange, String newValue) {
-        int videoId = dao.searchVideoByTitle(videoTitle);
+        int videoId = dao.getVideoIdByTitle(videoTitle);
         if (videoId == 0) {
             return false;
         }
-        int timestampId = dao.findTimeStampId(videoId, timeStamp);
+        int timestampId = dao.getTimestampIdByTitle(videoId, timeStamp);
         if (timestampId == 0) {
             return false;
         }
@@ -216,11 +256,11 @@ public class DatabaseService {
     }
     
     public boolean deleteTimeStamp(String videoTitle, String timeStamp) {
-        int videoId = dao.searchVideoByTitle(videoTitle);
+        int videoId = dao.getVideoIdByTitle(videoTitle);
         if (videoId == 0) {
             return false;
         }
-        int timestampId = dao.findTimeStampId(videoId, timeStamp);
+        int timestampId = dao.getTimestampIdByTitle(videoId, timeStamp);
         if (timestampId == 0) {
             return false;
         }

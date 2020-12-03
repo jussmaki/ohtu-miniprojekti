@@ -23,15 +23,15 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     private List<BookRecommendation> bookRecommendations;
     private List<VideoRecommendation> videoRecommendations;
     private List<TimeMemory> timeStamps;
-    private List<BlogRecommendation> blogs;
-    private List<PodcastRecommendation> podcasts;
+    private List<BlogRecommendation> blogRecommendations;
+    private List<PodcastRecommendation> podcastRecommendations;
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
         this.videoRecommendations = new ArrayList<>();
         this.timeStamps = new ArrayList<>();
-        this.blogs = new ArrayList<>();
-        this.podcasts = new ArrayList<>();
+        this.blogRecommendations = new ArrayList<>();
+        this.podcastRecommendations = new ArrayList<>();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     }
 
     @Override
-    public int searchVideoByTitle(String title) {
+    public int getVideoIdByTitle(String title) {
         for (VideoRecommendation v : videoRecommendations) {
             if (v.getTitle().equals(title)) {
                 return v.getId();
@@ -188,33 +188,101 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     @Override
     public void createBlogRecommendation(String url, String title, String author, String description) {
         String addDate = java.time.LocalDate.now().toString();
-        this.blogs.add(new BlogRecommendation(this.blogs.size() + 1, author, url, title, description, addDate));
+        this.blogRecommendations.add(new BlogRecommendation(this.blogRecommendations.size() + 1, author, url, title, description, addDate));
     }
 
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String podcastName) {
         String addDate = java.time.LocalDate.now().toString();
-        this.podcasts.add(new PodcastRecommendation(this.podcasts.size() + 1, author, title, description, podcastName, addDate));
+        this.podcastRecommendations.add(new PodcastRecommendation(this.podcastRecommendations.size() + 1, author, title, description, podcastName, addDate));
     }
 
     @Override
     public List<BlogRecommendation> getAllBlogRecommendations() {
-        return this.blogs;
+        return this.blogRecommendations;
     }
 
     @Override
     public List<PodcastRecommendation> getAllPodcastRecommendations() {
-        return this.podcasts;
+        return this.podcastRecommendations;
     }
 
     @Override
-    public int findTimeStampId(int videoId, String timestamp) {
+    public int getTimestampIdByTitle(int videoId, String timestamp) {
         for (TimeMemory t : this.timeStamps) {
             if (t.getVideoId() == videoId && t.getTimestamp() == timestamp) {
                 return t.getId();
             }
         }
         return 0;
+    }
+
+    @Override
+    public void editBlogRecommendation(String title, String fieldToBeEdited, String newValue) {
+        for (BlogRecommendation b : blogRecommendations) {
+            if (b.getTitle().equals(title)) {
+                editBlogMatchingField(b, fieldToBeEdited, newValue);
+            }
+        }
+    }
+
+    private void editBlogMatchingField(BlogRecommendation b, String fieldToBeEdited, String newValue) {
+        fieldToBeEdited = fieldToBeEdited.toLowerCase();
+        Map<String, Function<String, Boolean>> map = new HashMap<>();
+        map.put("title", b::setTitle);
+        map.put("author", b::setAuthor);
+        map.put("url", b::setUrl);
+        map.put("description", b::setDescription);
+        System.err.println(fieldToBeEdited);
+        map.get(fieldToBeEdited).apply(newValue);
+    }
+
+    @Override
+    public void editPodcastRecommendation(String title, String fieldToBeEdited, String newValue) {
+        for (PodcastRecommendation p : podcastRecommendations) {
+            if (p.getTitle().equals(title)) {
+                editPodcastMatchingField(p, fieldToBeEdited, newValue);
+            }
+        }
+    }
+
+    private void editPodcastMatchingField(PodcastRecommendation p, String fieldToBeEdited, String newValue) {
+        fieldToBeEdited = fieldToBeEdited.toLowerCase();
+        Map<String, Function<String, Boolean>> map = new HashMap<>();
+        map.put("title", p::setTitle);
+        map.put("author", p::setAuthor);
+        map.put("podcastname", p::setPodcastName);
+        map.put("description", p::setDescription);
+        System.err.println(fieldToBeEdited);
+        map.get(fieldToBeEdited).apply(newValue);
+    }
+
+    @Override
+    public void deleteBlogByTitle(String title) {
+        BlogRecommendation toBeRemoved = null;
+        for (BlogRecommendation b : blogRecommendations) {
+            if (b.getTitle().equals(title)) {
+                toBeRemoved = b;
+                break;
+            }
+        }
+        if (toBeRemoved != null) {
+            blogRecommendations.remove(toBeRemoved);
+        }
+    }
+
+    @Override
+    public void deletePodcastByTitle(String title) {
+        PodcastRecommendation toBeRemoved = null;
+        for (PodcastRecommendation p : podcastRecommendations) {
+            if (p.getTitle().equals(title)) {
+                toBeRemoved = p;
+                break;
+            }
+        }
+        if (toBeRemoved != null) {
+            podcastRecommendations.remove(toBeRemoved);
+        }
     }
 
 }

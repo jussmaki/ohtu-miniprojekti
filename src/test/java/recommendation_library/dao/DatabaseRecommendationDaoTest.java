@@ -189,6 +189,6 @@ public class DatabaseRecommendationDaoTest {
     
     @Test
     public void searchingForNonexistingVideoReturnsZero() {
-        assertTrue(db_dao.searchVideoByTitle("Nonexistent") == 0);
+        assertTrue(db_dao.getVideoIdByTitle("Nonexistent") == 0);
     }
 }
