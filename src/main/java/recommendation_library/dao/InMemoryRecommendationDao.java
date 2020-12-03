@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.function.Function;
 
 import recommendation_library.domain.TimeMemory;
-import recommendation_library.domain.Type;
 import recommendation_library.domain.VideoRecommendation;
 
 /**
@@ -22,11 +21,13 @@ import recommendation_library.domain.VideoRecommendation;
 public class InMemoryRecommendationDao implements RecommendationDao {
     private List<BookRecommendation> bookRecommendations;
     private List<VideoRecommendation> videoRecommendations;
+    private List<TimeMemory> timeStamps;
 
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
         this.videoRecommendations = new ArrayList<>();
+        this.timeStamps = new ArrayList<>();
     }
 
     @Override
@@ -120,12 +121,18 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.timeStamps.add(new TimeMemory(this.timeStamps.size() + 1, timestamp, comment, videoId));
     }
 
     @Override
-    public List<TimeMemory> getAllTimestampsForVideo(int videId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<TimeMemory> getAllTimestampsForVideo(int videoId) {
+        List<TimeMemory> stamps = new ArrayList<>();
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId) {
+                stamps.add(t);
+            }
+        }
+        return stamps;
     }
 
     @Override
@@ -139,6 +146,39 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         }
         if (toBeRemoved != null) {
             videoRecommendations.remove(toBeRemoved);
+        }
+    }
+
+    @Override
+    public void editTimestampForVideo(int videoId, int timeStampId, String fieldToBeEdited, String newValue) {
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId && t.getId() == timeStampId) {
+                editTimeStampField(t, fieldToBeEdited, newValue);
+            }
+        }
+    }
+
+    private void editTimeStampField(TimeMemory t, String fieldToBeEdited, String newValue) {
+        if (fieldToBeEdited.toLowerCase().equals("comment")) {
+            t.setComment(newValue);
+        } else if (fieldToBeEdited.toLowerCase().equals("timestamp")) {
+            t.setTimestamp(newValue);
+        } else {
+            System.err.println(fieldToBeEdited);
+        }
+    }
+
+    @Override
+    public void deleteTimestamp(int videoId, int timeStampId) {
+        TimeMemory toBeRemoved = null;
+        for (TimeMemory t : this.timeStamps) {
+            if (t.getVideoId() == videoId && t.getId() == timeStampId) {
+                toBeRemoved = t;
+                break;
+            }
+        }
+        if (toBeRemoved != null) {
+            timeStamps.remove(toBeRemoved);
         }
     }
 

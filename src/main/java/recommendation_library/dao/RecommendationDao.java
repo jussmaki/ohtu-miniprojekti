@@ -23,13 +23,16 @@ public interface RecommendationDao {
     
     List<BookRecommendation> getAllBookRecommendations();
     List<VideoRecommendation> getAllVideoRecommendations();
-    List<TimeMemory> getAllTimestampsForVideo(int videId);
+    List<TimeMemory> getAllTimestampsForVideo(int videoId);
             
     void editBookRecommendation(String title, String fieldToBeEdited, String newValue);
     void editVideoRecommendation(String title, String fieldToBeEdited, String newValue);
+    void editTimestampForVideo(int videoId, int timeStampId, String fieldToBeEdited, String newValue);
     
     void deleteBookByTitle(String title);
     
     void deleteVideoByTitle(String title);
     int searchVideoByTitle(String title);
+    
+    void deleteTimestamp(int videoId, int timeStampId);
 }

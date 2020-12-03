@@ -232,7 +232,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             pstatement.setInt(1, videId);
             ResultSet result = pstatement.executeQuery();
             while (result.next()) {
-                timestamps.add(new TimeMemory(result.getString("timestamp"),
+                timestamps.add(new TimeMemory(result.getInt("id"), result.getString("timestamp"),
                         result.getString("comment"), result.getInt("video_id")));
             }
             connection.close();
@@ -308,6 +308,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void deleteVideoByTitle(String title) {
         int videoId = searchVideoByTitle(title);
+
         String deleteVideo = "DELETE FROM videos WHERE title = ?";
         try {
             Connection conn = this.connect();
@@ -318,7 +319,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
         deleteVideoTimeStamps(videoId);
     }
     
@@ -329,10 +329,41 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             PreparedStatement stmt = conn.prepareStatement(deleteTimeStamps);
             stmt.setInt(1, videoId);
             stmt.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         
+    }
+
+    @Override
+    public void editTimestampForVideo(int videoId, int timeStampId, String fieldToBeEdited, String newValue) {
+        String sql = "UPDATE timestamps SET " + fieldToBeEdited + " = ? WHERE video_id = ? AND id = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement preparedstmt = conn.prepareStatement(sql);
+            preparedstmt.setString(1, newValue);
+            preparedstmt.setInt(2, videoId);
+            preparedstmt.setInt(3, timeStampId);
+            preparedstmt.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteTimestamp(int videoId, int timeStampId) {
+        String deleteTimeStamps = "DELETE FROM timestamps WHERE video_id = ? AND id = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement stmt = conn.prepareStatement(deleteTimeStamps);
+            stmt.setInt(1, videoId);
+            stmt.setInt(2, timeStampId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

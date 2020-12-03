@@ -149,4 +149,36 @@ public class DatabaseRecommendationDaoTest {
 //        assertFalse(added);
 //        assertEquals(count, db_dao.getAllVideoRecommendations().size());
 //    }
+    
+    @Test
+    public void gettingAllTimestampsForVideoReturnsOnlyTimeStampsForTheSpecifiedVideo() {
+        db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
+        db_dao.addTimeStampToVideo(1, "0:00", "start");
+        db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up", "Rick Roll");
+        db_dao.addTimeStampToVideo(2, "0:00", "start");
+        assertEquals(1, db_dao.getAllTimestampsForVideo(1).size());       
+    }
+    
+    @Test
+    public void editingTimeStampFieldEditsOnlySpecifiedField() {
+        db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
+        db_dao.addTimeStampToVideo(1, "0:00", "start");
+        db_dao.editTimestampForVideo(1, 1, "timestamp", "0:01");
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimestamp().equals("0:01"));
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getComment().equals("start"));
+        db_dao.editTimestampForVideo(1, 1, "comment", "The beginning");
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimestamp().equals("0:01"));
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getComment().equals("The beginning"));
+    }
+    
+    @Test
+    public void deletingTimestampDeletesOnlyOne() {
+        db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
+        db_dao.addTimeStampToVideo(1, "0:00", "start");
+        db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up", "Rick Roll");
+        db_dao.addTimeStampToVideo(2, "0:00", "start");
+        db_dao.deleteTimestamp(1, 1);
+        assertEquals(0, db_dao.getAllTimestampsForVideo(1).size());       
+        assertEquals(1, db_dao.getAllTimestampsForVideo(2).size());       
+    }
 }
