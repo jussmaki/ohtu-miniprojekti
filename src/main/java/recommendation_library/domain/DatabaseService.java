@@ -65,7 +65,17 @@ public class DatabaseService {
         return false;
     }
 */
-    
+    /**
+     * Create book recommendation
+     *
+     * @param author
+     * @param title
+     * @param isbn
+     * @param pageCount
+     * @param description
+     * 
+     * @return success/failure
+     */
     public boolean addBook(String author, String title, String description, String isbn, int pageCount) {
         if (bookTitleAlreadyExists(title)) {
             return false;
@@ -74,11 +84,54 @@ public class DatabaseService {
         return true;
     }
 
+    /**
+     * Create video recommendation
+     *
+     * @param url
+     * @param title
+     * @param description
+     * 
+     * @return success/failure
+     */
     public boolean addVideo(String url, String title, String description) {
         if (videoTitleAlreadyExists(title)) {
             return false;
         }
         dao.createVideoRecommendation(url, title, description);
+        return true;
+    }
+    
+    /**
+     * Create blog recommendation
+     *
+     * @param url
+     * @param author
+     * @param title
+     * @param description
+     * 
+     * @return success/failure
+     */
+    public boolean addBlog(String url, String title, String author, String description) {
+//        if 
+        dao.createBlogRecommendation(url, title, author, description);
+        return true;
+    }
+    
+    /**
+     * Create blog recommendation
+     *
+     * @param author
+     * @param title
+     * @param description
+     * @param name
+     * 
+     * @return success/failure
+     */
+    public boolean addPodcast(String author, String title, String description, String name) {
+//        if (this) {
+//            return false;
+//        }
+        dao.createPodcastRecommendation(author, title, description, name);
         return true;
     }
 

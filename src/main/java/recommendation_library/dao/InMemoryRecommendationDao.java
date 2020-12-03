@@ -182,5 +182,15 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         }
     }
 
+    @Override
+    public void createBlogRecommendation(String url, String title, String author, String description) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void createPodcastRecommendation(String author, String title, String description, String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

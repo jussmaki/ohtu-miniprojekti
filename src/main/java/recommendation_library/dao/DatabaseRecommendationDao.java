@@ -9,7 +9,6 @@ import recommendation_library.domain.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import recommendation_library.domain.Type;
 
 /**
  *
@@ -25,6 +24,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         createBookTable();
         createVideoTable();
         createTimeStampTable();
+        this.createBlogTable();
+        this.createPodcastTable();
     }
 
     private Connection connect() {
@@ -43,7 +44,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         return connection;
     }
 
-    public void createBookTable() {
+    private void createBookTable() {
         String sql = "CREATE TABLE IF NOT EXISTS books (\n"
                 + " id integer PRIMARY KEY,\n"
                 + " author TEXT NOT NULL,\n"
@@ -64,7 +65,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
     }
 
-    public void createVideoTable() {
+    private void createVideoTable() {
         String sql = "CREATE TABLE IF NOT EXISTS videos (\n"
                 + " id integer PRIMARY KEY,\n"
                 + " url TEXT NOT NULL,\n"
@@ -83,7 +84,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
     }
 
-    public void createTimeStampTable() {
+    private void createTimeStampTable() {
         String sql = "CREATE TABLE IF NOT EXISTS timestamps (\n"
                 + " id integer PRIMARY KEY,\n"
                 + " timestamp TEXT NOT NULL,\n"
@@ -96,6 +97,44 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             stmt.execute(sql);
             connection.close();
 //            System.out.println("table created");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void createPodcastTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS podcasts (\n"
+                + " id integer PRIMARY KEY,\n"
+                + " author TEXT NOT NULL,\n"
+                + " title TEXT NOT NULL UNIQUE,\n"
+                + " description TEXT,\n"
+                + " name TEXT,\n"
+                + " created TEXT"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void createBlogTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS blogs (\n"
+                + " id integer PRIMARY KEY,\n"
+                + " url TEXT NOT NULL,\n"
+                + " author TEXT NOT NULL,\n"
+                + " title TEXT NOT NULL UNIQUE,\n"
+                + " description TEXT,\n"
+                + " created TEXT"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -128,7 +167,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     /**
      * Insert a new recommendation into the database
      *
@@ -153,7 +192,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     /**
      * Add a new timestamp into the database
      *
@@ -176,7 +215,61 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
+    }
+    
+    /**
+     * Insert a new recommendation into the database
+     *
+     * @param url
+     * @param title
+     * @param author
+     * @param description
+     */
+    @Override
+    public void createBlogRecommendation(String url, String title, String author, String description) {
+        String sql = "INSERT INTO blogs (url, title, author, description, created) "
+                + "VALUES(?,?,?,?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, url);
+            statement.setString(2, title);
+            statement.setString(3, author);            
+            statement.setString(4, description);
+            statement.setString(5, java.time.LocalDate.now().toString());
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * Insert a new recommendation into the database
+     *
+     * @param author
+     * @param title
+     * @param description
+     * @param isbn
+     */
+    @Override
+    public void createPodcastRecommendation(String author, String title, String description, String name) {
+        String sql = "INSERT INTO podcasts(author, title, description, name, created) "
+                + "VALUES(?,?,?,?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, author);
+            statement.setString(2, title);
+            statement.setString(3, description);
+            statement.setString(4, name);
+            statement.setString(5, java.time.LocalDate.now().toString());
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -202,7 +295,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return books;
     }
-    
+
     @Override
     public List<VideoRecommendation> getAllVideoRecommendations() {
         ArrayList<VideoRecommendation> videos = new ArrayList<>();
@@ -212,7 +305,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = statement.executeQuery("SELECT * FROM videos");
             while (result.next()) {
                 videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
-                        result.getString("title"), result.getString("description"), 
+                        result.getString("title"), result.getString("description"),
                         result.getString("created")));
             }
             connection.close();
@@ -241,7 +334,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return timestamps;
     }
-    
+
     @Override
     public void editBookRecommendation(String title, String fieldToBeEdited, String newValue) {
         String sql = "UPDATE books SET " + fieldToBeEdited + " = ? WHERE title = ?";
@@ -256,7 +349,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     @Override
     public void editVideoRecommendation(String title, String fieldToBeEdited, String newValue) {
         String sql = "UPDATE videos SET " + fieldToBeEdited + " = ? WHERE title = ?";
@@ -290,7 +383,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
-    
+
     @Override
     public void deleteBookByTitle(String title) {
         String sql = "DELETE FROM books WHERE title = ?";
@@ -304,7 +397,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     @Override
     public void deleteVideoByTitle(String title) {
         int videoId = searchVideoByTitle(title);
@@ -321,7 +414,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         deleteVideoTimeStamps(videoId);
     }
-    
+
     private void deleteVideoTimeStamps(int videoId) {
         String deleteTimeStamps = "DELETE FROM timestamps WHERE video_id = ?";
         try {
@@ -333,7 +426,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
 
     @Override

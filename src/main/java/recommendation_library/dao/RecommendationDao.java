@@ -19,6 +19,8 @@ public interface RecommendationDao {
     
     void createBookRecommendation(String author, String title, String description, String isbn, int pageCount);
     void createVideoRecommendation(String url, String title, String description);
+    void createBlogRecommendation(String url, String title, String author, String description);
+    void createPodcastRecommendation(String author, String title, String description, String name);
     void addTimeStampToVideo(int videoId, String timestamp, String comment);
     
     List<BookRecommendation> getAllBookRecommendations();
