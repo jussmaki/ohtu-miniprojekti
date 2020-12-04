@@ -100,13 +100,24 @@ public class UserInterface {
     }
 
     public void add() {
-        this.io.print("[1] Add book, [2] Add video");
+        this.io.print("[1] Add book, [2] Add video, [3] Add blog, [4] Add podcast");
         int input = Integer.valueOf(io.nextLine());
 
-        if (input == 1) {
-            addBook();
-        } else if (input == 2) {
-            addVideo();
+        switch(input) {
+            case 1: 
+                addBook();
+                break;
+            case 2:
+                addVideo();
+                break;
+            case 3:
+                addBlog();
+                break;
+            case 4:
+                addPodcast();
+                break;
+            default:
+                this.io.print("Unknown command");
         }
 
     }
@@ -133,9 +144,6 @@ public class UserInterface {
         }
     }
 
-    /**
-     * add a book recommendation to the library
-     */
     public void addBook() {
 
         this.io.print("Type the author of the book recommendation");
@@ -155,6 +163,58 @@ public class UserInterface {
             String pageCount = io.nextLine();
 
             if (recommendationApp.addBook(author, title, description, isbn, pageCount)) {
+                this.io.print("Recommendation added");
+            } else {
+                this.io.print("Addition failed");
+            }
+        } else {
+            io.print("Title already exists");
+        }
+
+    }
+    
+    public void addBlog() {
+
+        this.io.print("Type the title of the blog recommendation");
+        String title = io.nextLine();
+        
+        if (!recommendationApp.blogAlreadyExists(title)) {            
+            this.io.print("Type the author of the blog recommendation");
+            String author = io.nextLine();
+        
+            this.io.print("Type the description of the blog recommendation");
+            String description = io.nextLine();
+
+            this.io.print("Type the URL of the blog recommendation");
+            String url = io.nextLine();
+
+            if (recommendationApp.addBlog(title, author, description, url)) {
+                this.io.print("Recommendation added");
+            } else {
+                this.io.print("Addition failed");
+            }
+        } else {
+            io.print("Title already exists");
+        }
+
+    }
+    
+    public void addPodcast() {
+
+        this.io.print("Type the title of the podcast recommendation");
+        String title = io.nextLine();
+        
+        if (!recommendationApp.podcastAlreadyExists(title)) {            
+            this.io.print("Type the name of the podcast recommendation");
+            String name = io.nextLine();
+        
+            this.io.print("Type the author of the podcast recommendation");
+            String author = io.nextLine();
+        
+            this.io.print("Type the description of the podcast recommendation");
+            String description = io.nextLine();
+
+            if (recommendationApp.addPodcast(title, name, author, description)) {
                 this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
