@@ -145,7 +145,7 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
 
-        assertTrue(io.getPrints().contains("Recommendation 1" + separator +
+        assertTrue(io.getPrints().contains("Book 1" + separator +
             "Author: " + author + separator +
             "Title: " + title + separator +
             "Description: " + description + separator +
