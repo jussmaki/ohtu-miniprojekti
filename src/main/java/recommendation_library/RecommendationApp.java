@@ -8,8 +8,10 @@ package recommendation_library;
 import java.util.ArrayList;
 import java.util.List;
 import recommendation_library.dao.RecommendationDao;
+import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.DatabaseService;
+import recommendation_library.domain.PodcastRecommendation;
 import recommendation_library.domain.VideoRecommendation;
 import recommendation_library.io.IO;
 
@@ -71,8 +73,6 @@ public class RecommendationApp {
 
         return false;
     }
-    
-    
 
     public boolean bookAlreadyExists(String title) {
         return service.bookTitleAlreadyExists(title);
@@ -96,7 +96,7 @@ public class RecommendationApp {
         int i = 1;
 
         for (BookRecommendation r : list) {
-            recommendationStrings.add("Recommendation " + i++ + System.lineSeparator()
+            recommendationStrings.add("Book " + i++ + System.lineSeparator()
                     + "Author: " + r.getAuthor() + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
@@ -114,9 +114,43 @@ public class RecommendationApp {
         int i = 1;
 
         for (VideoRecommendation r : list) {
-            recommendationStrings.add("Recommendation " + i++ + System.lineSeparator()
+            recommendationStrings.add("Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "URL: " + r.getUrl() + System.lineSeparator()
+                    + "Description: " + r.getDescription() + System.lineSeparator()
+                    + "Added: " + r.getAddDate());
+        }
+
+        return recommendationStrings;
+    }
+    
+    public List<String> listBlogs() {
+        List<BlogRecommendation> list = service.getAllBlogRecommendations();
+        List<String> recommendationStrings = new ArrayList<>();
+        int i = 1;
+
+        for (BlogRecommendation r : list) {
+            recommendationStrings.add("Blog " + i++ + System.lineSeparator()
+                    + "Author: " + r.getAuthor() + System.lineSeparator()
+                    + "Title: " + r.getTitle() + System.lineSeparator()
+                    + "Description: " + r.getDescription() + System.lineSeparator()
+                    + "URL: " + r.getUrl() + System.lineSeparator()
+                    + "Added: " + r.getAddDate());
+        }
+
+        return recommendationStrings;
+    }
+    
+    public List<String> listPodcasts() {
+        List<PodcastRecommendation> list = service.getAllPodcastRecommendations();
+        List<String> recommendationStrings = new ArrayList<>();
+        int i = 1;
+
+        for (PodcastRecommendation r : list) {
+            recommendationStrings.add("Podcast " + i++ + System.lineSeparator()
+                    + "Podcast name: " + r.getPodcastName() + System.lineSeparator()
+                    + "Author: " + r.getAuthor() + System.lineSeparator()
+                    + "Title: " + r.getTitle() + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
                     + "Added: " + r.getAddDate());
         }
