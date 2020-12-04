@@ -44,11 +44,35 @@ public class RecommendationApp {
         try {
             return service.addVideo(url, title, description);
         } catch (Exception e) {
-            this.io.print("Given page count is not an integer!");
+            this.io.print(e.getMessage());
         }
 
         return false;
     }
+    
+    public boolean addPodcast(String title, String podcastName, String author, String description) {
+
+        try {
+            return service.addPodcast(author, title, description, podcastName);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+
+        return false;
+    }
+    
+    public boolean addBlog(String title, String author, String description, String url) {
+
+        try {
+            return service.addBlog(url, title, author, description);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+
+        return false;
+    }
+    
+    
 
     public boolean bookAlreadyExists(String title) {
         return service.bookTitleAlreadyExists(title);
@@ -56,6 +80,14 @@ public class RecommendationApp {
 
     public boolean videoAlreadyExists(String title) {
         return service.videoTitleAlreadyExists(title);
+    }
+    
+    public boolean blogAlreadyExists(String title) {
+        return service.blogTitleAlreadyExists(title);
+    }
+    
+    public boolean podcastAlreadyExists(String title) {
+        return service.podcastTitleAlreadyExists(title);
     }
 
     public List<String> listBooks() {
