@@ -226,15 +226,26 @@ public class UserInterface {
     }
 
     public void list() {
-        this.io.print("[1] List all, [2] List books, [3] List videos");
+        this.io.print("[1] List all, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
         int input = Integer.valueOf(io.nextLine());
 
-        if (input == 1) {
-            listAll();
-        } else if (input == 2) {
-            listBooks();
-        } else if (input == 3) {
-            listVideos();
+        switch(input) {
+            case 1: 
+                listAll();
+                break;
+            case 2:
+                listBooks();
+                break;
+            case 3:
+                listVideos();
+                break;
+            case 4:
+                listBlogs();
+                break;
+            case 5:
+                listPodcasts();
+            default:
+                this.io.print("Unknown command");
         }
     }
 
@@ -253,6 +264,22 @@ public class UserInterface {
             this.io.print(videoRecommendation);
         }
     }
+    
+    public void listBlogs() {
+        List<String> blogRecommendations = recommendationApp.listBlogs();
+
+        for (String blogRecommendation : blogRecommendations) {
+            this.io.print(blogRecommendation);
+        }
+    }
+    
+    public void listPodcasts() {
+        List<String> podcastRecommendations = recommendationApp.listPodcasts();
+
+        for (String podcastRecommendation : podcastRecommendations) {
+            this.io.print(podcastRecommendation);
+        }
+    }
 
     /**
      * list all recommendations contained within the library
@@ -260,6 +287,8 @@ public class UserInterface {
     public void listAll() {
         listBooks();
         listVideos();
+        listBlogs();
+        listPodcasts();
     }
     
     public void editBook() {
