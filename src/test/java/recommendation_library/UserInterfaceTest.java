@@ -306,7 +306,7 @@ public class UserInterfaceTest {
         db_ui = new UserInterface(db_io, db_dao);
         db_ui.run();
 
-        assertTrue(db_io.getPrints().contains("Recommendation 1" + System.lineSeparator()
+        assertTrue(db_io.getPrints().contains("Book 1" + System.lineSeparator()
             + "Author: Jeff VanderMeer" + System.lineSeparator()
             + "Title: Annihilation" + System.lineSeparator()
             + "Description: Good book" + System.lineSeparator()
