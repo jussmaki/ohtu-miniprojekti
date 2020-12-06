@@ -50,13 +50,31 @@ public class UserInterface {
     public void run() {
         while (true) {
             this.io.print("[1] Add recommendation, [2] List recommendations, [3] Edit recommendation, [4] Delete recommendation, [5] Exit");
-            int input = Integer.valueOf(io.nextLine());
-            if (input == 5) {
-                break;
+            String input = io.nextLine();
+            if(validateInput(input)) {
+                int numericInput = Integer.valueOf(input);
+                if (numericInput == 5) {
+                    break;
+                }
+                checkInput(numericInput);
             }
-            checkInput(input);
         }
 
+    }
+    
+    /**
+     * Function to validate userInput
+     * @param userInput
+     * @return true if userinput is numeric
+     */
+    private boolean validateInput(String userInput) {
+        try {
+            int input = Integer.valueOf(userInput);
+            return true;
+        } catch (Exception e) {
+            this.io.print("Unknown command");
+            return false;
+        }
     }
 
     /**
