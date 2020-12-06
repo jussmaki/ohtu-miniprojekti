@@ -426,4 +426,9 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         return newTag;
     }
 
+    @Override
+    public List<Tag> getAllTags() {
+        return this.tags;
+    }
+
 }

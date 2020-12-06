@@ -235,8 +235,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      */
     @Override
     public void createBookRecommendation(String author, String title, String description, String isbn, int pageCount) {
-        String sql = "INSERT INTO books(author, title, description, isbn, pageCount, created) "
-                + "VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO books (author, title, description, isbn, pageCount, created) "
+                + "VALUES (?,?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -263,7 +263,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createVideoRecommendation(String url, String title, String description) {
         String sql = "INSERT INTO videos (url, title, description, created) "
-                + "VALUES(?,?,?,?)";
+                + "VALUES (?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -287,8 +287,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      */
     @Override
     public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
-        String sql = "INSERT INTO timestamps(timestamp, comment, video_id) "
-                + "VALUES(?,?,?)";
+        String sql = "INSERT INTO timestamps (timestamp, comment, video_id) "
+                + "VALUES (?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -314,7 +314,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createBlogRecommendation(String url, String title, String author, String description) {
         String sql = "INSERT INTO blogs (url, title, author, description, created) "
-                + "VALUES(?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -340,8 +340,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      */
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String name) {
-        String sql = "INSERT INTO podcasts(author, title, description, name, created) "
-                + "VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO podcasts (author, title, description, name, created) "
+                + "VALUES (?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -688,7 +688,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void deleteBlogByTitle(String title) {
-        String deleteBlog = "DELETE FROM blogss WHERE title = ?";
+        String deleteBlog = "DELETE FROM blogs WHERE title = ?";
         try {
             Connection conn = this.connect();
             PreparedStatement stmt = conn.prepareStatement(deleteBlog);
@@ -895,6 +895,24 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
         return tagId;  
+    }
+
+    @Override
+    public List<Tag> getAllTags() {
+        ArrayList<Tag> tags = new ArrayList<>();
+        String sql = "SELECT * FROM tags";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                tags.add(new Tag(result.getInt("id"), result.getString("tagText")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tags;
     }
 
 }

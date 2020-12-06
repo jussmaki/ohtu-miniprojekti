@@ -11,6 +11,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
+import recommendation_library.domain.PodcastRecommendation;
+import recommendation_library.domain.Tag;
 import recommendation_library.domain.VideoRecommendation;
 
 /**
@@ -32,6 +34,14 @@ public class DatabaseRecommendationDaoTest {
         List<VideoRecommendation> videos = db_dao.getAllVideoRecommendations();
         for (VideoRecommendation v : videos) {
             db_dao.deleteVideoByTitle(v.getTitle());
+        }
+        List<BlogRecommendation> blogs = db_dao.getAllBlogRecommendations();
+        for (BlogRecommendation b : blogs) {
+            db_dao.deleteBlogByTitle(b.getTitle());
+        }
+        List<PodcastRecommendation> pods = db_dao.getAllPodcastRecommendations();
+        for (PodcastRecommendation p : pods) {
+            db_dao.deletePodcastByTitle(p.getTitle());
         }
         
     }
@@ -190,5 +200,58 @@ public class DatabaseRecommendationDaoTest {
     @Test
     public void searchingForNonexistingVideoReturnsZero() {
         assertTrue(db_dao.getVideoIdByTitle("Nonexistent") == 0);
+    }
+    
+    @Test
+    public void createBlogRecommendationAddsToTheDatabase() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        assertFalse(db_dao.getAllBlogRecommendations().isEmpty());
+
+        BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
+        assertEquals("Jane", addedRecommendation.getAuthor());
+        assertEquals("google.fi", addedRecommendation.getUrl());
+        assertEquals("Title", addedRecommendation.getTitle());
+        assertEquals("description", addedRecommendation.getDescription());
+        assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+    }
+
+    @Test
+    public void editBlogRecommendationEditsAuthor() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        db_dao.editBlogRecommendation("Title", "author", "John");
+        BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
+        assertEquals("John", addedRecommendation.getAuthor());
+    }
+
+    @Test
+    public void editBlogRecommendationEditsTitle() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        db_dao.editBlogRecommendation("Title", "title", "BLORG");
+        BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
+        assertEquals("BLORG", addedRecommendation.getTitle());
+    }
+
+    @Test
+    public void editBlogRecommendationEditsUrl() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        db_dao.editBlogRecommendation("Title", "url", "cba");
+        BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
+        assertEquals("cba", addedRecommendation.getUrl());
+    }
+    
+    @Test
+    public void editBlogRecommendationEditsDescription() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        db_dao.editBlogRecommendation("Title", "description", "cba");
+        BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
+        assertEquals("cba", addedRecommendation.getDescription());
+    }
+
+    @Test
+    public void deleteBlogByTitle() {
+        db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
+        assertEquals(1, db_dao.getAllBlogRecommendations().size());
+        db_dao.deleteBlogByTitle("Title");
+        assertEquals(0, db_dao.getAllBlogRecommendations().size());
     }
 }
