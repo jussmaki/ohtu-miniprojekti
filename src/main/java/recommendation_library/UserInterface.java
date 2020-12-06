@@ -377,11 +377,11 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.bookAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Pagecount");
+            this.io.print("Choose a field to edit \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
             String fieldToEdit = String.valueOf(io.nextLine());
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Pagecount");
+                this.io.print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
                 fieldToEdit = String.valueOf(io.nextLine());
             }
 
@@ -407,7 +407,7 @@ public class UserInterface {
             }
             
             if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
             }
@@ -453,7 +453,7 @@ public class UserInterface {
             }
             
             if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
             }
@@ -502,7 +502,7 @@ public class UserInterface {
             }
             
             if (recommendationApp.editBlog(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
             }
@@ -550,7 +550,7 @@ public class UserInterface {
             }
             
             if (recommendationApp.editPodcast(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
             } else {
                 this.io.print("Failed!");
             }
