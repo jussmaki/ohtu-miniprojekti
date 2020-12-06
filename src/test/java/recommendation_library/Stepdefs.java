@@ -148,13 +148,13 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
 
-//        assertTrue(io.getPrints().contains("Book 1" + separator +
-//            "Author: " + author + separator +
-//            "Title: " + title + separator +
-//            "Description: " + description + separator +
-//            "ISBN: " + isbn + separator +
-//            "Page count: " + pageCount + separator +
-//            "Added: " + addDate));
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Book 1" + System.lineSeparator() +
+            "Author: " + author + System.lineSeparator() +
+            "Title: " + title + System.lineSeparator() +
+            "Description: " + description + System.lineSeparator() +
+            "ISBN: " + isbn + System.lineSeparator() +
+            "Page count: " + pageCount + System.lineSeparator() +
+            "Added: " + addDate));
     }
 
     @Then("app lists a recommendation with title {string}, description {string} and url {string}")
@@ -163,17 +163,16 @@ public class Stepdefs {
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-
-//        assertTrue(io.getPrints().contains(
-//            "Title: " + title
-//        ));
-//
-//        assertTrue(io.getPrints().contains(
-//            "URL: " + url
-//        ));
-//        assertTrue(io.getPrints().contains(
-//            "Description: " + description
-//        ));
+        
+        String addDate = java.time.LocalDate.now().toString();
+        
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Video 1" + System.lineSeparator()
+                    + "Title: " + title + System.lineSeparator()
+                    + "URL: " + url + System.lineSeparator()
+                    + "Timestamps: " + System.lineSeparator()
+                    + "[]" + System.lineSeparator()
+                    + "Description: " + description + System.lineSeparator()
+                    + "Added: " + addDate));
     }
 
     @Then("app deletes a recommendation with the title {string}")

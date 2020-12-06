@@ -108,7 +108,7 @@ public class RecommendationApp {
         int i = 1;
 
         for (BookRecommendation r : list) {
-            recommendationStrings.add("\n" + "Book " + i++ + System.lineSeparator()
+            recommendationStrings.add(System.lineSeparator() + "Book " + i++ + System.lineSeparator()
                     + "Author: " + r.getAuthor() + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
@@ -134,7 +134,7 @@ public class RecommendationApp {
                 timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
             });
                         
-            recommendationStrings.add("\n" + "Video " + i++ + System.lineSeparator()
+            recommendationStrings.add(System.lineSeparator() + "Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "URL: " + r.getUrl() + System.lineSeparator()
                     + "Timestamps: " + System.lineSeparator()
@@ -152,7 +152,7 @@ public class RecommendationApp {
         int i = 1;
 
         for (BlogRecommendation r : list) {
-            recommendationStrings.add("\n" + "Blog " + i++ + System.lineSeparator()
+            recommendationStrings.add(System.lineSeparator() + "Blog " + i++ + System.lineSeparator()
                     + "Author: " + r.getAuthor() + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
@@ -169,7 +169,7 @@ public class RecommendationApp {
         int i = 1;
 
         for (PodcastRecommendation r : list) {
-            recommendationStrings.add("\n" + "Podcast " + i++ + System.lineSeparator()
+            recommendationStrings.add(System.lineSeparator() + "Podcast " + i++ + System.lineSeparator()
                     + "Podcast name: " + r.getPodcastName() + System.lineSeparator()
                     + "Author: " + r.getAuthor() + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
