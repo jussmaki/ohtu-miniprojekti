@@ -34,7 +34,7 @@ public class BlogRecommendation extends Recommendation {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public boolean setUrl(String newUrl) {
@@ -43,7 +43,7 @@ public class BlogRecommendation extends Recommendation {
     }
 
     public String getAuthor() {
-        return author;
+        return this.author;
     }
 
     public boolean setAuthor(String author) {

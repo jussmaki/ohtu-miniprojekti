@@ -34,6 +34,7 @@ public interface RecommendationDao {
     List<VideoRecommendation> getAllVideoRecommendations();
     List<BlogRecommendation> getAllBlogRecommendations();
     List<PodcastRecommendation> getAllPodcastRecommendations();
+    List<Tag> getAllTags();
     List<TimeMemory> getAllTimestampsForVideo(int videoId);
     List<Tag> getAllTagsForBook(int bookId);
     List<Tag> getAllTagsForVideo(int videoId);
