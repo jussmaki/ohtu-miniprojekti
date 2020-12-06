@@ -131,9 +131,9 @@ public class RecommendationApp {
             List<TimeMemory> timeStampList = service.getTimestampsForVideo(r.getTitle());
             List<String> timeStampStrings = new ArrayList<>();
             
-            for (TimeMemory t : timeStampList) {
+            timeStampList.forEach((t) -> {
                 timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
-                    }
+            });
                         
             recommendationStrings.add("Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
