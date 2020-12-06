@@ -5,6 +5,7 @@
  */
 package recommendation_library.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,20 +31,20 @@ public class DatabaseServiceTest {
     
     @Test
     public void videoTitleSearchingWorksForExistingTitle() {
-        service.addVideo("1234", "Test", "Test video");
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
         assertTrue(service.videoTitleAlreadyExists("Test"));
     }
     
     @Test
     public void videoTitleSearchingWorksForNonexistingTitle() {
         assertFalse(service.videoTitleAlreadyExists("Test"));
-        service.addVideo("1234", "Test", "Test video");
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
         assertFalse(service.videoTitleAlreadyExists("Test2"));
     }
     
     @Test
     public void deletingVideoWorks() {
-        service.addVideo("1234", "Test", "Test video");
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
         assertTrue(service.videoTitleAlreadyExists("Test"));
         service.deleteVideoRecommendation("Test");
         assertFalse(service.videoTitleAlreadyExists("Test"));
@@ -51,7 +52,7 @@ public class DatabaseServiceTest {
     
     @Test
     public void deletingNonexistingVideoWorks() {
-        service.addVideo("1234", "Test", "Test video");
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
         assertTrue(service.videoTitleAlreadyExists("Test"));
         assertFalse(service.deleteVideoRecommendation("Test1"));
         assertTrue(service.videoTitleAlreadyExists("Test"));
@@ -59,20 +60,20 @@ public class DatabaseServiceTest {
     
     @Test
     public void creatingAlreadyExistingBookFails() {
-        service.addBook("Test", "Title", "Book", "USBN", 10);
-        assertFalse(service.addBook("Tet", "Title", "A", "AAA", 0));
+        service.addBook("Test", "Title", "Book", "USBN", 10, new ArrayList<String>());
+        assertFalse(service.addBook("Tet", "Title", "A", "AAA", 0, new ArrayList<String>()));
     }
     
     @Test
     public void creatingAlreadyExistingVideoFails() {
-        service.addVideo("1234", "Test", "Test video");
-        assertFalse(service.addVideo("134", "Test", "Teest video"));
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
+        assertFalse(service.addVideo("134", "Test", "Teest video", new ArrayList<String>()));
     }
     
     @Test
     public void gettingAllRecommendationsSortedWorks() {
-        service.addVideo("1234", "Test", "Test video");
-        service.addBook("Test", "Title", "Book", "USBN", 10);
+        service.addVideo("1234", "Test", "Test video", new ArrayList<String>());
+        service.addBook("Test", "Title", "Book", "USBN", 10, new ArrayList<String>());
         List<Recommendation> r = service.getAllRecommendationsSortedByCreatedDate();
         assertEquals(2, r.size());
         VideoRecommendation v = service.getAllVideoRecommendations().get(0);
@@ -83,10 +84,10 @@ public class DatabaseServiceTest {
     
     @Test
     public void existingBookTitleNotReaddedToDatabase() {
-        service.addBook("Bob", "book4", "good", "abc", 10);
+        service.addBook("Bob", "book4", "good", "abc", 10, new ArrayList<String>());
         assertTrue(service.bookTitleAlreadyExists("book4"));
         int count = service.getAllBookRecommendations().size();
-        boolean added = service.addBook("Henri", "book4", "different book same title", "asd", 11);
+        boolean added = service.addBook("Henri", "book4", "different book same title", "asd", 11, new ArrayList<String>());
         assertFalse(added);
         assertEquals(count, service.getAllBookRecommendations().size());
     }

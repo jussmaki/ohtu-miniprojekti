@@ -29,11 +29,11 @@ public class RecommendationApp {
         this.service = new DatabaseService(dao);
     }
 
-    public boolean addBook(String author, String title, String description, String isbn, String pageCount) {
+    public boolean addBook(String author, String title, String description, String isbn, String pageCount, List<String> tags) {
 
         try {
             int pageCountInt = Integer.parseInt(pageCount);
-            return service.addBook(author, title, description, isbn, pageCountInt);
+            return service.addBook(author, title, description, isbn, pageCountInt, tags);
         } catch (Exception e) {
             this.io.print("Given page count is not an integer!");
         }
@@ -41,10 +41,10 @@ public class RecommendationApp {
         return false;
     }
 
-    public boolean addVideo(String title, String description, String url) {
+    public boolean addVideo(String title, String description, String url, List<String> tags) {
 
         try {
-            return service.addVideo(url, title, description);
+            return service.addVideo(url, title, description, tags);
         } catch (Exception e) {
             this.io.print(e.getMessage());
         }
@@ -52,10 +52,10 @@ public class RecommendationApp {
         return false;
     }
     
-    public boolean addPodcast(String title, String podcastName, String author, String description) {
+    public boolean addPodcast(String title, String podcastName, String author, String description, List<String> tags) {
 
         try {
-            return service.addPodcast(author, title, description, podcastName);
+            return service.addPodcast(author, title, description, podcastName, tags);
         } catch (Exception e) {
             this.io.print(e.getMessage());
         }
@@ -63,10 +63,10 @@ public class RecommendationApp {
         return false;
     }
     
-    public boolean addBlog(String title, String author, String description, String url) {
+    public boolean addBlog(String title, String author, String description, String url, List<String> tags) {
 
         try {
-            return service.addBlog(url, title, author, description);
+            return service.addBlog(url, title, author, description, tags);
         } catch (Exception e) {
             this.io.print(e.getMessage());
         }

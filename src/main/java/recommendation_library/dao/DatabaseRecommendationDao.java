@@ -26,6 +26,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         createTimeStampTable();
         createBlogTable();
         createPodcastTable();
+        createTagTable();
+        createConnectionTables();
     }
 
     private Connection connect() {
@@ -139,6 +141,89 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
+    
+    private void createTagTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS tags (\n"
+                + " id integer PRIMARY KEY,\n"
+                + " tagText TEXT NOT NULL UNIQUE"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(sql);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void createConnectionTables() {
+        createBookConnectionTable();
+        createVideoConnectionTable();
+        createBlogConnectionTable();
+        createPodcastConnectionTable();
+    }
+    
+    private void createBookConnectionTable() {
+        String booksTags = "CREATE TABLE IF NOT EXISTS booksTags (\n"
+                + " books_id INTEGER REFERENCES books,\n"
+                + " tags_id INTEGER REFERENCES tags"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(booksTags);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    private void createVideoConnectionTable() {
+        String videosTags = "CREATE TABLE IF NOT EXISTS videosTags (\n"
+             + " books_id INTEGER REFERENCES videos,\n"
+             + " tags_id INTEGER REFERENCES tags"
+             + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(videosTags);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    private void createBlogConnectionTable() {
+        String blogsTags = "CREATE TABLE IF NOT EXISTS blogsTags (\n"
+                + " books_id INTEGER REFERENCES blogs,\n"
+                + " tags_id INTEGER REFERENCES tags"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(blogsTags);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+    
+    private void createPodcastConnectionTable() {        
+        String podcastsTags = "CREATE TABLE IF NOT EXISTS podcastsTags (\n"
+                + " books_id INTEGER REFERENCES podcasts,\n"
+                + " tags_id INTEGER REFERENCES tags"
+                + ");";
+        try {
+            Connection connection = connect();
+            Statement stmt = connection.createStatement();
+            stmt.execute(podcastsTags);
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
 
     /**
      * Insert a new recommendation into the database
@@ -404,25 +489,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     @Override
-    public int getVideoIdByTitle(String title) {
-        String sql = "SELECT id FROM videos WHERE title = ?";
-        int id = 0;
-        try {
-            Connection conn = this.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, title);
-            ResultSet result = pstmt.executeQuery();
-            if (result.next()) {
-                id = result.getInt("id");
-            }
-            conn.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return id;
-    }
-
-    @Override
     public void deleteBookByTitle(String title) {
         String sql = "DELETE FROM books WHERE title = ?";
         try {
@@ -494,6 +560,82 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    @Override
+    public int getVideoIdByTitle(String title) {
+        String sql = "SELECT id FROM videos WHERE title = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+    
+    @Override
+    public int getBookIdByTitle(String title) {
+        String sql = "SELECT id FROM books WHERE title = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+    
+    @Override
+    public int getBlogIdByTitle(String title) {
+        String sql = "SELECT id FROM blogs WHERE title = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+    
+    @Override
+    public int getPodcastIdByTitle(String title) {
+        String sql = "SELECT id FROM podcasts WHERE title = ?";
+        int id = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) {
+                id = result.getInt("id");
+            }
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
     }
     
     @Override
@@ -570,5 +712,189 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }    }
+
+    @Override
+    public List<Tag> getAllTagsForBook(int bookId) {
+        ArrayList<Tag> tags = new ArrayList<>();
+        String sql = "SELECT * FROM tags INNER JOIN booksTags ON tags.id = booksTags.tags_id WHERE booksTags.books_id = ?";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            pstatement.setInt(1, bookId);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                tags.add(new Tag(result.getInt("id"), result.getString("tagText")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForVideo(int videoId) {
+        ArrayList<Tag> tags = new ArrayList<>();
+        String sql = "SELECT * FROM tags INNER JOIN videosTags ON tags.id = videosTags.tags_id WHERE videosTags.videos_id = ?";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            pstatement.setInt(1, videoId);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                tags.add(new Tag(result.getInt("id"), result.getString("tagText")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForBlog(int blogId) {
+        ArrayList<Tag> tags = new ArrayList<>();
+        String sql = "SELECT * FROM tags INNER JOIN blogsTags ON tags.id = blogsTags.tags_id WHERE blogsTags.blogs_id = ?";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            pstatement.setInt(1, blogId);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                tags.add(new Tag(result.getInt("id"), result.getString("tagText")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForPodcast(int podcastId) {
+        ArrayList<Tag> tags = new ArrayList<>();
+        String sql = "SELECT * FROM tags INNER JOIN pogcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.blogs_id = ?";
+        try {
+            Connection connection = this.connect();
+            PreparedStatement pstatement = connection.prepareStatement(sql);
+            pstatement.setInt(1, podcastId);
+            ResultSet result = pstatement.executeQuery();
+            while (result.next()) {
+                tags.add(new Tag(result.getInt("id"), result.getString("tagText")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tags;
+    }
+
+    @Override
+    public void addTagToBook(int bookId, String tagText) {
+        createTag(tagText);
+        int tagId = getTagId(tagText);
+        String booksTags = "INSERT INTO booksTags(books_id, tags_id) VALUES(?,?)";
+        if (tagId != 0) {
+            try {
+                Connection conn = this.connect();
+                PreparedStatement statement = conn.prepareStatement(booksTags);
+                statement.setInt(1, bookId);
+                statement.setInt(2, tagId);
+                statement.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }          
+        }
+    }
+
+    @Override
+    public void addTagToVideo(int videoId, String tagText) {
+        createTag(tagText);
+        int tagId = getTagId(tagText);
+        String booksTags = "INSERT INTO videosTags(videos_id, tags_id) VALUES(?,?)";
+        if (tagId != 0) {
+            try {
+                Connection conn = this.connect();
+                PreparedStatement statement = conn.prepareStatement(booksTags);
+                statement.setInt(1, videoId);
+                statement.setInt(2, tagId);
+                statement.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }          
+        }
+    }
+
+    @Override
+    public void addTagToBlog(int blogId, String tagText) {
+        createTag(tagText);
+        int tagId = getTagId(tagText);
+        String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
+        if (tagId != 0) {
+            try {
+                Connection conn = this.connect();
+                PreparedStatement statement = conn.prepareStatement(booksTags);
+                statement.setInt(1, blogId);
+                statement.setInt(2, tagId);
+                statement.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }          
+        }
+    }
+
+    @Override
+    public void addTagToPodcast(int podcastId, String tagText) {
+        createTag(tagText);
+        int tagId = getTagId(tagText);
+        String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
+        if (tagId != 0) {
+            try {
+                Connection conn = this.connect();
+                PreparedStatement statement = conn.prepareStatement(booksTags);
+                statement.setInt(1, podcastId);
+                statement.setInt(2, tagId);
+                statement.executeUpdate();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }          
+        }
+    }
+    
+    private void createTag(String tagText) {
+        String tag = "INSERT INTO tags(tagText) "
+                + "VALUES(?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(tag);
+            statement.setString(1, tagText);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
+    @Override
+    public int getTagId(String tagText) {
+        String getTagId = "SELECT id FROM tags WHERE tagText = ?";
+        int tagId = 0;
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(getTagId);
+            statement.setString(1, tagText);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                tagId = result.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tagId;  
+    }
 
 }

@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.PodcastRecommendation;
+import recommendation_library.domain.Tag;
 
 import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.VideoRecommendation;
@@ -25,6 +26,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     private List<TimeMemory> timeStamps;
     private List<BlogRecommendation> blogRecommendations;
     private List<PodcastRecommendation> podcastRecommendations;
+    private List<Tag> tags;
 
     public InMemoryRecommendationDao() {
         this.bookRecommendations = new ArrayList<>();
@@ -32,6 +34,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         this.timeStamps = new ArrayList<>();
         this.blogRecommendations = new ArrayList<>();
         this.podcastRecommendations = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     @Override
@@ -117,6 +120,36 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         for (VideoRecommendation v : videoRecommendations) {
             if (v.getTitle().equals(title)) {
                 return v.getId();
+            }
+        }
+        return 0;
+    }
+    
+    @Override
+    public int getBookIdByTitle(String title) {
+        for (BookRecommendation b : bookRecommendations) {
+            if (b.getTitle().equals(title)) {
+                return b.getId();
+            }
+        }
+        return 0;
+    }
+    
+    @Override
+    public int getBlogIdByTitle(String title) {
+        for (BlogRecommendation b : blogRecommendations) {
+            if (b.getTitle().equals(title)) {
+                return b.getId();
+            }
+        }
+        return 0;
+    }
+    
+    @Override
+    public int getPodcastIdByTitle(String title) {
+        for (PodcastRecommendation p : podcastRecommendations) {
+            if (p.getTitle().equals(title)) {
+                return p.getId();
             }
         }
         return 0;
@@ -283,6 +316,114 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         if (toBeRemoved != null) {
             podcastRecommendations.remove(toBeRemoved);
         }
+    }
+
+    @Override
+    public List<Tag> getAllTagsForBook(int bookId) {
+        List<Tag> tags = new ArrayList<>();
+        for (BookRecommendation b : bookRecommendations) {
+            if (b.getId() == bookId) {
+                tags = b.getTags();
+            }
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForVideo(int videoId) {
+        List<Tag> tags = new ArrayList<>();
+        for (VideoRecommendation v : videoRecommendations) {
+            if (v.getId() == videoId) {
+                tags = v.getTags();
+            }
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForBlog(int blogId) {
+        List<Tag> tags = new ArrayList<>();
+        for (BlogRecommendation b : blogRecommendations) {
+            if (b.getId() == blogId) {
+                tags = b.getTags();
+            }
+        }
+        return tags;
+    }
+
+    @Override
+    public List<Tag> getAllTagsForPodcast(int podcastId) {
+        List<Tag> tags = new ArrayList<>();
+        for (PodcastRecommendation p : podcastRecommendations) {
+            if (p.getId() == podcastId) {
+                tags = p.getTags();
+            }
+        }
+        return tags;
+    }
+
+    @Override
+    public void addTagToBook(int bookId, String tagText) {
+        Tag newTag = addTag(tagText);
+        loop:
+        for (BookRecommendation b : bookRecommendations) {
+            if (b.getId() == bookId) {
+                b.addTag(newTag);
+                break loop;
+            }
+        }
+    }
+
+    @Override
+    public void addTagToVideo(int videoId, String tagText) {
+        Tag newTag = addTag(tagText);
+        loop:
+        for (VideoRecommendation v : videoRecommendations) {
+            if (v.getId() == videoId) {
+                v.addTag(newTag);
+                break loop;
+            }
+        }        
+    }
+
+    @Override
+    public void addTagToBlog(int blogId, String tagText) {
+        Tag newTag = addTag(tagText);
+        loop:
+        for (BlogRecommendation b : blogRecommendations) {
+            if (b.getId() == blogId) {
+                b.addTag(newTag);
+                break loop;
+            }
+        }
+    }
+
+    @Override
+    public void addTagToPodcast(int podcastId, String tagText) {
+        Tag newTag = addTag(tagText);
+        loop:
+        for (PodcastRecommendation p : podcastRecommendations) {
+            if (p.getId() == podcastId) {
+                p.addTag(newTag);
+                break loop;
+            }
+        }
+    }
+
+    @Override
+    public int getTagId(String tagText) {
+        for (Tag t : tags) {
+            if (t.getTagText().equals(tagText)) {
+                return t.getId();
+            }
+        }
+        return 0;
+    }
+    
+    private Tag addTag(String tagText) {
+        Tag newTag = new Tag(this.tags.size() + 1, tagText);
+        this.tags.add(newTag);
+        return newTag;
     }
 
 }

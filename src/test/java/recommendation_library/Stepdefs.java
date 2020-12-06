@@ -91,6 +91,7 @@ public class Stepdefs {
         inputLines.add(description);
         inputLines.add(isbn);
         inputLines.add(pageCount);
+        inputLines.add("0");
     }
 
     @When("video recommendation with title {string}, description {string} and url {string} is added")
@@ -98,6 +99,7 @@ public class Stepdefs {
         inputLines.add(title);
         inputLines.add(description);
         inputLines.add(url);
+        inputLines.add("0");
     }
 
 

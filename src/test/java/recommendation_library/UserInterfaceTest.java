@@ -65,15 +65,16 @@ public class UserInterfaceTest {
             .thenReturn("Hobitti")
             .thenReturn("Sci-fi thriller")
             .thenReturn("1234-ABCD")
-            .thenReturn("10");
+            .thenReturn("10")
+            .thenReturn("0");
 
 
         UI.checkInput(1);
 
 
-        verify(input, times(6)).nextLine();
+        verify(input, times(7)).nextLine();
         verify(test_dao, times(1)).createBookRecommendation("Jane", "Hobitti", "Sci-fi thriller", "1234-ABCD", 10);
-        verify(input, times(7)).print(anyString());
+        verify(input, times(8)).print(anyString());
 
     }
 
@@ -115,7 +116,13 @@ public class UserInterfaceTest {
             .thenReturn(true);
 
         when(input.nextLine())
-            .thenReturn(anyString());
+            .thenReturn("Jane")
+            .thenReturn("Hobitti")
+            .thenReturn("Sci-fi thriller")
+            .thenReturn("1234-ABCD")
+            .thenReturn("10")
+            .thenReturn("0");
+
 
         ui.addBook();
 
@@ -132,11 +139,16 @@ public class UserInterfaceTest {
         when(app.bookAlreadyExists(anyString()))
             .thenReturn(false);
         
-        when(app.addBook(anyString(), anyString(), anyString(), anyString(), anyString()))
+        when(app.addBook(anyString(), anyString(), anyString(), anyString(), anyString(), anyList()))
             .thenReturn(false);
 
         when(input.nextLine())
-            .thenReturn(anyString());
+            .thenReturn("Jane")
+            .thenReturn("Hobitti")
+            .thenReturn("Sci-fi thriller")
+            .thenReturn("1234-ABCD")
+            .thenReturn("10")
+            .thenReturn("0");
 
         ui.addBook();
 
@@ -154,7 +166,11 @@ public class UserInterfaceTest {
             .thenReturn(true);
 
         when(input.nextLine())
-            .thenReturn(anyString());
+            .thenReturn("Jane")
+            .thenReturn("Hobitti")
+            .thenReturn("Sci-fi thriller")
+            .thenReturn("0");
+
 
         ui.addVideo();
 
@@ -171,11 +187,15 @@ public class UserInterfaceTest {
         when(app.videoAlreadyExists(anyString()))
             .thenReturn(false);
 
-        when(app.addVideo(anyString(), anyString(), anyString()))
+        when(app.addVideo(anyString(), anyString(), anyString(), anyList()))
             .thenReturn(false);
 
-        when(input.nextLine())
-            .thenReturn(anyString());
+        when(input.nextLine()) 
+            .thenReturn("Jane")
+            .thenReturn("Hobitti")
+            .thenReturn("Sci-fi thriller")
+            .thenReturn("0");
+
 
         ui.addVideo();
 
@@ -300,7 +320,7 @@ public class UserInterfaceTest {
 
     @Test
     public void listingRecommendationsReturnsList() {
-        List<String> inputLines = Arrays.asList("1", "1", "Jeff VanderMeer", "Annihilation", "Good book", "ABCD", "777", "2", "2");
+        List<String> inputLines = Arrays.asList("1", "1", "Jeff VanderMeer", "Annihilation", "Good book", "ABCD", "777", "0", "2", "2");
 
         db_io = new StubIO(inputLines);
         db_ui = new UserInterface(db_io, db_dao);

@@ -5,6 +5,9 @@
  */
 package recommendation_library.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
@@ -16,6 +19,7 @@ public class Recommendation implements Comparable<Recommendation> {
     protected Type type;
     protected String description;
     protected String addDate;
+    protected List<Tag> tags;
     
     public Recommendation(int id, String title, Type type, String description, String addDate) {
         this.id = id;
@@ -23,6 +27,11 @@ public class Recommendation implements Comparable<Recommendation> {
         this.type = type;
         this.description = description;
         this.addDate = addDate;
+        this.tags = new ArrayList<>();
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 
     public int getId() {
@@ -68,6 +77,10 @@ public class Recommendation implements Comparable<Recommendation> {
     public boolean setAddDate(String addDate) {
         this.addDate = addDate;
         return true;
+    }
+    
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
     }
 
     public boolean equals(Recommendation other) {

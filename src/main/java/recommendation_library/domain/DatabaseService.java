@@ -74,11 +74,15 @@ public class DatabaseService {
      * 
      * @return success/failure
      */
-    public boolean addBook(String author, String title, String description, String isbn, int pageCount) {
+    public boolean addBook(String author, String title, String description, String isbn, int pageCount, List<String> tagTexts) {
         if (bookTitleAlreadyExists(title)) {
             return false;
         }
         dao.createBookRecommendation(author, title, description, isbn, pageCount);
+        int bookId = dao.getBookIdByTitle(title);
+        for (String tagText : tagTexts) {
+            dao.addTagToBook(bookId, tagText);
+        }
         return true;
     }
 
@@ -91,11 +95,15 @@ public class DatabaseService {
      * 
      * @return success/failure
      */
-    public boolean addVideo(String url, String title, String description) {
+    public boolean addVideo(String url, String title, String description, List<String> tagTexts) {
         if (videoTitleAlreadyExists(title)) {
             return false;
         }
         dao.createVideoRecommendation(url, title, description);
+        int videoId = dao.getVideoIdByTitle(title);
+        for (String tagText : tagTexts) {
+            dao.addTagToBook(videoId, tagText);
+        }
         return true;
     }
     
@@ -109,16 +117,20 @@ public class DatabaseService {
      * 
      * @return success/failure
      */
-    public boolean addBlog(String url, String title, String author, String description) {
+    public boolean addBlog(String url, String title, String author, String description, List<String> tagTexts) {
         if (this.blogTitleAlreadyExists(title)) {
             return false;
         }
         dao.createBlogRecommendation(url, title, author, description);
+        int blogId = dao.getBlogIdByTitle(title);
+        for (String tagText : tagTexts) {
+            dao.addTagToBook(blogId, tagText);
+        }
         return true;
     }
     
     /**
-     * Create blog recommendation
+     * Create podcast recommendation
      *
      * @param author
      * @param title
@@ -127,11 +139,15 @@ public class DatabaseService {
      * 
      * @return success/failure
      */
-    public boolean addPodcast(String author, String title, String description, String name) {
+    public boolean addPodcast(String author, String title, String description, String name, List<String> tagTexts) {
         if (this.podcastTitleAlreadyExists(title)) {
             return false;
         }
         dao.createPodcastRecommendation(author, title, description, name);
+        int podcastId = dao.getPodcastIdByTitle(title);
+        for (String tagText : tagTexts) {
+            dao.addTagToBook(podcastId, tagText);
+        }
         return true;
     }
 
@@ -265,6 +281,30 @@ public class DatabaseService {
             return false;
         }
         dao.deleteTimestamp(videoId, timestampId);
+        return true;
+    }
+    
+    public boolean addTagToBook(String bookTitle, String tagText) {
+        int bookId = dao.getBookIdByTitle(bookTitle);
+        dao.addTagToBook(bookId, tagText);
+        return true;
+    }
+    
+    public boolean addTagToVideo(String videoTitle, String tagText) {
+        int videoId = dao.getVideoIdByTitle(videoTitle);
+        dao.addTagToBook(videoId, tagText);
+        return true;
+    }
+    
+    public boolean addTagToBlog(String blogTitle, String tagText) {
+        int blogId = dao.getBlogIdByTitle(blogTitle);
+        dao.addTagToBook(blogId, tagText);
+        return true;
+    }
+    
+    public boolean addTagToPodcast(String podcastTitle, String tagText) {
+        int podcastId = dao.getPodcastIdByTitle(podcastTitle);
+        dao.addTagToBook(podcastId, tagText);
         return true;
     }
     

@@ -133,8 +133,19 @@ public class UserInterface {
 
             this.io.print("Type the url of the video recommendation");
             String url = io.nextLine();
+            
+            List<String> tags = new ArrayList<>();
+            
+            this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
+            while (true) {
+                String tag = io.nextLine();
+                if (tag.equals("0")) {
+                    break;
+                }
+                tags.add(tag);
+            }
 
-            if (recommendationApp.addVideo(title, description, url)) {
+            if (recommendationApp.addVideo(title, description, url, tags)) {
                 this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
@@ -161,8 +172,19 @@ public class UserInterface {
 
             this.io.print("Type the page count of the book recommendation");
             String pageCount = io.nextLine();
+            
+            List<String> tags = new ArrayList<>();
+            
+            this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
+            while (true) {
+                String tag = io.nextLine();
+                if (tag.equals("0")) {
+                    break;
+                }
+                tags.add(tag);
+            }
 
-            if (recommendationApp.addBook(author, title, description, isbn, pageCount)) {
+            if (recommendationApp.addBook(author, title, description, isbn, pageCount, tags)) {
                 this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
@@ -187,8 +209,19 @@ public class UserInterface {
 
             this.io.print("Type the URL of the blog recommendation");
             String url = io.nextLine();
+            
+            List<String> tags = new ArrayList<>();
+            
+            this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
+            while (true) {
+                String tag = io.nextLine();
+                if (tag.equals("0")) {
+                    break;
+                }
+                tags.add(tag);
+            }
 
-            if (recommendationApp.addBlog(title, author, description, url)) {
+            if (recommendationApp.addBlog(title, author, description, url, tags)) {
                 this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
@@ -213,8 +246,19 @@ public class UserInterface {
         
             this.io.print("Type the description of the podcast recommendation");
             String description = io.nextLine();
+            
+            List<String> tags = new ArrayList<>();
+            
+            this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
+            while (true) {
+                String tag = io.nextLine();
+                if (tag.equals("0")) {
+                    break;
+                }
+                tags.add(tag);
+            }
 
-            if (recommendationApp.addPodcast(title, name, author, description)) {
+            if (recommendationApp.addPodcast(title, name, author, description, tags)) {
                 this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
