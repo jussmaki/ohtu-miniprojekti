@@ -12,6 +12,7 @@ import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.DatabaseService;
 import recommendation_library.domain.PodcastRecommendation;
+import recommendation_library.domain.TimeMemory;
 import recommendation_library.domain.VideoRecommendation;
 import recommendation_library.io.IO;
 
@@ -45,6 +46,17 @@ public class RecommendationApp {
 
         try {
             return service.addVideo(url, title, description, tags);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+
+        return false;
+    }
+    
+    public boolean addTimeStampToVideo(String timestamp, String comment, String videoTitle) {
+        
+        try {
+            return service.addTimeStampToVideo(timestamp, comment, videoTitle);
         } catch (Exception e) {
             this.io.print(e.getMessage());
         }
@@ -111,12 +123,23 @@ public class RecommendationApp {
     public List<String> listVideos() {
         List<VideoRecommendation> list = service.getAllVideoRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
+        
         int i = 1;
 
         for (VideoRecommendation r : list) {
+        
+            List<TimeMemory> timeStampList = service.getTimestampsForVideo(r.getTitle());
+            List<String> timeStampStrings = new ArrayList<>();
+            
+            for (TimeMemory t : timeStampList) {
+                timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
+                    }
+                        
             recommendationStrings.add("Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "URL: " + r.getUrl() + System.lineSeparator()
+                    + "Timestamps: " + System.lineSeparator()
+                        + timeStampStrings + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
                     + "Added: " + r.getAddDate());
         }
@@ -158,9 +181,7 @@ public class RecommendationApp {
         return recommendationStrings;
     }
 
-    /**
-     * list titles of all video recommendations contained within the library
-     */
+    
     public List<String> listVideoTitles() {
         List<VideoRecommendation> videoRecommendationList = service.getAllVideoRecommendations();
         List<String> videoTitleList = new ArrayList<>();
@@ -182,6 +203,29 @@ public class RecommendationApp {
 
         return bookTitleList;
     }
+    
+    public List<String> listBlogTitles() {
+        List<BlogRecommendation> blogRecommendationList = service.getAllBlogRecommendations();
+        List<String> blogTitleList = new ArrayList<>();
+
+        for (BlogRecommendation book : blogRecommendationList) {
+            blogTitleList.add(book.getTitle());
+        }
+
+        return blogTitleList;
+    }
+    
+    public List<String> listPodcastTitles() {
+        List<PodcastRecommendation> podcastRecommendationList = service.getAllPodcastRecommendations();
+        List<String> podcastTitleList = new ArrayList<>();
+
+        for (PodcastRecommendation book : podcastRecommendationList) {
+            podcastTitleList.add(book.getTitle());
+        }
+
+        return podcastTitleList;
+    }
+    
 
     public boolean editBook(String titleToEdit, String fieldToEdit, String newValue) {
 
@@ -193,16 +237,6 @@ public class RecommendationApp {
 
         return true;
     }
-
-    public boolean deleteBook(String titleToDelete) {
-        return this.service.deleteBookRecommendation(titleToDelete);
-    }
-
-    public boolean deleteVideo(String titleToDelete) {
-        return this.service.deleteVideoRecommendation(titleToDelete);
-    }
-
-
     
     public boolean editVideo(String titleToEdit, String fieldToEdit, String newValue) {
 
@@ -214,5 +248,45 @@ public class RecommendationApp {
 
         return true;
     }
+    
+    public boolean editBlog(String titleToEdit, String fieldToEdit, String newValue) {
+
+        try {
+            this.service.editBlogRecommendation(titleToEdit, fieldToEdit, newValue);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+    
+    public boolean editPodcast(String titleToEdit, String fieldToEdit, String newValue) {
+
+        try {
+            this.service.editPodcastRecommendation(titleToEdit, fieldToEdit, newValue);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }    
+    
+    
+    public boolean deleteBook(String titleToDelete) {
+        return this.service.deleteBookRecommendation(titleToDelete);
+    }
+
+    public boolean deleteVideo(String titleToDelete) {
+        return this.service.deleteVideoRecommendation(titleToDelete);
+    }
+    
+    public boolean deleteBlog(String titleToDelete) {
+        return this.service.deleteBlogRecommendation(titleToDelete);
+    }
+    
+    public boolean deletePodcast(String titleToDelete) {
+        return this.service.deletePodcastRecommendation(titleToDelete);
+    }
+
 
 }
