@@ -133,6 +133,7 @@ public class DatabaseRecommendationDaoTest {
     public void editVideoRecommendationEditsDescription() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
         db_dao.editVideoRecommendation("How to get full marks on all courses 101", "Description", "An obvious Rick Roll");
+        assertEquals(0, db_dao.getVideoIdByTitle("wrong"));
         VideoRecommendation addedRecommendation = db_dao.getAllVideoRecommendations().get(0);
         assertEquals("An obvious Rick Roll", addedRecommendation.getDescription());
     }
@@ -184,8 +185,8 @@ public class DatabaseRecommendationDaoTest {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up", "Rick Roll");
         db_dao.addTimeStampToVideo(2, "0:00", "start");
         db_dao.deleteTimestamp(1, 1);
-        assertEquals(0, db_dao.getAllTimestampsForVideo(1).size());
-        assertEquals(1, db_dao.getAllTimestampsForVideo(2).size());
+        assertEquals(0, db_dao.getTimestampIdByTitle(1, "0:00"));
+        assertEquals(2, db_dao.getTimestampIdByTitle(2, "0:00"));
     }
 
     @Test
@@ -199,11 +200,8 @@ public class DatabaseRecommendationDaoTest {
     public void addingPodcastAddsNewPodcastAndReturnsItAsPartOfTheList() {
         db_dao.createPodcastRecommendation("author", "title", "description", "name");
         assertFalse(db_dao.getAllPodcastRecommendations().isEmpty());
-    }
-
-    @Test
-    public void searchingForNonexistingVideoReturnsZero() {
-        assertTrue(db_dao.getVideoIdByTitle("Nonexistent") == 0);
+        assertEquals(1, db_dao.getPodcastIdByTitle("title"));
+        assertEquals(0, db_dao.getPodcastIdByTitle("Title"));
     }
 
     @Test
@@ -239,14 +237,21 @@ public class DatabaseRecommendationDaoTest {
     public void editBlogRecommendationEditsUrl() {
         db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
         db_dao.editBlogRecommendation("Title", "url", "cba");
+        assertEquals(0, db_dao.getBlogIdByTitle("wrongtitle"));
+        db_dao.editBlogRecommendation("Title", "title", "right");
+        db_dao.editBlogRecommendation("Title", "url", "newValue.com");
+        db_dao.editBlogRecommendation("right", "author", "John");
         BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
         assertEquals("cba", addedRecommendation.getUrl());
+        assertEquals("right", addedRecommendation.getTitle());
+        assertEquals("John", addedRecommendation.getAuthor());
     }
 
     @Test
     public void editBlogRecommendationEditsDescription() {
         db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
         db_dao.editBlogRecommendation("Title", "description", "cba");
+        assertEquals(0, db_dao.getBlogIdByTitle("wrong"));
         BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
         assertEquals("cba", addedRecommendation.getDescription());
     }
@@ -255,7 +260,28 @@ public class DatabaseRecommendationDaoTest {
     public void deleteBlogByTitle() {
         db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
         assertEquals(1, db_dao.getAllBlogRecommendations().size());
+        db_dao.deleteBlogByTitle("title");
+        assertFalse(db_dao.getAllBlogRecommendations().isEmpty());
+        assertEquals(1, db_dao.getBlogIdByTitle("Title"));
         db_dao.deleteBlogByTitle("Title");
         assertEquals(0, db_dao.getAllBlogRecommendations().size());
+    }
+
+    @Test
+    public void editingPodcastEditsCorrectly() {
+        db_dao.createPodcastRecommendation("author", "title", "description", "name");
+        db_dao.editPodcastRecommendation("title", "title", "Title");
+        assertEquals(0, db_dao.getPodcastIdByTitle("title"));
+        db_dao.editPodcastRecommendation("Title", "description", "good");
+        assertEquals("good", db_dao.getAllPodcastRecommendations().get(0).getDescription());
+    }
+
+    @Test
+    public void deletingPodcastDeletes() {
+        db_dao.createPodcastRecommendation("author", "title", "description", "name");
+        db_dao.deletePodcastByTitle("Title");
+        assertEquals(1, db_dao.getPodcastIdByTitle("title"));
+        db_dao.deletePodcastByTitle("title");
+        assertTrue(db_dao.getAllPodcastRecommendations().isEmpty());
     }
 }
