@@ -26,12 +26,12 @@ project.ext {
 }
 
 dependencies {
-    testCompile 'io.cucumber:cucumber-java:' + cucumberVersion
-    testCompile 'io.cucumber:cucumber-junit:' + cucumberVersion
-    testCompile 'junit:junit:' + junitVersion
-    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation 'io.cucumber:cucumber-java:' + cucumberVersion
+    testImplementation 'io.cucumber:cucumber-junit:' + cucumberVersion
+    testImplementation 'junit:junit:' + junitVersion
+    testImplementation "org.mockito:mockito-core:2.+"
     // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
-    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
 }
 
 run {
