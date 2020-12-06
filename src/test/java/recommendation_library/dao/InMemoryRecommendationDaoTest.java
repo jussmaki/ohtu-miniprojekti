@@ -21,7 +21,7 @@ import recommendation_library.domain.VideoRecommendation;
 public class InMemoryRecommendationDaoTest {
 
     RecommendationDao dao;
-    
+
     @Before
     public void setUp() {
         dao = new InMemoryRecommendationDao();
@@ -40,6 +40,7 @@ public class InMemoryRecommendationDaoTest {
         assertEquals("1234-ABCD", addedRecommendation.getIsbn());
         assertEquals(10, addedRecommendation.getPageCount());
         assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+        assertEquals(0, dao.getBookIdByTitle("titteli"));
     }
 
     @Test
@@ -47,6 +48,7 @@ public class InMemoryRecommendationDaoTest {
         dao.createBookRecommendation("Bob", "book", "good", "abc", 10);
         dao.editBookRecommendation("book", "author", "John");
         BookRecommendation addedRecommendation = dao.getAllBookRecommendations().get(0);
+        dao.editBookRecommendation("titteli", "author", "Jane");
         assertEquals("John", addedRecommendation.getAuthor());
     }
 
@@ -81,7 +83,7 @@ public class InMemoryRecommendationDaoTest {
         BookRecommendation addedRecommendation = dao.getAllBookRecommendations().get(0);
         assertEquals(100, addedRecommendation.getPageCount());
     }
-    
+
     @Test
     public void deleteBookByTitle() {
         // created second entry to ensure for loop works correctly in delete method
@@ -89,6 +91,7 @@ public class InMemoryRecommendationDaoTest {
         dao.createBookRecommendation("Bob", "book4", "good", "abc", 10);
         assertEquals(2, dao.getAllBookRecommendations().size());
         dao.deleteBookByTitle("book4");
+        dao.deleteBookByTitle("NONEXISTING TITLE");
         assertEquals(1, dao.getAllBookRecommendations().size());
     }
 
@@ -102,17 +105,16 @@ public class InMemoryRecommendationDaoTest {
 //        assertFalse(added);
 //        assertEquals(count, db_dao.getAllBookRecommendations().size());
 //    }
-
     @Test
     public void createVideoRecommendationAddsToTheDatabase() {
         dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
         assertFalse(dao.getAllVideoRecommendations().isEmpty());
-
         VideoRecommendation addedRecommendation = dao.getAllVideoRecommendations().get(0);
         assertEquals("https://www.youtube.com/watch?v=dQw4w9WgXcQ", addedRecommendation.getUrl());
         assertEquals("How to get full marks on all courses 101", addedRecommendation.getTitle());
         assertEquals("Very secret", addedRecommendation.getDescription());
         assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+        assertEquals(0, dao.getVideoIdByTitle("Wrong title"));
     }
 
     @Test
@@ -121,6 +123,7 @@ public class InMemoryRecommendationDaoTest {
         dao.editVideoRecommendation("How to get full marks on all courses 101", "url", "google.fi");
         VideoRecommendation addedRecommendation = dao.getAllVideoRecommendations().get(0);
         dao.getAllVideoRecommendations().forEach(r -> System.err.println(r.getUrl()));
+        dao.editVideoRecommendation("wrong title", "url", "notgoogle.fi");
         assertEquals("google.fi", addedRecommendation.getUrl());
     }
 
@@ -147,6 +150,7 @@ public class InMemoryRecommendationDaoTest {
         dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
         assertEquals(2, dao.getAllVideoRecommendations().size());
         dao.deleteVideoByTitle("How to get full marks on all courses 101");
+        dao.deleteVideoByTitle("wrong title");
         assertEquals(1, dao.getAllVideoRecommendations().size());
     }
 
@@ -160,7 +164,6 @@ public class InMemoryRecommendationDaoTest {
 //        assertFalse(added);
 //        assertEquals(count, db_dao.getAllVideoRecommendations().size());
 //    }
-    
     @Test
     public void createBlogRecommendationAddsToTheDatabase() {
         dao.createBlogRecommendation("www.blog.com", "my blog", "bob", "description");
@@ -173,7 +176,28 @@ public class InMemoryRecommendationDaoTest {
         assertEquals("www.blog.com", addedRecommendation.getUrl());
         assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
     }
-    
+
+    @Test
+    public void editingBlogEditsTheRightBlogAndRightFields() {
+        dao.createBlogRecommendation("url", "title", "author", "description");
+        dao.editBlogRecommendation("title", "title", "newTitle");
+        assertEquals(0, dao.getBlogIdByTitle("title"));
+        assertEquals("newTitle", dao.getAllBlogRecommendations().get(0).getTitle());
+        dao.editBlogRecommendation("newTitle", "description", "newValue");
+        assertEquals(1, dao.getBlogIdByTitle("newTitle"));
+        assertEquals("newValue", dao.getAllBlogRecommendations().get(0).getDescription());
+    }
+
+    @Test
+    public void deletingBlogDeletes() {
+        dao.createBlogRecommendation("url", "title", "author", "description");
+        dao.deleteBlogByTitle("wrong title");
+        assertFalse(dao.getAllBlogRecommendations().isEmpty());
+        assertEquals(1, dao.getBlogIdByTitle("title"));
+        dao.deleteBlogByTitle("title");
+        assertTrue(dao.getAllBlogRecommendations().isEmpty());
+    }
+
     @Test
     public void createPodcastRecommendationAddsToTheDatabase() {
         dao.createPodcastRecommendation("author", "title", "description", "podcastName");
@@ -185,5 +209,64 @@ public class InMemoryRecommendationDaoTest {
         assertEquals("description", addedRecommendation.getDescription());
         assertEquals("podcastName", addedRecommendation.getPodcastName());
         assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
+        assertEquals(0, dao.getPodcastIdByTitle("wrong title"));
     }
+
+    @Test
+    public void editingPodcastEditsCorrectPodcastAndCorrectField() {
+        dao.createPodcastRecommendation("author", "title", "description", "name");
+        dao.editPodcastRecommendation("title", "title", "newTitle");
+        dao.editBlogRecommendation("title", "author", "newAuthor");
+        assertEquals("newTitle", dao.getAllPodcastRecommendations().get(0).getTitle());
+        assertEquals(0, dao.getPodcastIdByTitle("title"));
+        assertEquals("author", dao.getAllPodcastRecommendations().get(0).getAuthor());
+    }
+
+    @Test
+    public void deletingPodcastsDeletes() {
+        dao.createPodcastRecommendation("author", "title", "description", "name");
+        dao.deletePodcastByTitle("wrong");
+        assertFalse(dao.getAllPodcastRecommendations().isEmpty());
+        assertEquals(1, dao.getPodcastIdByTitle("title"));
+        dao.deletePodcastByTitle("title");
+        assertTrue(dao.getAllPodcastRecommendations().isEmpty());
+    }
+
+    @Test
+    public void addingTimeStampsToVideo() {
+        dao.createVideoRecommendation("url", "title", "description");
+        dao.createVideoRecommendation("url", "title2", "description");
+        assertEquals(2, dao.getAllVideoRecommendations().size());
+        assertEquals(0, dao.getVideoIdByTitle("titteli"));
+        dao.addTimeStampToVideo(dao.getVideoIdByTitle("title"), "timestamp", "comment");
+        assertEquals("timestamp", dao.getAllTimestampsForVideo(1).get(0).getTimestamp());
+        assertTrue(dao.getAllTimestampsForVideo(2).isEmpty());
+    }
+
+    @Test
+    public void editingTimestampInVideo() {
+        dao.createVideoRecommendation("url", "title", "description");
+        dao.addTimeStampToVideo(1, "timestamp", "comment");
+        dao.editTimestampForVideo(1, dao.getTimestampIdByTitle(1, "timestamp"), "timestamp", "1*4*5");
+        assertEquals(0, dao.getTimestampIdByTitle(1, "timestamp"));
+        assertEquals(1, dao.getTimestampIdByTitle(1, "1*4*5"));
+        dao.editTimestampForVideo(1, 2, "comment", "newValue");
+        assertEquals("comment", dao.getAllTimestampsForVideo(1).get(0).getComment());
+        dao.editTimestampForVideo(1, 1, "comment", "newComment");
+        assertEquals("newComment", dao.getAllTimestampsForVideo(1).get(0).getComment());
+    }
+    
+    @Test
+    public void deletingTImestampDeletesCorrectly() {
+        dao.createVideoRecommendation("url", "title", "description");
+        dao.addTimeStampToVideo(1, "timestamp", "comment");
+        dao.deleteTimestamp(1, 2);
+        dao.deleteTimestamp(2, 1);
+        dao.deleteTimestamp(0, 0);
+        assertFalse(dao.getAllTimestampsForVideo(1).isEmpty());
+        dao.deleteTimestamp(1, 1);
+        assertTrue(dao.getAllTimestampsForVideo(1).isEmpty());
+    }
+    
+
 }

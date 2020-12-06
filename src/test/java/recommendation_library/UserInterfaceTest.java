@@ -8,7 +8,6 @@ package recommendation_library;
 /**
  * @author jhku
  */
-
 import org.junit.Before;
 import org.junit.Test;
 import recommendation_library.dao.DatabaseRecommendationDao;
@@ -60,17 +59,15 @@ public class UserInterfaceTest {
     @Test
     public void checkInputCallsAdd() {
         when(input.nextLine())
-            .thenReturn("1")
-            .thenReturn("Jane")
-            .thenReturn("Hobitti")
-            .thenReturn("Sci-fi thriller")
-            .thenReturn("1234-ABCD")
-            .thenReturn("10")
-            .thenReturn("0");
-
+                .thenReturn("1")
+                .thenReturn("Jane")
+                .thenReturn("Hobitti")
+                .thenReturn("Sci-fi thriller")
+                .thenReturn("1234-ABCD")
+                .thenReturn("10")
+                .thenReturn("0");
 
         UI.checkInput(1);
-
 
         verify(input, times(7)).nextLine();
         verify(test_dao, times(1)).createBookRecommendation("Jane", "Hobitti", "Sci-fi thriller", "1234-ABCD", 10);
@@ -88,7 +85,7 @@ public class UserInterfaceTest {
     @Test
     public void checkInputCallsListBooks() {
         when(input.nextLine())
-            .thenReturn("2");
+                .thenReturn("2");
 
         UI.checkInput(2);
 
@@ -98,7 +95,7 @@ public class UserInterfaceTest {
     @Test
     public void checkInputCallsListVideos() {
         when(input.nextLine())
-            .thenReturn("3");
+                .thenReturn("3");
 
         UI.checkInput(2);
 
@@ -113,16 +110,15 @@ public class UserInterfaceTest {
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.bookAlreadyExists(anyString()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(input.nextLine())
-            .thenReturn("Jane")
-            .thenReturn("Hobitti")
-            .thenReturn("Sci-fi thriller")
-            .thenReturn("1234-ABCD")
-            .thenReturn("10")
-            .thenReturn("0");
-
+                .thenReturn("Jane")
+                .thenReturn("Hobitti")
+                .thenReturn("Sci-fi thriller")
+                .thenReturn("1234-ABCD")
+                .thenReturn("10")
+                .thenReturn("0");
 
         ui.addBook();
 
@@ -137,18 +133,18 @@ public class UserInterfaceTest {
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.bookAlreadyExists(anyString()))
-            .thenReturn(false);
-        
+                .thenReturn(false);
+
         when(app.addBook(anyString(), anyString(), anyString(), anyString(), anyString(), anyList()))
-            .thenReturn(false);
+                .thenReturn(false);
 
         when(input.nextLine())
-            .thenReturn("Jane")
-            .thenReturn("Hobitti")
-            .thenReturn("Sci-fi thriller")
-            .thenReturn("1234-ABCD")
-            .thenReturn("10")
-            .thenReturn("0");
+                .thenReturn("Jane")
+                .thenReturn("Hobitti")
+                .thenReturn("Sci-fi thriller")
+                .thenReturn("1234-ABCD")
+                .thenReturn("10")
+                .thenReturn("0");
 
         ui.addBook();
 
@@ -163,14 +159,13 @@ public class UserInterfaceTest {
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.videoAlreadyExists(anyString()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(input.nextLine())
-            .thenReturn("Jane")
-            .thenReturn("Hobitti")
-            .thenReturn("Sci-fi thriller")
-            .thenReturn("0");
-
+                .thenReturn("Jane")
+                .thenReturn("Hobitti")
+                .thenReturn("Sci-fi thriller")
+                .thenReturn("0");
 
         ui.addVideo();
 
@@ -185,17 +180,16 @@ public class UserInterfaceTest {
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.videoAlreadyExists(anyString()))
-            .thenReturn(false);
+                .thenReturn(false);
 
         when(app.addVideo(anyString(), anyString(), anyString(), anyList()))
-            .thenReturn(false);
+                .thenReturn(false);
 
-        when(input.nextLine()) 
-            .thenReturn("Jane")
-            .thenReturn("Hobitti")
-            .thenReturn("Sci-fi thriller")
-            .thenReturn("0");
-
+        when(input.nextLine())
+                .thenReturn("Jane")
+                .thenReturn("Hobitti")
+                .thenReturn("Sci-fi thriller")
+                .thenReturn("0");
 
         ui.addVideo();
 
@@ -209,22 +203,22 @@ public class UserInterfaceTest {
 
         // imaginary book titles
         when(app.listBookTitles())
-            .thenReturn(Arrays.asList("A", "B", "C"));
+                .thenReturn(Arrays.asList("A", "B", "C"));
 
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.bookAlreadyExists(anyString()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(input.nextLine())
-            // titleToEdit
-            .thenReturn("A")
-            // fieldToEdit
-            .thenReturn("FieldThatDoesNotExist")
-            // correct field
-            .thenReturn("1")
-            // new value
-            .thenReturn("D");
+                // titleToEdit
+                .thenReturn("A")
+                // fieldToEdit
+                .thenReturn("FieldThatDoesNotExist")
+                // correct field
+                .thenReturn("1")
+                // new value
+                .thenReturn("D");
 
         ui.editBook();
 
@@ -238,16 +232,16 @@ public class UserInterfaceTest {
 
         // imaginary book titles
         when(app.listBookTitles())
-            .thenReturn(Arrays.asList("A", "B", "C"));
+                .thenReturn(Arrays.asList("A", "B", "C"));
 
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.bookAlreadyExists(anyString()))
-            .thenReturn(false);
+                .thenReturn(false);
 
         when(input.nextLine())
-            // titleToEdit
-            .thenReturn("A");
+                // titleToEdit
+                .thenReturn("A");
 
         ui.editBook();
 
@@ -261,22 +255,22 @@ public class UserInterfaceTest {
 
         // imaginary book titles
         when(app.listVideoTitles())
-            .thenReturn(Arrays.asList("A", "B", "C"));
+                .thenReturn(Arrays.asList("A", "B", "C"));
 
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.videoAlreadyExists(anyString()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(input.nextLine())
-            // titleToEdit
-            .thenReturn("A")
-            // fieldToEdit
-            .thenReturn("FieldThatDoesNotExist")
-            // correct fieldToEdit
-            .thenReturn("1")
-            // new value
-            .thenReturn("D");
+                // titleToEdit
+                .thenReturn("A")
+                // fieldToEdit
+                .thenReturn("FieldThatDoesNotExist")
+                // correct fieldToEdit
+                .thenReturn("1")
+                // new value
+                .thenReturn("D");
 
         ui.editVideo();
 
@@ -290,16 +284,16 @@ public class UserInterfaceTest {
 
         // imaginary book titles
         when(app.listVideoTitles())
-            .thenReturn(Arrays.asList("A", "B", "C"));
+                .thenReturn(Arrays.asList("A", "B", "C"));
 
         // no need to test app's bookAlreadyExists implementation here, 
         // just return true to enter the if block
         when(app.videoAlreadyExists(anyString()))
-            .thenReturn(false);
+                .thenReturn(false);
 
         when(input.nextLine())
-            // titleToEdit
-            .thenReturn("A");
+                // titleToEdit
+                .thenReturn("A");
 
         ui.editVideo();
 
@@ -309,7 +303,7 @@ public class UserInterfaceTest {
     @Test
     public void checkInputCallsListAll() {
         when(input.nextLine())
-            .thenReturn("1");
+                .thenReturn("1");
 
         UI.checkInput(2);
 
@@ -325,9 +319,9 @@ public class UserInterfaceTest {
         db_io = new StubIO(inputLines);
         db_ui = new UserInterface(db_io, db_dao);
         db_ui.run();
-        
+
         assertTrue(db_io.getPrints().contains("Recommendation added"));
-        
+
         assertTrue(db_io.getPrints().contains(System.lineSeparator() + "Book 1"
             + System.lineSeparator()
             + "Author: Jeff VanderMeer" + System.lineSeparator()

@@ -358,7 +358,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     }
 
     /**
-     * Fetch every recommendation from attached database
+     * Fetch every book recommendation from attached database
      *
      * @return List of recommendations
      */
