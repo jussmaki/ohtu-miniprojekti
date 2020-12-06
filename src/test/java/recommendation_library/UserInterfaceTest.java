@@ -329,7 +329,7 @@ public class UserInterfaceTest {
         assertTrue(db_io.getPrints().contains("Recommendation added"));
         
         assertTrue(db_io.getPrints().contains(System.lineSeparator() + "Book 1"
-        + System.lineSeparator()
+            + System.lineSeparator()
             + "Author: Jeff VanderMeer" + System.lineSeparator()
             + "Title: Annihilation" + System.lineSeparator()
             + "Description: Good book" + System.lineSeparator()
