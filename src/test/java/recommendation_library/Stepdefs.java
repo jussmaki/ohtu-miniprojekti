@@ -100,6 +100,7 @@ public class Stepdefs {
         inputLines.add(description);
         inputLines.add(url);
         inputLines.add("0");
+        inputLines.add("n");
     }
 
 
