@@ -61,7 +61,7 @@ public class UserInterface {
 
     /**
      * @param input number given from user. 1 for "add", 2 for "list", 3 for
-     *              "edit", 4 for "exit"
+     *              "edit", 4 for "delete", 5 for "exit"
      */
     public void checkInput(int input) {
         if (input == 1) {
@@ -78,24 +78,46 @@ public class UserInterface {
     }
 
     public void edit() {
-        this.io.print("[1] Edit book, [2] Edit video");
+        this.io.print("[1] Edit book, [2] Edit video, [3] Edit blog, [4] Edit podcast");
         int input = Integer.valueOf(io.nextLine());
 
-        if (input == 1) {
-            editBook();
-        } else if (input == 2) {
-            editVideo();
+        switch(input) {
+            case 1: 
+                editBook();
+                break;
+            case 2:
+                editVideo();
+                break;
+            case 3:
+                editBlog();
+                break;
+            case 4:
+                editPodcast();
+                break;
+            default:
+                this.io.print("Unknown command");
         }
     }
 
     public void delete() {
-        this.io.print("[1] Delete book, [2] Delete video");
+        this.io.print("[1] Delete book, [2] Delete video, [3] Delete blog, [4] Delete podcast");
         int input = Integer.valueOf(io.nextLine());
 
-        if (input == 1) {
-            deleteBook();
-        } else if (input == 2) {
-            deleteVideo();
+        switch(input) {
+            case 1: 
+                deleteBook();
+                break;
+            case 2:
+                deleteVideo();
+                break;
+            case 3:
+                deleteBlog();
+                break;
+            case 4:
+                deletePodcast();
+                break;
+            default:
+                this.io.print("Unknown command");
         }
     }
 
@@ -146,7 +168,15 @@ public class UserInterface {
             }
 
             if (recommendationApp.addVideo(title, description, url, tags)) {
-                this.io.print("Recommendation added");
+                this.io.print("Do you want to add a timestamp? [y]/[n]");
+                if(this.io.nextLine().equals("y")) {
+                    this.io.print("Time [hh:mm:ss]:");
+                    String timestamp = io.nextLine();
+                    this.io.print("Comment:");
+                    String comment = io.nextLine();
+                    recommendationApp.addTimeStampToVideo(timestamp, comment, title);
+                } 
+                this.io.print("Recommendation added");                
             } else {
                 this.io.print("Addition failed");
             }
@@ -432,6 +462,103 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
+    
+    public void editBlog() {
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+
+        this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
+        List<String> allBlogTitles = recommendationApp.listBlogTitles();
+        for (String title : allBlogTitles) {
+            this.io.print(title);
+        }
+        ;
+        String titleToEdit = String.valueOf(io.nextLine());
+
+        if (recommendationApp.blogAlreadyExists(titleToEdit)) {
+            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Author");
+            String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+
+            while (!stringFieldNames.contains(fieldToEdit)) {
+                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Author");
+                fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+            }
+
+            this.io.print("Enter a new value to insert into the selected field");
+            String newValue = String.valueOf(io.nextLine());
+
+            switch(fieldToEdit){
+                case "1": 
+                    fieldToEdit = "title";
+                    break;
+                case "2": 
+                    fieldToEdit = "url";
+                    break;
+                case "3": 
+                    fieldToEdit = "description";
+                    break;    
+                case "4":
+                    fieldToEdit = "author";
+                    break;
+            }
+            
+            if (recommendationApp.editBlog(titleToEdit, fieldToEdit, newValue)) {
+                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+            } else {
+                this.io.print("Failed!");
+            }
+
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
+    public void editPodcast() {
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+
+        this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
+        List<String> allPodcastTitles = recommendationApp.listPodcastTitles();
+        for (String title : allPodcastTitles) {
+            this.io.print(title);
+        }
+        ;
+        String titleToEdit = String.valueOf(io.nextLine());
+
+        if (recommendationApp.podcastAlreadyExists(titleToEdit)) {
+            this.io.print("Choose a field to edit \n[1] Title, [2] Author, [3] Description, [4] Podcast name");
+            String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+
+            while (!stringFieldNames.contains(fieldToEdit)) {
+                this.io.print("Invalid input! \n[1] Title, [2] Author, [3] Description, [4] Podcast name");
+                fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+            }
+
+            this.io.print("Enter a new value to insert into the selected field");
+            String newValue = String.valueOf(io.nextLine());
+
+            switch(fieldToEdit){
+                case "1": 
+                    fieldToEdit = "title";
+                    break;
+                case "2": 
+                    fieldToEdit = "author";
+                    break;
+                case "3": 
+                    fieldToEdit = "description";
+                    break;
+                case "4":
+                    fieldToEdit = "name";
+                    break;
+            }
+            
+            if (recommendationApp.editPodcast(titleToEdit, fieldToEdit, newValue)) {
+                this.io.print("Field " + fieldToEdit + " succesfully changed to " + newValue + "!");
+            } else {
+                this.io.print("Failed!");
+            }
+
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
 
 
     public void deleteBook() {
@@ -460,6 +587,38 @@ public class UserInterface {
         String titleToDelete = String.valueOf(io.nextLine());
 
         if (recommendationApp.deleteVideo(titleToDelete)) {
+            this.io.print("Recommendation deleted!");
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
+    
+    public void deleteBlog() {
+        this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
+        List<String> allBlogTitles = recommendationApp.listBlogTitles();
+        for (String title : allBlogTitles) {
+            this.io.print(title);
+        }
+        ;
+        String titleToDelete = String.valueOf(io.nextLine());
+
+        if (recommendationApp.deleteBlog(titleToDelete)) {
+            this.io.print("Recommendation deleted!");
+        } else {
+            this.io.print("Recommendation with the given title doesn't exist! Try again: ");
+        }
+    }
+    
+    public void deletePodcast() {
+        this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
+        List<String> allPodcastTitles = recommendationApp.listPodcastTitles();
+        for (String title : allPodcastTitles) {
+            this.io.print(title);
+        }
+        ;
+        String titleToDelete = String.valueOf(io.nextLine());
+
+        if (recommendationApp.deletePodcast(titleToDelete)) {
             this.io.print("Recommendation deleted!");
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
