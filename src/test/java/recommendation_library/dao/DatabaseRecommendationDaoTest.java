@@ -6,6 +6,7 @@
 package recommendation_library.dao;
 
 import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -22,10 +23,15 @@ import recommendation_library.domain.VideoRecommendation;
 public class DatabaseRecommendationDaoTest {
 
     RecommendationDao db_dao;
-    
+
     @Before
     public void setUp() {
         db_dao = new DatabaseRecommendationDao("src/test/resources/test.db");
+
+    }
+
+    @After
+    public void tearDown() {
 
         List<BookRecommendation> books = db_dao.getAllBookRecommendations();
         for (BookRecommendation b : books) {
@@ -43,12 +49,12 @@ public class DatabaseRecommendationDaoTest {
         for (PodcastRecommendation p : pods) {
             db_dao.deletePodcastByTitle(p.getTitle());
         }
-        
+
     }
 
     @Test
     public void createBookRecommendationAddsToTheDatabase() {
-        
+
         db_dao.createBookRecommendation("Jane", "Hobitti", "Sci-fi thriller", "1234-ABCD", 10);
         assertFalse(db_dao.getAllBookRecommendations().isEmpty());
 
@@ -95,7 +101,6 @@ public class DatabaseRecommendationDaoTest {
         assertEquals(count, db_dao.getAllBookRecommendations().size());
     }
 
-    
     @Test
     public void createVideoRecommendationAddsToTheDatabase() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
@@ -107,7 +112,7 @@ public class DatabaseRecommendationDaoTest {
         assertEquals("Very secret", addedRecommendation.getDescription());
         assertEquals(addedRecommendation.getAddDate(), java.time.LocalDate.now().toString());
     }
-    
+
     @Test
     public void editVideoRecommendationEditsUrl() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
@@ -151,16 +156,15 @@ public class DatabaseRecommendationDaoTest {
 //        assertFalse(added);
 //        assertEquals(count, db_dao.getAllVideoRecommendations().size());
 //    }
-    
     @Test
     public void gettingAllTimestampsForVideoReturnsOnlyTimeStampsForTheSpecifiedVideo() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
         db_dao.addTimeStampToVideo(1, "0:00", "start");
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up", "Rick Roll");
         db_dao.addTimeStampToVideo(2, "0:00", "start");
-        assertEquals(1, db_dao.getAllTimestampsForVideo(1).size());       
+        assertEquals(1, db_dao.getAllTimestampsForVideo(1).size());
     }
-    
+
     @Test
     public void editingTimeStampFieldEditsOnlySpecifiedField() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
@@ -172,7 +176,7 @@ public class DatabaseRecommendationDaoTest {
         assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimestamp().equals("0:01"));
         assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getComment().equals("The beginning"));
     }
-    
+
     @Test
     public void deletingTimestampDeletesOnlyOne() {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
@@ -180,28 +184,28 @@ public class DatabaseRecommendationDaoTest {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "Rick Astley - Never Gonna Give You Up", "Rick Roll");
         db_dao.addTimeStampToVideo(2, "0:00", "start");
         db_dao.deleteTimestamp(1, 1);
-        assertEquals(0, db_dao.getAllTimestampsForVideo(1).size());       
-        assertEquals(1, db_dao.getAllTimestampsForVideo(2).size());       
+        assertEquals(0, db_dao.getAllTimestampsForVideo(1).size());
+        assertEquals(1, db_dao.getAllTimestampsForVideo(2).size());
     }
-    
+
     @Test
     public void addingBlogAddsNewBlogToDatabase() {
         db_dao.createBlogRecommendation("url", "title", "author", "description");
         assertFalse(db_dao.getAllBlogRecommendations().isEmpty());
         assertEquals("title", db_dao.getAllBlogRecommendations().get(0).getTitle());
     }
-    
+
     @Test
     public void addingPodcastAddsNewPodcastAndReturnsItAsPartOfTheList() {
         db_dao.createPodcastRecommendation("author", "title", "description", "name");
         assertFalse(db_dao.getAllPodcastRecommendations().isEmpty());
     }
-    
+
     @Test
     public void searchingForNonexistingVideoReturnsZero() {
         assertTrue(db_dao.getVideoIdByTitle("Nonexistent") == 0);
     }
-    
+
     @Test
     public void createBlogRecommendationAddsToTheDatabase() {
         db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
@@ -238,7 +242,7 @@ public class DatabaseRecommendationDaoTest {
         BlogRecommendation addedRecommendation = db_dao.getAllBlogRecommendations().get(0);
         assertEquals("cba", addedRecommendation.getUrl());
     }
-    
+
     @Test
     public void editBlogRecommendationEditsDescription() {
         db_dao.createBlogRecommendation("google.fi", "Title", "Jane", "description");
