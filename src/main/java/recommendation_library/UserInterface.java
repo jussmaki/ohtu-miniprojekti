@@ -7,6 +7,7 @@ package recommendation_library;
 
 import java.util.*;
 
+import recommendation_library.domain.Recommendation;
 import recommendation_library.io.IO;
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
@@ -46,7 +47,11 @@ public class UserInterface {
      */
     public void run() {
         while (true) {
+            io.print("");
             this.io.print("[1] Add recommendation, [2] List recommendations, [3] Edit recommendation, [4] Delete recommendation, [5] Exit");
+            io.print("[10] Search recommendations by tag");
+            io.print("");
+
             String input = io.nextLine();
             if(validateInput(input)) {
                 int numericInput = Integer.valueOf(input);
@@ -95,6 +100,9 @@ public class UserInterface {
                 break;
             case 5:
                 listTags();
+                break;
+            case 10:
+                searchByTag();
                 break;
             default:
                 io.print("Unknown command");
@@ -324,7 +332,10 @@ public class UserInterface {
     }
 
     public void list() {
+        io.print("");
         this.io.print("[1] List all recommendations, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts, [6] List tags");
+        io.print("");
+
         String input = String.valueOf(io.nextLine());
 
         switch(input) {
@@ -394,6 +405,44 @@ public class UserInterface {
         }
     }
 
+    public void searchByTag() {
+   
+        io.print("Which tag do you want to search?");
+        String tag = io.nextLine();
+        
+        searchTagsWithType(tag);
+    }
+    
+    public void searchTagsWithType(String tag) {
+        io.print("");
+        io.print("[1] List all recommendations, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
+        io.print("");
+        String type = io.nextLine();
+        List<String> recommendations = new ArrayList<>();
+        switch (type) {
+            case "1":
+                recommendations = recommendationApp.listBooks(recommendationApp.getBooksWithTag(tag));
+                recommendations.addAll(recommendationApp.listVideos(recommendationApp.getVideosWithTag(tag)));
+                recommendations.addAll(recommendationApp.listBlogs(recommendationApp.getBlogsWithTag(tag)));
+                recommendations.addAll(recommendationApp.listPodcasts(recommendationApp.getPodcastsWithTag(tag)));
+                break;
+            case "2":
+                recommendations = recommendationApp.listBooks(recommendationApp.getBooksWithTag(tag));
+                break;
+            case "3":
+                recommendations = recommendationApp.listVideos(recommendationApp.getVideosWithTag(tag));
+                break;
+            case "4":
+                recommendations = recommendationApp.listBlogs(recommendationApp.getBlogsWithTag(tag));
+                break;
+            case "5":
+                recommendations = recommendationApp.listPodcasts(recommendationApp.getPodcastsWithTag(tag));
+                break;
+        }
+        
+        recommendations.forEach(io::print);
+    }
+    
     /**
      * list all recommendations contained within the library
      */
@@ -600,6 +649,7 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
+    
     public void editPodcast() {
         List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
 
@@ -650,8 +700,7 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-
-
+    
     public void deleteBook() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
         List<String> allBookTitles = recommendationApp.listBookTitles();

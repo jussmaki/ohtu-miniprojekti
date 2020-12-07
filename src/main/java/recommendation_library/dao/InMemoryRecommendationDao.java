@@ -5,16 +5,10 @@
  */
 package recommendation_library.dao;
 
-import recommendation_library.domain.BookRecommendation;
+import recommendation_library.domain.*;
 
 import java.util.*;
 import java.util.function.Function;
-import recommendation_library.domain.BlogRecommendation;
-import recommendation_library.domain.PodcastRecommendation;
-import recommendation_library.domain.Tag;
-
-import recommendation_library.domain.TimeMemory;
-import recommendation_library.domain.VideoRecommendation;
 
 /**
  * @author jenni.makinen
@@ -414,6 +408,32 @@ public class InMemoryRecommendationDao implements RecommendationDao {
             }
         }
         return 0;
+    }
+
+    // not implemented yet
+    @Override
+    public List<Recommendation> getRecommendationsWithTag(String tag) {
+        return null;
+    }
+
+    @Override
+    public List<BookRecommendation> getBooksWithTag(String tag) {
+        return null;
+    }
+
+    @Override
+    public List<VideoRecommendation> getVideosWithTag(String tag) {
+        return null;
+    }
+
+    @Override
+    public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
+        return null;
+    }
+
+    @Override
+    public List<BlogRecommendation> getBlogsWithTag(String tag) {
+        return null;
     }
 
     @Override

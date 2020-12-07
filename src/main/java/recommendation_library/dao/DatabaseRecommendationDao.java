@@ -738,7 +738,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForVideo(int videoId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT * FROM tags INNER JOIN videosTags ON tags.id = videosTags.tags_id WHERE videosTags.videos_id = ?";
+        String sql = "SELECT * FROM tags INNER JOIN videosTags ON tags.id = videosTags.tags_id WHERE videosTags.books_id = ?";
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -757,7 +757,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForBlog(int blogId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT * FROM tags INNER JOIN blogsTags ON tags.id = blogsTags.tags_id WHERE blogsTags.blogs_id = ?";
+        String sql = "SELECT * FROM tags INNER JOIN blogsTags ON tags.id = blogsTags.tags_id WHERE blogsTags.books_id = ?";
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -776,7 +776,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForPodcast(int podcastId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT * FROM tags INNER JOIN podcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.blogs_id = ?";
+        String sql = "SELECT * FROM tags INNER JOIN podcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.books_id = ?";
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -819,7 +819,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO videosTags(videos_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO videosTags(books_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -840,7 +840,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO blogsTags(books_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -861,7 +861,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO podcastsTags(books_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -872,7 +872,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
 
     @Override
@@ -926,4 +926,115 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         return tags;
     }
 
+    @Override
+    public List<Recommendation> getRecommendationsWithTag(String tag) {
+        ArrayList<Recommendation> list = new ArrayList<>();
+        
+        list.addAll(getBooksWithTag(tag));
+        list.addAll(getVideosWithTag(tag));
+        list.addAll(getPodcastsWithTag(tag));
+        list.addAll(getBlogsWithTag(tag));
+        return list;
+    }
+
+    public List<BookRecommendation> getBooksWithTag(String tag) {
+        String sql = "SELECT Books.id, author, title, description, isbn, pagecount, created" +
+            " from Books" +
+            " join BookStags on Books.id = BooksTags.books_id" +
+            " join Tags on tags_id = Tags.id " +
+            " where tagText = ?";
+
+        ArrayList<BookRecommendation> books = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                books.add(new BookRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return books;
+    }
+
+    public List<VideoRecommendation> getVideosWithTag(String tag) {
+        String sql = "SELECT Videos.id, url, title, description, created" +
+            " from Videos" +
+            " join VideoStags on Videos.id = VideosTags.books_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+
+        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return videos;
+    }
+
+    public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
+        String sql = "SELECT Podcasts.id, author, title, description, name, created" +
+            " from Podcasts" +
+            " join PodcastsTags on Podcasts.id = PodcastsTags.books_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+        ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("name"), result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return podcasts;
+    }
+
+    public List<BlogRecommendation> getBlogsWithTag(String tag) {
+        String sql = "SELECT Blogs.id, url, author, title, description, created" +
+            " from Blogs" +
+            " join BlogsTags on Blogs.id = BlogsTags.books_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+        ArrayList<BlogRecommendation> blogs = new ArrayList<>();
+        try {
+            Connection connection = this.connect();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                blogs.add(new BlogRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("url"), result.getString("title"),
+                    result.getString("description"), result.getString("created")));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return blogs;
+    }
 }
