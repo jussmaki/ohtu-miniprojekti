@@ -79,19 +79,19 @@ public class UserInterface {
 
     public void edit() {
         this.io.print("[1] Edit book, [2] Edit video, [3] Edit blog, [4] Edit podcast");
-        int input = Integer.valueOf(io.nextLine());
+        String input = String.valueOf(io.nextLine());
 
         switch(input) {
-            case 1: 
+            case "1": 
                 editBook();
                 break;
-            case 2:
+            case "2":
                 editVideo();
                 break;
-            case 3:
+            case "3":
                 editBlog();
                 break;
-            case 4:
+            case "4":
                 editPodcast();
                 break;
             default:
@@ -101,19 +101,19 @@ public class UserInterface {
 
     public void delete() {
         this.io.print("[1] Delete book, [2] Delete video, [3] Delete blog, [4] Delete podcast");
-        int input = Integer.valueOf(io.nextLine());
+        String input = String.valueOf(io.nextLine());
 
         switch(input) {
-            case 1: 
+            case "1": 
                 deleteBook();
                 break;
-            case 2:
+            case "2":
                 deleteVideo();
                 break;
-            case 3:
+            case "3":
                 deleteBlog();
                 break;
-            case 4:
+            case "4":
                 deletePodcast();
                 break;
             default:
@@ -123,19 +123,19 @@ public class UserInterface {
 
     public void add() {
         this.io.print("[1] Add book, [2] Add video, [3] Add blog, [4] Add podcast");
-        int input = Integer.valueOf(io.nextLine());
+        String input = String.valueOf(io.nextLine());
 
         switch(input) {
-            case 1: 
+            case "1": 
                 addBook();
                 break;
-            case 2:
+            case "2":
                 addVideo();
                 break;
-            case 3:
+            case "3":
                 addBlog();
                 break;
-            case 4:
+            case "4":
                 addPodcast();
                 break;
             default:
@@ -301,22 +301,22 @@ public class UserInterface {
 
     public void list() {
         this.io.print("[1] List all, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
-        int input = Integer.valueOf(io.nextLine());
+        String input = String.valueOf(io.nextLine());
 
         switch(input) {
-            case 1: 
+            case "1": 
                 listAll();
                 break;
-            case 2:
+            case "2":
                 listBooks();
                 break;
-            case 3:
+            case "3":
                 listVideos();
                 break;
-            case 4:
+            case "4":
                 listBlogs();
                 break;
-            case 5:
+            case "5":
                 listPodcasts();
             default:
                 this.io.print("Unknown command");
@@ -404,6 +404,8 @@ public class UserInterface {
                 case "5": 
                     fieldToEdit = "pagecount";
                     break;
+                default:
+                    this.io.print("Unknown command");
             }
             
             if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
@@ -449,7 +451,9 @@ public class UserInterface {
                     break;
                 case "3": 
                     fieldToEdit = "description";
-                    break;                
+                    break;  
+                default:
+                    this.io.print("Unknown command");
             }
             
             if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
@@ -499,6 +503,8 @@ public class UserInterface {
                 case "4":
                     fieldToEdit = "author";
                     break;
+                default:
+                    this.io.print("Unknown command");
             }
             
             if (recommendationApp.editBlog(titleToEdit, fieldToEdit, newValue)) {
@@ -547,6 +553,8 @@ public class UserInterface {
                 case "4":
                     fieldToEdit = "name";
                     break;
+                default:
+                    this.io.print("Unknown command");
             }
             
             if (recommendationApp.editPodcast(titleToEdit, fieldToEdit, newValue)) {
