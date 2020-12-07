@@ -274,7 +274,7 @@ public class UserInterfaceTest {
 
         ui.editVideo();
 
-        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description");
+        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
     }
 
     @Test
