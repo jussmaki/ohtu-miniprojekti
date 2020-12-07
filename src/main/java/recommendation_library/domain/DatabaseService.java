@@ -8,7 +8,6 @@ package recommendation_library.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import recommendation_library.dao.DatabaseRecommendationDao;
 import recommendation_library.dao.RecommendationDao;
 
 /**
@@ -71,6 +70,7 @@ public class DatabaseService {
      * @param isbn
      * @param pageCount
      * @param description
+     * @param tagTexts
      * 
      * @return success/failure
      */
@@ -92,6 +92,7 @@ public class DatabaseService {
      * @param url
      * @param title
      * @param description
+     * @param tagTexts
      * 
      * @return success/failure
      */
@@ -114,6 +115,7 @@ public class DatabaseService {
      * @param author
      * @param title
      * @param description
+     * @param tagTexts
      * 
      * @return success/failure
      */
@@ -136,6 +138,7 @@ public class DatabaseService {
      * @param title
      * @param description
      * @param name
+     * @param tagTexts
      * 
      * @return success/failure
      */
@@ -284,28 +287,32 @@ public class DatabaseService {
         return true;
     }
     
+    public boolean checkIdForZero(int id) {
+        return id == 0 ? true : false;
+    }
+    
     public boolean addTagToBook(String bookTitle, String tagText) {
         int bookId = dao.getBookIdByTitle(bookTitle);
         dao.addTagToBook(bookId, tagText);
-        return true;
+        return checkIdForZero(bookId);
     }
     
     public boolean addTagToVideo(String videoTitle, String tagText) {
         int videoId = dao.getVideoIdByTitle(videoTitle);
         dao.addTagToBook(videoId, tagText);
-        return true;
+        return checkIdForZero(videoId);
     }
     
     public boolean addTagToBlog(String blogTitle, String tagText) {
         int blogId = dao.getBlogIdByTitle(blogTitle);
         dao.addTagToBook(blogId, tagText);
-        return true;
+        return checkIdForZero(blogId);
     }
     
     public boolean addTagToPodcast(String podcastTitle, String tagText) {
         int podcastId = dao.getPodcastIdByTitle(podcastTitle);
         dao.addTagToBook(podcastId, tagText);
-        return true;
+        return checkIdForZero(podcastId);
     }
     
 }
