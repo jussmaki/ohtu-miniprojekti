@@ -773,7 +773,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForPodcast(int podcastId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT * FROM tags INNER JOIN pogcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.blogs_id = ?";
+        String sql = "SELECT * FROM tags INNER JOIN podcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.blogs_id = ?";
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
