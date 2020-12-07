@@ -101,6 +101,10 @@ public class RecommendationApp {
     public boolean podcastAlreadyExists(String title) {
         return service.podcastTitleAlreadyExists(title);
     }
+    
+    public boolean timeStampAlreadyExists(String videoTitle, String time) {
+        return service.timeStampAlreadyExists(videoTitle, time);
+    }
 
     public List<String> listBooks() {
         List<BookRecommendation> list = service.getAllBookRecommendations();
@@ -127,12 +131,14 @@ public class RecommendationApp {
         int i = 1;
 
         for (VideoRecommendation r : list) {
-            List<TimeMemory> timeStampList = service.getTimestampsForVideo(r.getTitle());
+            /*List<TimeMemory> timeStampList = service.getTimestampsForVideo(r.getTitle());
             List<String> timeStampStrings = new ArrayList<>();
             
             timeStampList.forEach((t) -> {
                 timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
-            });
+            });*/
+            
+            List<String> timeStampStrings = listTimestampsForVideo(r.getTitle());
                         
             recommendationStrings.add(System.lineSeparator() + "Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
@@ -144,6 +150,16 @@ public class RecommendationApp {
         }
 
         return recommendationStrings;
+    }
+    
+    public List<String> listTimestampsForVideo(String videotitle) {        
+            List<TimeMemory> timeStampList = service.getTimestampsForVideo(videotitle);
+            List<String> timeStampStrings = new ArrayList<>();
+            
+            timeStampList.forEach((t) -> {
+                timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
+            });
+            return timeStampStrings;
     }
     
     public List<String> listBlogs() {
@@ -270,7 +286,17 @@ public class RecommendationApp {
         return true;
     }    
     
-    
+    public boolean editTimestampForVideo(String videoTitle, String time_HH_MM_SS, String fieldToChange, String newValue) {        
+        
+        try {
+            this.service.editTimeStamp(videoTitle, time_HH_MM_SS, fieldToChange, newValue);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }    
+        
     public boolean deleteBook(String titleToDelete) {
         return this.service.deleteBookRecommendation(titleToDelete);
     }
