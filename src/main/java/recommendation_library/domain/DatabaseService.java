@@ -66,7 +66,7 @@ public class DatabaseService {
         int videoID = dao.getVideoIdByTitle(videoTitle);
         List<TimeMemory> timestampsOfVideo = dao.getAllTimestampsForVideo(videoID);
         for (TimeMemory t : timestampsOfVideo) {
-            if (t.getTimestamp().equals(time)) {
+            if (t.getTimeStamp().equals(time)) {
                 return true;
             }
         }

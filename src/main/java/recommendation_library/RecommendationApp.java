@@ -153,7 +153,7 @@ public class RecommendationApp {
         List<String> timeStampStrings = new ArrayList<>();
 
         timeStampList.forEach((t) -> {
-            timeStampStrings.add("Time: " + t.getTimestamp() + ", " + "Comment: " + t.getComment());
+            timeStampStrings.add("Time: " + t.getTimeStamp() + ", " + "Comment: " + t.getComment());
         });
         return timeStampStrings;
     }

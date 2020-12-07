@@ -18,6 +18,3 @@
 * Katselmoitu
 * Dokumentoitu
 * Integroitu tuotantoon
-
-
-
