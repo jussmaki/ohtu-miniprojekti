@@ -24,6 +24,7 @@ public interface RecommendationDao {
     void createVideoRecommendation(String url, String title, String description);
     void createBlogRecommendation(String url, String title, String author, String description);
     void createPodcastRecommendation(String author, String title, String description, String name);
+    void createTag(String tagText);
     
     void addTagToBook(int bookId, String tagText);
     void addTagToVideo(int videoId, String tagText);

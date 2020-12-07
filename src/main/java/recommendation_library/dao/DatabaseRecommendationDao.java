@@ -145,7 +145,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     private void createTagTable() {
         String sql = "CREATE TABLE IF NOT EXISTS tags (\n"
                 + " id integer PRIMARY KEY,\n"
-                + " tagText TEXT NOT NULL UNIQUE"
+                + " tagText TEXT NOT NULL"
                 + ");";
         try {
             Connection connection = connect();
@@ -791,7 +791,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToBook(int bookId, String tagText) {
-        createTag(tagText);
         int tagId = getTagId(tagText);
         String booksTags = "INSERT INTO booksTags(books_id, tags_id) VALUES(?,?)";
         if (tagId != 0) {
@@ -810,7 +809,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToVideo(int videoId, String tagText) {
-        createTag(tagText);
         int tagId = getTagId(tagText);
         String booksTags = "INSERT INTO videosTags(videos_id, tags_id) VALUES(?,?)";
         if (tagId != 0) {
@@ -829,7 +827,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToBlog(int blogId, String tagText) {
-        createTag(tagText);
         int tagId = getTagId(tagText);
         String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
         if (tagId != 0) {
@@ -848,7 +845,6 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToPodcast(int podcastId, String tagText) {
-        createTag(tagText);
         int tagId = getTagId(tagText);
         String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
         if (tagId != 0) {
@@ -865,7 +861,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
     }
     
-    private void createTag(String tagText) {
+    @Override
+    public void createTag(String tagText) {
         String tag = "INSERT INTO tags(tagText) "
                 + "VALUES(?)";
         try {

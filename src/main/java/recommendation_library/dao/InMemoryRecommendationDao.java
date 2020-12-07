@@ -364,11 +364,10 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToBook(int bookId, String tagText) {
-        Tag newTag = addTag(tagText);
         loop:
         for (BookRecommendation b : bookRecommendations) {
             if (b.getId() == bookId) {
-                b.addTag(newTag);
+                b.addTag(getTag(tagText));
                 break loop;
             }
         }
@@ -376,11 +375,10 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToVideo(int videoId, String tagText) {
-        Tag newTag = addTag(tagText);
         loop:
         for (VideoRecommendation v : videoRecommendations) {
             if (v.getId() == videoId) {
-                v.addTag(newTag);
+                v.addTag(getTag(tagText));
                 break loop;
             }
         }        
@@ -388,11 +386,10 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToBlog(int blogId, String tagText) {
-        Tag newTag = addTag(tagText);
         loop:
         for (BlogRecommendation b : blogRecommendations) {
             if (b.getId() == blogId) {
-                b.addTag(newTag);
+                b.addTag(getTag(tagText));
                 break loop;
             }
         }
@@ -400,11 +397,10 @@ public class InMemoryRecommendationDao implements RecommendationDao {
 
     @Override
     public void addTagToPodcast(int podcastId, String tagText) {
-        Tag newTag = addTag(tagText);
         loop:
         for (PodcastRecommendation p : podcastRecommendations) {
             if (p.getId() == podcastId) {
-                p.addTag(newTag);
+                p.addTag(getTag(tagText));
                 break loop;
             }
         }
@@ -419,16 +415,25 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         }
         return 0;
     }
-    
-    private Tag addTag(String tagText) {
-        Tag newTag = new Tag(this.tags.size() + 1, tagText);
-        this.tags.add(newTag);
-        return newTag;
-    }
 
     @Override
     public List<Tag> getAllTags() {
         return this.tags;
+    }
+
+    @Override
+    public void createTag(String tagText) {
+        Tag newTag = new Tag(this.tags.size() + 1, tagText);
+        this.tags.add(newTag);
+    }
+    
+    private Tag getTag(String tagText) {
+        for (Tag t : tags) {
+            if (t.getTagText().equals(tagText)) {
+                return t;
+            }
+        }
+        return null;
     }
 
 }
