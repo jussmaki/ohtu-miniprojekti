@@ -342,4 +342,8 @@ public class DatabaseService {
         return checkIdForZero(podcastId);
     }
     
+    public List<Tag> getAllTags() {
+        return dao.getAllTags();
+    }
+    
 }

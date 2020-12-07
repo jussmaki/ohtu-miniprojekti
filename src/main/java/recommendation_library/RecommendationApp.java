@@ -7,13 +7,10 @@ package recommendation_library;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import recommendation_library.dao.RecommendationDao;
-import recommendation_library.domain.BlogRecommendation;
-import recommendation_library.domain.BookRecommendation;
-import recommendation_library.domain.DatabaseService;
-import recommendation_library.domain.PodcastRecommendation;
-import recommendation_library.domain.TimeMemory;
-import recommendation_library.domain.VideoRecommendation;
+import recommendation_library.domain.*;
 import recommendation_library.io.IO;
 
 /**
@@ -236,6 +233,13 @@ public class RecommendationApp {
         return podcastTitleList;
     }
 
+    public List<String> listTags() {
+        return service.getAllTags()
+            .stream()
+            .map(Tag::getTagText)
+            .collect(Collectors.toList());
+    }
+    
     public boolean editBook(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {

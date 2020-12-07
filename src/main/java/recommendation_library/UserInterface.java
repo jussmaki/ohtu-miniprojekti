@@ -82,16 +82,25 @@ public class UserInterface {
      *              "edit", 4 for "delete", 5 for "exit"
      */
     public void checkInput(int input) {
-        if (input == 1) {
-            add();
-        } else if (input == 2) {
-            list();
-        } else if (input == 3) {
-            edit();
-        } else if (input == 4) {
-            delete();
-        } else {
-            this.io.print("Unknown command");
+        
+        switch (input) {
+            case 1:
+                add();
+                break;
+            case 2:
+                list();
+                break;
+            case 3:
+                edit();
+                break;
+            case 4:
+                delete();
+                break;
+            case 5:
+                listTags();
+                break;
+            default:
+                io.print("Unknown command");
         }
     }
 
@@ -371,6 +380,10 @@ public class UserInterface {
         for (String podcastRecommendation : podcastRecommendations) {
             this.io.print(podcastRecommendation);
         }
+    }
+    
+    public void listTags() {
+        
     }
 
     /**
