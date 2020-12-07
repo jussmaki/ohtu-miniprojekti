@@ -323,13 +323,13 @@ public class UserInterfaceTest {
         assertTrue(db_io.getPrints().contains("Recommendation added"));
 
         assertTrue(db_io.getPrints().contains(System.lineSeparator() + "Book 1"
-                + System.lineSeparator()
-                + "Author: Jeff VanderMeer" + System.lineSeparator()
-                + "Title: Annihilation" + System.lineSeparator()
-                + "Description: Good book" + System.lineSeparator()
-                + "ISBN: ABCD" + System.lineSeparator()
-                + "Page count: 777" + System.lineSeparator()
-                + "Added: " + java.time.LocalDate.now().toString()));
+            + System.lineSeparator()
+            + "Author: Jeff VanderMeer" + System.lineSeparator()
+            + "Title: Annihilation" + System.lineSeparator()
+            + "Description: Good book" + System.lineSeparator()
+            + "ISBN: ABCD" + System.lineSeparator()
+            + "Page count: 777" + System.lineSeparator()
+            + "Added: " + java.time.LocalDate.now().toString()));
     }
 
 }
