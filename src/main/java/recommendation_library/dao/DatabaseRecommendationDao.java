@@ -281,7 +281,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     /**
      * Add a new timestamp into the database
      *
-     * @param video_id
+     * @param videoId
      * @param timestamp
      * @param comment
      */
@@ -336,7 +336,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
      * @param author
      * @param title
      * @param description
-     * @param isbn
+     * @param name
      */
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String name) {
