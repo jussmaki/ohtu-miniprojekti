@@ -420,7 +420,8 @@ public class UserInterface {
     }
 
     public void editVideo() {
-        List<String> stringFieldNames = Arrays.asList("1", "2", "3");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+        List<String> stringFieldsTimestamp = Arrays.asList("1", "2");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allVideoTitles = recommendationApp.listVideoTitles();
@@ -431,17 +432,14 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.videoAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description");
+            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
             String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description");
+                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
                 fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
-
-            this.io.print("Enter a new value to insert into the selected field");
-            String newValue = String.valueOf(io.nextLine());
-
+            
             switch(fieldToEdit){
                 case "1": 
                     fieldToEdit = "title";
@@ -451,11 +449,57 @@ public class UserInterface {
                     break;
                 case "3": 
                     fieldToEdit = "description";
-                    break;  
+                    break;    
+                
+                case "4":
+                    this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to edit:\nTimestamps of this recommendation:");
+                    List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
+                    for (String stamp : allVideoTimestamps) {
+                        this.io.print(stamp);
+                    }
+                    ;
+                    String time_HH_MM_SS = this.io.nextLine();
+                    while(!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
+                        this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
+                        time_HH_MM_SS = this.io.nextLine();
+                        if(time_HH_MM_SS.equals("e"))
+                            return;
+                    }
+                    
+                    this.io.print("Choose a field to edit \n[1] Time, [2] Comment");
+                    fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+                    while (!stringFieldsTimestamp.contains(fieldToEdit)) {
+                        this.io.print("Invalid input! \n[1] Time, [2] Comment");
+                        fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+                    }
+                    
+                    switch(fieldToEdit) {
+                        case "1":
+                            fieldToEdit = "timestamp";
+                            break;
+                        case "2":
+                            fieldToEdit = "comment";
+                            break;
+                        default:
+                            this.io.print("Unknown command");
+                    }
+                    
+                    this.io.print("Enter a new value to insert into the selected field");
+                    String newValue = String.valueOf(io.nextLine());
+                    if(recommendationApp.editTimestampForVideo(titleToEdit, time_HH_MM_SS, fieldToEdit, newValue)) {
+                        this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                        return;
+                    } else {
+                        this.io.print("Failed!");                        
+                    };
+                
                 default:
                     this.io.print("Unknown command");
             }
             
+            this.io.print("Enter a new value to insert into the selected field");
+            String newValue = String.valueOf(io.nextLine());
+ 
             if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
                 this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
             } else {
