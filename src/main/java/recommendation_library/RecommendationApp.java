@@ -52,9 +52,9 @@ public class RecommendationApp {
 
         return false;
     }
-    
+
     public boolean addTimeStampToVideo(String timestamp, String comment, String videoTitle) {
-        
+
         try {
             return service.addTimeStampToVideo(timestamp, comment, videoTitle);
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class RecommendationApp {
 
         return false;
     }
-    
+
     public boolean addPodcast(String title, String podcastName, String author, String description, List<String> tags) {
 
         try {
@@ -74,7 +74,7 @@ public class RecommendationApp {
 
         return false;
     }
-    
+
     public boolean addBlog(String title, String author, String description, String url, List<String> tags) {
 
         try {
@@ -93,15 +93,15 @@ public class RecommendationApp {
     public boolean videoAlreadyExists(String title) {
         return service.videoTitleAlreadyExists(title);
     }
-    
+
     public boolean blogAlreadyExists(String title) {
         return service.blogTitleAlreadyExists(title);
     }
-    
+
     public boolean podcastAlreadyExists(String title) {
         return service.podcastTitleAlreadyExists(title);
     }
-    
+
     public boolean timeStampAlreadyExists(String videoTitle, String time) {
         return service.timeStampAlreadyExists(videoTitle, time);
     }
@@ -127,7 +127,6 @@ public class RecommendationApp {
     public List<String> listVideos() {
         List<VideoRecommendation> list = service.getAllVideoRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
-        
         int i = 1;
 
         for (VideoRecommendation r : list) {
@@ -137,31 +136,28 @@ public class RecommendationApp {
             timeStampList.forEach((t) -> {
                 timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
             });*/
-            
+
             List<String> timeStampStrings = listTimestampsForVideo(r.getTitle());
-                        
             recommendationStrings.add(System.lineSeparator() + "Video " + i++ + System.lineSeparator()
                     + "Title: " + r.getTitle() + System.lineSeparator()
                     + "URL: " + r.getUrl() + System.lineSeparator()
-                    + "Timestamps: " + System.lineSeparator()
-                        + timeStampStrings + System.lineSeparator()
+                    + "Timestamps: " + System.lineSeparator() + timeStampStrings + System.lineSeparator()
                     + "Description: " + r.getDescription() + System.lineSeparator()
                     + "Added: " + r.getAddDate());
         }
-
         return recommendationStrings;
     }
-    
-    public List<String> listTimestampsForVideo(String videotitle) {        
-            List<TimeMemory> timeStampList = service.getTimestampsForVideo(videotitle);
-            List<String> timeStampStrings = new ArrayList<>();
-            
-            timeStampList.forEach((t) -> {
-                timeStampStrings.add("Time: " + t.getTimestamp() + ", "+ "Comment: " + t.getComment());
-            });
-            return timeStampStrings;
+
+    public List<String> listTimestampsForVideo(String videotitle) {
+        List<TimeMemory> timeStampList = service.getTimestampsForVideo(videotitle);
+        List<String> timeStampStrings = new ArrayList<>();
+
+        timeStampList.forEach((t) -> {
+            timeStampStrings.add("Time: " + t.getTimestamp() + ", " + "Comment: " + t.getComment());
+        });
+        return timeStampStrings;
     }
-    
+
     public List<String> listBlogs() {
         List<BlogRecommendation> list = service.getAllBlogRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
@@ -178,7 +174,7 @@ public class RecommendationApp {
 
         return recommendationStrings;
     }
-    
+
     public List<String> listPodcasts() {
         List<PodcastRecommendation> list = service.getAllPodcastRecommendations();
         List<String> recommendationStrings = new ArrayList<>();
@@ -196,7 +192,6 @@ public class RecommendationApp {
         return recommendationStrings;
     }
 
-    
     public List<String> listVideoTitles() {
         List<VideoRecommendation> videoRecommendationList = service.getAllVideoRecommendations();
         List<String> videoTitleList = new ArrayList<>();
@@ -218,7 +213,7 @@ public class RecommendationApp {
 
         return bookTitleList;
     }
-    
+
     public List<String> listBlogTitles() {
         List<BlogRecommendation> blogRecommendationList = service.getAllBlogRecommendations();
         List<String> blogTitleList = new ArrayList<>();
@@ -229,7 +224,7 @@ public class RecommendationApp {
 
         return blogTitleList;
     }
-    
+
     public List<String> listPodcastTitles() {
         List<PodcastRecommendation> podcastRecommendationList = service.getAllPodcastRecommendations();
         List<String> podcastTitleList = new ArrayList<>();
@@ -240,7 +235,6 @@ public class RecommendationApp {
 
         return podcastTitleList;
     }
-    
 
     public boolean editBook(String titleToEdit, String fieldToEdit, String newValue) {
 
@@ -252,7 +246,7 @@ public class RecommendationApp {
 
         return true;
     }
-    
+
     public boolean editVideo(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {
@@ -263,7 +257,7 @@ public class RecommendationApp {
 
         return true;
     }
-    
+
     public boolean editBlog(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {
@@ -274,7 +268,7 @@ public class RecommendationApp {
 
         return true;
     }
-    
+
     public boolean editPodcast(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {
@@ -284,10 +278,10 @@ public class RecommendationApp {
         }
 
         return true;
-    }    
-    
-    public boolean editTimestampForVideo(String videoTitle, String time_HH_MM_SS, String fieldToChange, String newValue) {        
-        
+    }
+
+    public boolean editTimestampForVideo(String videoTitle, String time_HH_MM_SS, String fieldToChange, String newValue) {
+
         try {
             this.service.editTimeStamp(videoTitle, time_HH_MM_SS, fieldToChange, newValue);
         } catch (Exception e) {
@@ -295,8 +289,8 @@ public class RecommendationApp {
         }
 
         return true;
-    }    
-        
+    }
+
     public boolean deleteBook(String titleToDelete) {
         return this.service.deleteBookRecommendation(titleToDelete);
     }
@@ -304,14 +298,13 @@ public class RecommendationApp {
     public boolean deleteVideo(String titleToDelete) {
         return this.service.deleteVideoRecommendation(titleToDelete);
     }
-    
+
     public boolean deleteBlog(String titleToDelete) {
         return this.service.deleteBlogRecommendation(titleToDelete);
     }
-    
+
     public boolean deletePodcast(String titleToDelete) {
         return this.service.deletePodcastRecommendation(titleToDelete);
     }
-
 
 }
