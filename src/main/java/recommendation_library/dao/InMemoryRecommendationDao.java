@@ -198,7 +198,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
         if (fieldToBeEdited.toLowerCase().equals("comment")) {
             t.setComment(newValue);
         } else if (fieldToBeEdited.toLowerCase().equals("timestamp")) {
-            t.setTimestamp(newValue);
+            t.setTimeStamp(newValue);
         } else {
             System.err.println(fieldToBeEdited);
         }
@@ -243,7 +243,7 @@ public class InMemoryRecommendationDao implements RecommendationDao {
     @Override
     public int getTimestampIdByTitle(int videoId, String timestamp) {
         for (TimeMemory t : this.timeStamps) {
-            if (t.getVideoId() == videoId && t.getTimestamp() == timestamp) {
+            if (t.getVideoId() == videoId && t.getTimeStamp() == timestamp) {
                 return t.getId();
             }
         }

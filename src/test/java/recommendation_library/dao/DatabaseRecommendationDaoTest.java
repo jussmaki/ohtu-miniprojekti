@@ -13,7 +13,6 @@ import static org.junit.Assert.*;
 import recommendation_library.domain.BlogRecommendation;
 import recommendation_library.domain.BookRecommendation;
 import recommendation_library.domain.PodcastRecommendation;
-import recommendation_library.domain.Tag;
 import recommendation_library.domain.VideoRecommendation;
 
 /**
@@ -171,10 +170,10 @@ public class DatabaseRecommendationDaoTest {
         db_dao.createVideoRecommendation("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "How to get full marks on all courses 101", "Very secret");
         db_dao.addTimeStampToVideo(1, "0:00", "start");
         db_dao.editTimestampForVideo(1, 1, "timestamp", "0:01");
-        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimestamp().equals("0:01"));
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimeStamp().equals("0:01"));
         assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getComment().equals("start"));
         db_dao.editTimestampForVideo(1, 1, "comment", "The beginning");
-        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimestamp().equals("0:01"));
+        assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getTimeStamp().equals("0:01"));
         assertTrue(db_dao.getAllTimestampsForVideo(1).get(0).getComment().equals("The beginning"));
     }
 

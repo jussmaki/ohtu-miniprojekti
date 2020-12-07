@@ -12,19 +12,19 @@ package recommendation_library.domain;
 public class TimeMemory {
     
     private int id;
-    private String timestamp;
+    private String timeStamp;
     private String comment;
     private int videoId;
     
-    public TimeMemory(int id, String timestamp, String comment, int videoId) {
+    public TimeMemory(int id, String timeStamp, String comment, int videoId) {
         this.id = id;
         this.comment = comment;
-        this.timestamp = timestamp;
+        this.timeStamp = timeStamp;
         this.videoId = videoId;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public void setComment(String comment) {
@@ -35,8 +35,8 @@ public class TimeMemory {
         return id;
     }
     
-    public String getTimestamp() {
-        return this.timestamp;
+    public String getTimeStamp() {
+        return this.timeStamp;
     }
     
     public String getComment() {

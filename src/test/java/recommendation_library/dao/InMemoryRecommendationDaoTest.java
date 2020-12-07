@@ -5,7 +5,6 @@
  */
 package recommendation_library.dao;
 
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -239,7 +238,7 @@ public class InMemoryRecommendationDaoTest {
         assertEquals(2, dao.getAllVideoRecommendations().size());
         assertEquals(0, dao.getVideoIdByTitle("titteli"));
         dao.addTimeStampToVideo(dao.getVideoIdByTitle("title"), "timestamp", "comment");
-        assertEquals("timestamp", dao.getAllTimestampsForVideo(1).get(0).getTimestamp());
+        assertEquals("timestamp", dao.getAllTimestampsForVideo(1).get(0).getTimeStamp());
         assertTrue(dao.getAllTimestampsForVideo(2).isEmpty());
     }
 
