@@ -5,14 +5,11 @@
  */
 package recommendation_library;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import recommendation_library.io.IO;
 import recommendation_library.dao.RecommendationDao;
 import recommendation_library.domain.BookRecommendation;
-
-import java.util.List;
 
 import recommendation_library.domain.DatabaseService;
 import recommendation_library.RecommendationApp;
@@ -327,7 +324,7 @@ public class UserInterface {
     }
 
     public void list() {
-        this.io.print("[1] List all, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
+        this.io.print("[1] List all recommendations, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts, [6] List tags");
         String input = String.valueOf(io.nextLine());
 
         switch(input) {
@@ -345,6 +342,8 @@ public class UserInterface {
                 break;
             case "5":
                 listPodcasts();
+            case "6":
+                listTags();
             default:
                 this.io.print("Unknown command");
         }
@@ -383,7 +382,16 @@ public class UserInterface {
     }
     
     public void listTags() {
-        
+        Map<String, Integer> tagsCount = new HashMap<>();
+
+        recommendationApp.listTags().forEach(tag -> tagsCount.put(tag, tagsCount.getOrDefault(tag, 0) + 1));
+
+        List<Map.Entry<String, Integer>> tags = new ArrayList<>(tagsCount.entrySet());
+        tags.sort(Map.Entry.comparingByValue(Collections.reverseOrder()));
+
+        for (var entry : tags) {
+            io.print("\t" + String.format("%-" + 10 + "s", entry.getKey()) + " (used " + entry.getValue() + " times)");
+        }
     }
 
     /**
