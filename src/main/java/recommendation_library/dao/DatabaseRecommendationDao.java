@@ -929,7 +929,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Recommendation> getRecommendationsWithTag(String tag) {
         ArrayList<Recommendation> list = new ArrayList<>();
-        
+
         list.addAll(getBooksWithTag(tag));
         list.addAll(getVideosWithTag(tag));
         list.addAll(getPodcastsWithTag(tag));
@@ -945,21 +945,17 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             " where tagText = ?";
 
         ArrayList<BookRecommendation> books = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
         try {
-            Connection connection = this.connect();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, tag);
-            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 books.add(new BookRecommendation(result.getInt("id"), result.getString("author"),
                     result.getString("title"), result.getString("description"),
                     result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
             }
-            connection.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-
         return books;
     }
 
@@ -971,19 +967,16 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             " where tags.tagText = ?";
 
         ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
         try {
-            Connection connection = this.connect();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, tag);
-            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
                     result.getString("title"), result.getString("description"),
                     result.getString("created")));
             }
-            connection.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return videos;
     }
@@ -995,23 +988,20 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             " join tags on tags_id = tags.id " +
             " where tags.tagText = ?";
         ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
         try {
-            Connection connection = this.connect();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, tag);
-
-            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
                     result.getString("title"), result.getString("description"),
                     result.getString("name"), result.getString("created")));
             }
-            connection.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return podcasts;
     }
+
 
     public List<BlogRecommendation> getBlogsWithTag(String tag) {
         String sql = "SELECT Blogs.id, url, author, title, description, created" +
@@ -1020,21 +1010,30 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             " join tags on tags_id = tags.id " +
             " where tags.tagText = ?";
         ArrayList<BlogRecommendation> blogs = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
         try {
-            Connection connection = this.connect();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, tag);
-
-            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 blogs.add(new BlogRecommendation(result.getInt("id"), result.getString("author"),
                     result.getString("url"), result.getString("title"),
                     result.getString("description"), result.getString("created")));
             }
-            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blogs;
+    }
+
+    private ResultSet getResultsForTagSearch(String tag, String sql, Connection connection) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+
+            ResultSet result = statement.executeQuery();
+            return result;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return blogs;
+        return null;
     }
 }
