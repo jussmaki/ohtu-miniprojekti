@@ -61,6 +61,17 @@ public class DatabaseService {
         }
         return false;
     }
+    
+    public boolean timeStampAlreadyExists(String videoTitle, String time) {
+        int videoID = dao.getVideoIdByTitle(videoTitle);
+        List<TimeMemory> timestampsOfVideo = dao.getAllTimestampsForVideo(videoID);
+        for (TimeMemory t : timestampsOfVideo) {
+            if (t.getTimestamp().equals(time)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Create book recommendation
