@@ -110,7 +110,7 @@ public class UserInterface {
     }
 
     public void edit() {
-        this.io.print("[1] Edit book, [2] Edit video, [3] Edit blog, [4] Edit podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
         switch(input) {
@@ -132,7 +132,7 @@ public class UserInterface {
     }
 
     public void delete() {
-        this.io.print("[1] Delete book, [2] Delete video, [3] Delete blog, [4] Delete podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
         switch(input) {
@@ -154,7 +154,7 @@ public class UserInterface {
     }
 
     public void add() {
-        this.io.print("[1] Add book, [2] Add video, [3] Add blog, [4] Add podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
         switch(input) {
@@ -333,7 +333,7 @@ public class UserInterface {
 
     public void list() {
         io.print("");
-        this.io.print("[1] List all recommendations, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts, [6] List tags");
+        this.io.print("[1] All, [2] Books, [3] Videos, [4] Blogs, [5] Podcasts, [6] Tags");
         io.print("");
 
         String input = String.valueOf(io.nextLine());
@@ -415,7 +415,7 @@ public class UserInterface {
     
     public void searchTagsWithType(String tag) {
         io.print("");
-        io.print("[1] List all recommendations, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
+        io.print("[1] All, [2] Books, [3] Videos, [4] Blogs, [5] Podcasts");
         io.print("");
         String type = io.nextLine();
         List<String> recommendations = new ArrayList<>();
