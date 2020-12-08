@@ -29,7 +29,7 @@ RecommendationLibrary is a Java-based project built using gradle. SQLite is util
 
 ## Class diagram
 
-[![Class Diagram](https://github.com/[HoolaBoola]/[ohtu-miniprojekti]/blob/[master]/'ClassDiagram.jpg'?raw=true)](https://github.com/[HoolaBoola]/[ohtu-miniprojekti]/blob/[master]/'ClassDiagram.jpg'?raw=true)
+![Class Diagram](ClassDiagram.jpg?raw=true)
 
 ## Definition of Done
 
