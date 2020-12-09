@@ -64,6 +64,18 @@ public class RecommendationApp {
 
         return false;
     }
+    
+    public boolean deleteTimeStampFromVideo(String timestamp, String videoTitle){
+        
+        try{
+            return service.deleteTimeStamp(videoTitle, timestamp);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        
+        
+        return false;
+    }
 
     public boolean addPodcast(String title, String podcastName, String author, String description, List<String> tags) {
 

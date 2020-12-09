@@ -561,7 +561,7 @@ public class UserInterface {
 
                     case "4":
 
-                        this.io.print("[1] Add timestamp, [2] Edit timestamp");
+                        this.io.print("[1] Add timestamp, [2] Edit timestamp, [3] Delete timestamp");
                         String input = io.nextLine();
 
                         if (input.equals("1")) {
@@ -637,6 +637,31 @@ public class UserInterface {
                             } else {
                                 this.io.print("Failed!");
                             };
+                        } else if(input.equals("3")){
+                            
+                            this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to delete:\nTimestamps of this recommendation:");
+                            List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
+                            for (String stamp : allVideoTimestamps) {
+                                this.io.print(stamp);
+                            }
+                            
+                            String time_HH_MM_SS = this.io.nextLine();
+                            while (!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
+                                this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
+                                time_HH_MM_SS = this.io.nextLine();
+                                if (time_HH_MM_SS.equals("e")) {
+                                    return;
+                                }
+                            }
+                            
+                            if (recommendationApp.deleteTimeStampFromVideo(time_HH_MM_SS, titleToEdit)) {
+                                this.io.print("Deleted successfully");
+                                return;
+                            } else {
+                                this.io.print("Failed");
+                            }
+                            
+                            
                         }
 
                     default:
