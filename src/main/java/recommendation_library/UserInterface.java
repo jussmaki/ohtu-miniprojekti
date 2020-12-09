@@ -201,13 +201,19 @@ public class UserInterface {
             }
 
             if (recommendationApp.addVideo(title, description, url, tags)) {
-                this.io.print("Do you want to add a timestamp? [y]/[n]");
-                if (this.io.nextLine().equals("y")) {
-                    this.io.print("Time [hh:mm:ss]:");
-                    String timestamp = io.nextLine();
-                    this.io.print("Comment:");
-                    String comment = io.nextLine();
-                    recommendationApp.addTimeStampToVideo(timestamp, comment, title);
+
+                while (true) {
+
+                    this.io.print("Do you want to add a timestamp? [y]/[n]");
+                    if (this.io.nextLine().equals("y")) {
+                        this.io.print("Time [hh:mm:ss]:");
+                        String timestamp = io.nextLine();
+                        this.io.print("Comment:");
+                        String comment = io.nextLine();
+                        recommendationApp.addTimeStampToVideo(timestamp, comment, title);
+                    } else {
+                        break;
+                    }
                 }
                 this.io.print("Recommendation added");
             } else {
@@ -637,14 +643,14 @@ public class UserInterface {
                             } else {
                                 this.io.print("Failed!");
                             };
-                        } else if(input.equals("3")){
-                            
+                        } else if (input.equals("3")) {
+
                             this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to delete:\nTimestamps of this recommendation:");
                             List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
                             for (String stamp : allVideoTimestamps) {
                                 this.io.print(stamp);
                             }
-                            
+
                             String time_HH_MM_SS = this.io.nextLine();
                             while (!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
                                 this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
@@ -653,15 +659,14 @@ public class UserInterface {
                                     return;
                                 }
                             }
-                            
+
                             if (recommendationApp.deleteTimeStampFromVideo(time_HH_MM_SS, titleToEdit)) {
                                 this.io.print("Deleted successfully");
                                 return;
                             } else {
                                 this.io.print("Failed");
                             }
-                            
-                            
+
                         }
 
                     default:
