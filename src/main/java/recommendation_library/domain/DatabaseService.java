@@ -321,25 +321,25 @@ public class DatabaseService {
     public boolean addTagToBook(String bookTitle, String tagText) {
         int bookId = dao.getBookIdByTitle(bookTitle);
         dao.addTagToBook(bookId, tagText);
-        return checkIdForZero(bookId);
+        return !checkIdForZero(bookId);
     }
     
     public boolean addTagToVideo(String videoTitle, String tagText) {
         int videoId = dao.getVideoIdByTitle(videoTitle);
         dao.addTagToBook(videoId, tagText);
-        return checkIdForZero(videoId);
+        return !checkIdForZero(videoId);
     }
     
     public boolean addTagToBlog(String blogTitle, String tagText) {
         int blogId = dao.getBlogIdByTitle(blogTitle);
         dao.addTagToBook(blogId, tagText);
-        return checkIdForZero(blogId);
+        return !checkIdForZero(blogId);
     }
     
     public boolean addTagToPodcast(String podcastTitle, String tagText) {
         int podcastId = dao.getPodcastIdByTitle(podcastTitle);
         dao.addTagToBook(podcastId, tagText);
-        return checkIdForZero(podcastId);
+        return !checkIdForZero(podcastId);
     }
     
     public List<Tag> getAllTags() {

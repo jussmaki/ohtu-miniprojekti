@@ -86,6 +86,42 @@ public class RecommendationApp {
 
         return false;
     }
+    
+    public boolean addTagToBook(String title, String tagText) {
+        try {
+            return service.addTagToBook(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addTagToVideo(String title, String tagText) {
+        try {
+            return service.addTagToVideo(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addTagToBlog(String title, String tagText) {
+        try {
+            return service.addTagToBlog(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addTagToPodcastok(String title, String tagText) {
+        try {
+            return service.addTagToPodcast(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
 
     public boolean bookAlreadyExists(String title) {
         return service.bookTitleAlreadyExists(title);

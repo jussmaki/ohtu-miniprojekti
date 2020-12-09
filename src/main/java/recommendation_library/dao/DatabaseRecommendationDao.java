@@ -181,7 +181,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createVideoConnectionTable() {
         String videosTags = "CREATE TABLE IF NOT EXISTS videosTags (\n"
-            + " books_id INTEGER REFERENCES videos,\n"
+            + " videos_id INTEGER REFERENCES videos,\n"
             + " tags_id INTEGER REFERENCES tags"
             + ");";
         try {
@@ -196,7 +196,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createBlogConnectionTable() {
         String blogsTags = "CREATE TABLE IF NOT EXISTS blogsTags (\n"
-            + " books_id INTEGER REFERENCES blogs,\n"
+            + " blogs_id INTEGER REFERENCES blogs,\n"
             + " tags_id INTEGER REFERENCES tags"
             + ");";
         try {
@@ -211,7 +211,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createPodcastConnectionTable() {
         String podcastsTags = "CREATE TABLE IF NOT EXISTS podcastsTags (\n"
-            + " books_id INTEGER REFERENCES podcasts,\n"
+            + " podcasts_id INTEGER REFERENCES podcasts,\n"
             + " tags_id INTEGER REFERENCES tags"
             + ");";
         try {
@@ -819,7 +819,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO videosTags(books_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO videosTags(videos_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -840,7 +840,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO blogsTags(books_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -861,7 +861,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             createTag(tagText);
             tagId = getTagId(tagText);
         }
-        String booksTags = "INSERT INTO podcastsTags(books_id, tags_id) VALUES(?,?)";
+        String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(booksTags);
@@ -940,7 +940,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     public List<BookRecommendation> getBooksWithTag(String tag) {
         String sql = "SELECT Books.id, author, title, description, isbn, pagecount, created" +
             " from Books" +
-            " join BookStags on Books.id = BooksTags.books_id" +
+            " join BooksTags on Books.id = BooksTags.books_id" +
             " join Tags on tags_id = Tags.id " +
             " where tagText = ?";
 
@@ -962,7 +962,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     public List<VideoRecommendation> getVideosWithTag(String tag) {
         String sql = "SELECT Videos.id, url, title, description, created" +
             " from Videos" +
-            " join VideoStags on Videos.id = VideosTags.books_id" +
+            " join VideosTags on Videos.id = VideosTags.videos_id" +
             " join tags on tags_id = tags.id " +
             " where tags.tagText = ?";
 
@@ -984,7 +984,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
         String sql = "SELECT Podcasts.id, author, title, description, name, created" +
             " from Podcasts" +
-            " join PodcastsTags on Podcasts.id = PodcastsTags.books_id" +
+            " join PodcastsTags on Podcasts.id = PodcastsTags.podcasts_id" +
             " join tags on tags_id = tags.id " +
             " where tags.tagText = ?";
         ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
@@ -1006,7 +1006,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     public List<BlogRecommendation> getBlogsWithTag(String tag) {
         String sql = "SELECT Blogs.id, url, author, title, description, created" +
             " from Blogs" +
-            " join BlogsTags on Blogs.id = BlogsTags.books_id" +
+            " join BlogsTags on Blogs.id = BlogsTags.blogs_id" +
             " join tags on tags_id = tags.id " +
             " where tags.tagText = ?";
         ArrayList<BlogRecommendation> blogs = new ArrayList<>();

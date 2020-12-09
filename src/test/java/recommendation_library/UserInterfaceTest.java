@@ -222,7 +222,7 @@ public class UserInterfaceTest {
 
         ui.editBook();
 
-        verify(input).print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
+        verify(input).print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count, [6] Add a tag");
     }
 
     @Test
@@ -274,7 +274,7 @@ public class UserInterfaceTest {
 
         ui.editVideo();
 
-        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
+        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp, [5] Add a tag");
     }
 
     @Test
