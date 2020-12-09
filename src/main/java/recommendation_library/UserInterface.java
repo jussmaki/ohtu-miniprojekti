@@ -353,8 +353,10 @@ public class UserInterface {
                 break;
             case "5":
                 listPodcasts();
+                break;
             case "6":
                 listTags();
+                break;
             default:
                 this.io.print("Unknown command");
         }
