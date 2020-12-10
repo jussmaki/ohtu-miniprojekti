@@ -79,6 +79,16 @@ public class Stepdefs {
         inputLines.add("3");
     }
 
+    @When("command list blogs is selected")
+    public void commandBlogsListingSelected() {
+        inputLines.add("4");
+    }
+
+    @When("command list podcasts is selected")
+    public void commandPodcastsListingSelected() {
+        inputLines.add("5");
+    }
+
     @When("command video is selected")
     public void commandVideoSelected() {
         inputLines.add("2");
@@ -100,7 +110,7 @@ public class Stepdefs {
         commandBlogSelected();
         addBlogRecommendation(title, "author", "description", "www.url.fi");
     }
-    
+
     @Given("podcast recommendation with title {string} is added")
     public void podcastRecommendationSuccessfullyAdded(String title) {
         commandAddSelected();
@@ -211,6 +221,40 @@ public class Stepdefs {
                 + "URL: " + url + System.lineSeparator()
                 + "Timestamps: " + System.lineSeparator()
                 + "[]" + System.lineSeparator()
+                + "Description: " + description + System.lineSeparator()
+                + "Added: " + addDate));
+    }
+
+    @Then("app lists a recommendation with title {string}, author {string}, description {string} and url {string}")
+    public void listingAddedBlogRecommendation(String title, String author, String description, String url) {
+        io = new StubIO(inputLines);
+        dao = new InMemoryRecommendationDao();
+        ui = new UserInterface(io, dao);
+        ui.run();
+
+        String addDate = java.time.LocalDate.now().toString();
+
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Blog 1" + System.lineSeparator()
+                + "Author: " + author + System.lineSeparator()
+                + "Title: " + title + System.lineSeparator()
+                + "Description: " + description + System.lineSeparator()
+                + "URL: " + url + System.lineSeparator()
+                + "Added: " + addDate));
+    }
+
+    @Then("app lists a podcast recommendation with title {string}, name {string}, author {string} and description {string}")
+    public void listingAddedPodcastRecommendation(String title, String name, String author, String description) {
+        io = new StubIO(inputLines);
+        dao = new InMemoryRecommendationDao();
+        ui = new UserInterface(io, dao);
+        ui.run();
+
+        String addDate = java.time.LocalDate.now().toString();
+
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Podcast 1" + System.lineSeparator()
+                + "Podcast name: " + name + System.lineSeparator()
+                + "Author: " + author + System.lineSeparator()
+                + "Title: " + title + System.lineSeparator()
                 + "Description: " + description + System.lineSeparator()
                 + "Added: " + addDate));
     }
