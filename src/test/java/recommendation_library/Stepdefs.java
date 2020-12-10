@@ -118,6 +118,18 @@ public class Stepdefs {
         addPodcastRecommendation(title, "name", "author", "description");
     }
 
+    @When("video recommendation with title {string}, timestamp {string} and comment {string} is added")
+    public void addVideoWithTimestamp(String title, String timestamp, String comment) {
+        inputLines.add(title);
+        inputLines.add("default description");
+        inputLines.add("default url");
+        inputLines.add("0");
+        inputLines.add("y");
+        inputLines.add(timestamp);
+        inputLines.add(comment);
+        inputLines.add("n");
+    }
+
     @When("book recommendation with author {string}, title {string}, description {string}, isbn {string} and page count {string} is added")
     public void addBookRecommendation(String author, String title, String description, String isbn, String pageCount) {
         inputLines.add(author);
@@ -222,6 +234,24 @@ public class Stepdefs {
                 + "Timestamps: " + System.lineSeparator()
                 + "[]" + System.lineSeparator()
                 + "Description: " + description + System.lineSeparator()
+                + "Added: " + addDate));
+    }
+
+    @Then("app lists a recommendation with title {string}, timestamp {string} and comment {string}")
+    public void listingAddedVideoRecommendationWithTimestamp(String title, String timestamp, String comment) {
+        io = new StubIO(inputLines);
+        dao = new InMemoryRecommendationDao();
+        ui = new UserInterface(io, dao);
+        ui.run();
+
+        String addDate = java.time.LocalDate.now().toString();
+
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Video 1" + System.lineSeparator()
+                + "Title: " + title + System.lineSeparator()
+                + "URL: default url" + System.lineSeparator()
+                + "Timestamps: " + System.lineSeparator()
+                + "[Time: "+ timestamp +", Comment: "+ comment +"]" + System.lineSeparator()
+                + "Description: default description" + System.lineSeparator()
                 + "Added: " + addDate));
     }
 
