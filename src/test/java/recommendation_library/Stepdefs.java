@@ -15,12 +15,12 @@ import io.cucumber.java.en.Then;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntUnaryOperator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import recommendation_library.domain.BookRecommendation;
-
 
 /**
  * @author jenni.makinen
@@ -58,12 +58,12 @@ public class Stepdefs {
     public void commandEditIsSelected() {
         inputLines.add("3");
     }
-    
+
     @When("command book is selected")
     public void commandBookSelected() {
         inputLines.add("1");
     }
-    
+
     @When("command list all is selected")
     public void commandAllListingSelected() {
         inputLines.add("1");
@@ -82,6 +82,30 @@ public class Stepdefs {
     @When("command video is selected")
     public void commandVideoSelected() {
         inputLines.add("2");
+    }
+
+    @When("command blog is selected")
+    public void commandBlogSelected() {
+        inputLines.add("3");
+    }
+
+    @When("command podcast is selected")
+    public void commandPodcastSelected() {
+        inputLines.add("4");
+    }
+
+    @Given("blog recommendation with title {string} is added")
+    public void blogRecommendationSuccessfullyadded(String title) {
+        commandAddSelected();
+        commandBlogSelected();
+        addBlogRecommendation(title, "author", "description", "www.url.fi");
+    }
+    
+    @Given("podcast recommendation with title {string} is added")
+    public void podcastRecommendationSuccessfullyAdded(String title) {
+        commandAddSelected();
+        commandPodcastSelected();
+        addPodcastRecommendation(title, "name", "author", "description");
     }
 
     @When("book recommendation with author {string}, title {string}, description {string}, isbn {string} and page count {string} is added")
@@ -103,6 +127,23 @@ public class Stepdefs {
         inputLines.add("n");
     }
 
+    @When("blog recommendation with title {string}, author {string}, description {string} and url {string} is added")
+    public void addBlogRecommendation(String title, String author, String description, String url) {
+        inputLines.add(title);
+        inputLines.add(author);
+        inputLines.add(description);
+        inputLines.add(url);
+        inputLines.add("0");
+    }
+
+    @When("podcast recommendation with title {string}, name {string}, author {string} and description {string} is added")
+    public void addPodcastRecommendation(String title, String name, String author, String description) {
+        inputLines.add(title);
+        inputLines.add(name);
+        inputLines.add(author);
+        inputLines.add(description);
+        inputLines.add("0");
+    }
 
     @When("title {string} is entered")
     public void bookTitleIsEntered(String title) {
@@ -147,14 +188,13 @@ public class Stepdefs {
 
         String addDate = java.time.LocalDate.now().toString();
 
-
-        assertTrue(io.getPrints().contains(System.lineSeparator() + "Book 1" + System.lineSeparator() +
-            "Author: " + author + System.lineSeparator() +
-            "Title: " + title + System.lineSeparator() +
-            "Description: " + description + System.lineSeparator() +
-            "ISBN: " + isbn + System.lineSeparator() +
-            "Page count: " + pageCount + System.lineSeparator() +
-            "Added: " + addDate));
+        assertTrue(io.getPrints().contains(System.lineSeparator() + "Book 1" + System.lineSeparator()
+                + "Author: " + author + System.lineSeparator()
+                + "Title: " + title + System.lineSeparator()
+                + "Description: " + description + System.lineSeparator()
+                + "ISBN: " + isbn + System.lineSeparator()
+                + "Page count: " + pageCount + System.lineSeparator()
+                + "Added: " + addDate));
     }
 
     @Then("app lists a recommendation with title {string}, description {string} and url {string}")
@@ -163,16 +203,16 @@ public class Stepdefs {
         dao = new InMemoryRecommendationDao();
         ui = new UserInterface(io, dao);
         ui.run();
-        
+
         String addDate = java.time.LocalDate.now().toString();
-        
+
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Video 1" + System.lineSeparator()
-                    + "Title: " + title + System.lineSeparator()
-                    + "URL: " + url + System.lineSeparator()
-                    + "Timestamps: " + System.lineSeparator()
-                    + "[]" + System.lineSeparator()
-                    + "Description: " + description + System.lineSeparator()
-                    + "Added: " + addDate));
+                + "Title: " + title + System.lineSeparator()
+                + "URL: " + url + System.lineSeparator()
+                + "Timestamps: " + System.lineSeparator()
+                + "[]" + System.lineSeparator()
+                + "Description: " + description + System.lineSeparator()
+                + "Added: " + addDate));
     }
 
     @Then("app deletes a recommendation with the title {string}")
