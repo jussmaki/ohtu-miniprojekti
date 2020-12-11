@@ -117,6 +117,16 @@ public class RecommendationApp {
         return false;
     }
     
+    public String listTagString(){
+        String tags = "";
+        
+        for(Tag tag: service.getAllTags()){
+            tags += tag.getTagText() + " ";
+        }
+        
+        return tags;
+    }
+    
     public boolean addTagToBlog(String title, String tagText) {
         try {
             return service.addTagToBlog(title, tagText);
