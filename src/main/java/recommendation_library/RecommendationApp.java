@@ -5,15 +5,16 @@
  */
 package recommendation_library;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import recommendation_library.dao.RecommendationDao;
-import recommendation_library.domain.BlogRecommendation;
-import recommendation_library.domain.BookRecommendation;
-import recommendation_library.domain.DatabaseService;
-import recommendation_library.domain.PodcastRecommendation;
-import recommendation_library.domain.TimeMemory;
-import recommendation_library.domain.VideoRecommendation;
+import recommendation_library.domain.*;
 import recommendation_library.io.IO;
 
 /**
@@ -63,6 +64,18 @@ public class RecommendationApp {
 
         return false;
     }
+    
+    public boolean deleteTimeStampFromVideo(String timestamp, String videoTitle){
+        
+        try{
+            return service.deleteTimeStamp(videoTitle, timestamp);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        
+        
+        return false;
+    }
 
     public boolean addPodcast(String title, String podcastName, String author, String description, List<String> tags) {
 
@@ -83,6 +96,52 @@ public class RecommendationApp {
             this.io.print(e.getMessage());
         }
 
+        return false;
+    }
+    
+    public boolean addTagToBook(String title, String tagText) {
+        try {
+            return service.addTagToBook(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addTagToVideo(String title, String tagText) {
+        try {
+            return service.addTagToVideo(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public String listTagString(){
+        String tags = "";
+        
+        for(Tag tag: service.getAllTags()){
+            tags += tag.getTagText() + " ";
+        }
+        
+        return tags;
+    }
+    
+    public boolean addTagToBlog(String title, String tagText) {
+        try {
+            return service.addTagToBlog(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addTagToPodcast(String title, String tagText) {
+        try {
+            return service.addTagToPodcast(title, tagText);
+        } catch (Exception e) {
+            this.io.print(e.getMessage());
+        }
         return false;
     }
 
@@ -108,17 +167,24 @@ public class RecommendationApp {
 
     public List<String> listBooks() {
         List<BookRecommendation> list = service.getAllBookRecommendations();
+
+        return listBooks(list);
+    }
+
+    public List<String> listBooks(List<BookRecommendation> list) {
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
 
         for (BookRecommendation r : list) {
             recommendationStrings.add(System.lineSeparator() + "Book " + i++ + System.lineSeparator()
-                    + "Author: " + r.getAuthor() + System.lineSeparator()
-                    + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "Description: " + r.getDescription() + System.lineSeparator()
-                    + "ISBN: " + r.getIsbn() + System.lineSeparator()
-                    + "Page count: " + r.getPageCount() + System.lineSeparator()
-                    + "Added: " + r.getAddDate());
+                + "Author: " + r.getAuthor() + System.lineSeparator()
+                + "Title: " + r.getTitle() + System.lineSeparator()
+                + "Description: " + r.getDescription() + System.lineSeparator()
+                + "ISBN: " + r.getIsbn() + System.lineSeparator()
+                + "Page count: " + r.getPageCount() + System.lineSeparator()
+                + "Added: " + r.getAddDate());
+            System.out.println(i);
+
         }
 
         return recommendationStrings;
@@ -126,6 +192,11 @@ public class RecommendationApp {
 
     public List<String> listVideos() {
         List<VideoRecommendation> list = service.getAllVideoRecommendations();
+    
+        return listVideos(list);
+    }
+
+    public List<String> listVideos(List<VideoRecommendation> list) {
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
 
@@ -139,11 +210,11 @@ public class RecommendationApp {
 
             List<String> timeStampStrings = listTimestampsForVideo(r.getTitle());
             recommendationStrings.add(System.lineSeparator() + "Video " + i++ + System.lineSeparator()
-                    + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "URL: " + r.getUrl() + System.lineSeparator()
-                    + "Timestamps: " + System.lineSeparator() + timeStampStrings + System.lineSeparator()
-                    + "Description: " + r.getDescription() + System.lineSeparator()
-                    + "Added: " + r.getAddDate());
+                + "Title: " + r.getTitle() + System.lineSeparator()
+                + "URL: " + r.getUrl() + System.lineSeparator()
+                + "Timestamps: " + System.lineSeparator() + timeStampStrings + System.lineSeparator()
+                + "Description: " + r.getDescription() + System.lineSeparator()
+                + "Added: " + r.getAddDate());
         }
         return recommendationStrings;
     }
@@ -160,37 +231,47 @@ public class RecommendationApp {
 
     public List<String> listBlogs() {
         List<BlogRecommendation> list = service.getAllBlogRecommendations();
+
+        return listBlogs(list);
+    }
+
+    public List<String> listBlogs(List<BlogRecommendation> list) {
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
 
         for (BlogRecommendation r : list) {
             recommendationStrings.add(System.lineSeparator() + "Blog " + i++ + System.lineSeparator()
-                    + "Author: " + r.getAuthor() + System.lineSeparator()
-                    + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "Description: " + r.getDescription() + System.lineSeparator()
-                    + "URL: " + r.getUrl() + System.lineSeparator()
-                    + "Added: " + r.getAddDate());
+                + "Author: " + r.getAuthor() + System.lineSeparator()
+                + "Title: " + r.getTitle() + System.lineSeparator()
+                + "Description: " + r.getDescription() + System.lineSeparator()
+                + "URL: " + r.getUrl() + System.lineSeparator()
+                + "Added: " + r.getAddDate());
         }
 
         return recommendationStrings;
     }
-
+    
     public List<String> listPodcasts() {
         List<PodcastRecommendation> list = service.getAllPodcastRecommendations();
+        return listPodcasts(list);
+    }
+    
+    public List<String> listPodcasts(List<PodcastRecommendation> list) {
         List<String> recommendationStrings = new ArrayList<>();
         int i = 1;
 
         for (PodcastRecommendation r : list) {
             recommendationStrings.add(System.lineSeparator() + "Podcast " + i++ + System.lineSeparator()
-                    + "Podcast name: " + r.getPodcastName() + System.lineSeparator()
-                    + "Author: " + r.getAuthor() + System.lineSeparator()
-                    + "Title: " + r.getTitle() + System.lineSeparator()
-                    + "Description: " + r.getDescription() + System.lineSeparator()
-                    + "Added: " + r.getAddDate());
+                + "Podcast name: " + r.getPodcastName() + System.lineSeparator()
+                + "Author: " + r.getAuthor() + System.lineSeparator()
+                + "Title: " + r.getTitle() + System.lineSeparator()
+                + "Description: " + r.getDescription() + System.lineSeparator()
+                + "Added: " + r.getAddDate());
         }
 
         return recommendationStrings;
     }
+
 
     public List<String> listVideoTitles() {
         List<VideoRecommendation> videoRecommendationList = service.getAllVideoRecommendations();
@@ -236,6 +317,13 @@ public class RecommendationApp {
         return podcastTitleList;
     }
 
+    public List<String> listTags() {
+        return service.getAllTags()
+            .stream()
+            .map(Tag::getTagText)
+            .collect(Collectors.toList());
+    }
+    
     public boolean editBook(String titleToEdit, String fieldToEdit, String newValue) {
 
         try {
@@ -305,6 +393,35 @@ public class RecommendationApp {
 
     public boolean deletePodcast(String titleToDelete) {
         return this.service.deletePodcastRecommendation(titleToDelete);
+    }
+
+    public List<Recommendation> getRecommendationsWithTag(String tag) {
+        ArrayList<Recommendation> list = new ArrayList<>();
+
+        list.addAll(getBooksWithTag(tag));
+        list.addAll(getVideosWithTag(tag));
+        list.addAll(getPodcastsWithTag(tag));
+        list.addAll(getBlogsWithTag(tag));
+        return list;
+    }
+    
+    public List<BookRecommendation> getBooksWithTag(String tag) {
+        return service.getBooksWithTag(tag);
+    }
+
+    public List<VideoRecommendation> getVideosWithTag(String tag) {
+
+        return service.getVideosWithTag(tag);
+    }
+
+    public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
+
+        return service.getPodcastsWithTag(tag);
+    }
+
+    public List<BlogRecommendation> getBlogsWithTag(String tag) {
+
+        return service.getBlogsWithTag(tag);
     }
 
 }

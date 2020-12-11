@@ -5,17 +5,10 @@
  */
 package recommendation_library;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import recommendation_library.io.IO;
 import recommendation_library.dao.RecommendationDao;
-import recommendation_library.domain.BookRecommendation;
-
-import java.util.List;
-
-import recommendation_library.domain.DatabaseService;
-import recommendation_library.RecommendationApp;
 
 /**
  * @author jhku
@@ -26,7 +19,7 @@ public class UserInterface {
     private RecommendationApp recommendationApp;
 
     /**
-     * 
+     *
      * @param io
      * @param dao
      */
@@ -37,7 +30,7 @@ public class UserInterface {
     /**
      *
      * @param io
-     * @param app 
+     * @param app
      */
     public UserInterface(IO io, RecommendationApp app) {
         this.io = io;
@@ -49,9 +42,13 @@ public class UserInterface {
      */
     public void run() {
         while (true) {
+            io.print("");
             this.io.print("[1] Add recommendation, [2] List recommendations, [3] Edit recommendation, [4] Delete recommendation, [5] Exit");
+            io.print("[10] Search recommendations by tag");
+            io.print("");
+
             String input = io.nextLine();
-            if(validateInput(input)) {
+            if (validateInput(input)) {
                 int numericInput = Integer.valueOf(input);
                 if (numericInput == 5) {
                     break;
@@ -61,9 +58,10 @@ public class UserInterface {
         }
 
     }
-    
+
     /**
      * Function to validate userInput
+     *
      * @param userInput
      * @return true if userinput is numeric
      */
@@ -79,28 +77,40 @@ public class UserInterface {
 
     /**
      * @param input number given from user. 1 for "add", 2 for "list", 3 for
-     *              "edit", 4 for "delete", 5 for "exit"
+     * "edit", 4 for "delete", 5 for "exit"
      */
     public void checkInput(int input) {
-        if (input == 1) {
-            add();
-        } else if (input == 2) {
-            list();
-        } else if (input == 3) {
-            edit();
-        } else if (input == 4) {
-            delete();
-        } else {
-            this.io.print("Unknown command");
+
+        switch (input) {
+            case 1:
+                add();
+                break;
+            case 2:
+                list();
+                break;
+            case 3:
+                edit();
+                break;
+            case 4:
+                delete();
+                break;
+            case 5:
+                listTags();
+                break;
+            case 10:
+                searchByTag();
+                break;
+            default:
+                io.print("Unknown command");
         }
     }
 
     public void edit() {
-        this.io.print("[1] Edit book, [2] Edit video, [3] Edit blog, [4] Edit podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
-        switch(input) {
-            case "1": 
+        switch (input) {
+            case "1":
                 editBook();
                 break;
             case "2":
@@ -118,11 +128,11 @@ public class UserInterface {
     }
 
     public void delete() {
-        this.io.print("[1] Delete book, [2] Delete video, [3] Delete blog, [4] Delete podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
-        switch(input) {
-            case "1": 
+        switch (input) {
+            case "1":
                 deleteBook();
                 break;
             case "2":
@@ -140,11 +150,11 @@ public class UserInterface {
     }
 
     public void add() {
-        this.io.print("[1] Add book, [2] Add video, [3] Add blog, [4] Add podcast");
+        this.io.print("[1] Book, [2] Video, [3] Blog, [4] Podcast");
         String input = String.valueOf(io.nextLine());
 
-        switch(input) {
-            case "1": 
+        switch (input) {
+            case "1":
                 addBook();
                 break;
             case "2":
@@ -173,9 +183,9 @@ public class UserInterface {
 
             this.io.print("Type the url of the video recommendation");
             String url = io.nextLine();
-            
+
             List<String> tags = new ArrayList<>();
-            
+
             this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
             while (true) {
                 String tag = io.nextLine();
@@ -186,15 +196,21 @@ public class UserInterface {
             }
 
             if (recommendationApp.addVideo(title, description, url, tags)) {
-                this.io.print("Do you want to add a timestamp? [y]/[n]");
-                if(this.io.nextLine().equals("y")) {
-                    this.io.print("Time [hh:mm:ss]:");
-                    String timestamp = io.nextLine();
-                    this.io.print("Comment:");
-                    String comment = io.nextLine();
-                    recommendationApp.addTimeStampToVideo(timestamp, comment, title);
-                } 
-                this.io.print("Recommendation added");                
+
+                while (true) {
+
+                    this.io.print("Do you want to add a timestamp? [y]/[n]");
+                    if (this.io.nextLine().equals("y")) {
+                        this.io.print("Time [hh:mm:ss]:");
+                        String timestamp = io.nextLine();
+                        this.io.print("Comment:");
+                        String comment = io.nextLine();
+                        recommendationApp.addTimeStampToVideo(timestamp, comment, title);
+                    } else {
+                        break;
+                    }
+                }
+                this.io.print("Recommendation added");
             } else {
                 this.io.print("Addition failed");
             }
@@ -220,9 +236,9 @@ public class UserInterface {
 
             this.io.print("Type the page count of the book recommendation");
             String pageCount = io.nextLine();
-            
+
             List<String> tags = new ArrayList<>();
-            
+
             this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
             while (true) {
                 String tag = io.nextLine();
@@ -242,24 +258,24 @@ public class UserInterface {
         }
 
     }
-    
+
     public void addBlog() {
 
         this.io.print("Type the title of the blog recommendation");
         String title = io.nextLine();
-        
-        if (!recommendationApp.blogAlreadyExists(title)) {            
+
+        if (!recommendationApp.blogAlreadyExists(title)) {
             this.io.print("Type the author of the blog recommendation");
             String author = io.nextLine();
-        
+
             this.io.print("Type the description of the blog recommendation");
             String description = io.nextLine();
 
             this.io.print("Type the URL of the blog recommendation");
             String url = io.nextLine();
-            
+
             List<String> tags = new ArrayList<>();
-            
+
             this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
             while (true) {
                 String tag = io.nextLine();
@@ -279,24 +295,24 @@ public class UserInterface {
         }
 
     }
-    
+
     public void addPodcast() {
 
         this.io.print("Type the title of the podcast recommendation");
         String title = io.nextLine();
-        
-        if (!recommendationApp.podcastAlreadyExists(title)) {            
+
+        if (!recommendationApp.podcastAlreadyExists(title)) {
             this.io.print("Type the name of the podcast recommendation");
             String name = io.nextLine();
-        
+
             this.io.print("Type the author of the podcast recommendation");
             String author = io.nextLine();
-        
+
             this.io.print("Type the description of the podcast recommendation");
             String description = io.nextLine();
-            
+
             List<String> tags = new ArrayList<>();
-            
+
             this.io.print("Type tags for the recommendation. Typing 0 will end the loop");
             while (true) {
                 String tag = io.nextLine();
@@ -318,11 +334,14 @@ public class UserInterface {
     }
 
     public void list() {
-        this.io.print("[1] List all, [2] List books, [3] List videos, [4] List blogs, [5] List podcasts");
+        io.print("");
+        this.io.print("[1] All, [2] Books, [3] Videos, [4] Blogs, [5] Podcasts, [6] Tags");
+        io.print("");
+
         String input = String.valueOf(io.nextLine());
 
-        switch(input) {
-            case "1": 
+        switch (input) {
+            case "1":
                 listAll();
                 break;
             case "2":
@@ -336,6 +355,10 @@ public class UserInterface {
                 break;
             case "5":
                 listPodcasts();
+                break;
+            case "6":
+                listTags();
+                break;
             default:
                 this.io.print("Unknown command");
         }
@@ -356,7 +379,7 @@ public class UserInterface {
             this.io.print(videoRecommendation);
         }
     }
-    
+
     public void listBlogs() {
         List<String> blogRecommendations = recommendationApp.listBlogs();
 
@@ -364,13 +387,65 @@ public class UserInterface {
             this.io.print(blogRecommendation);
         }
     }
-    
+
     public void listPodcasts() {
         List<String> podcastRecommendations = recommendationApp.listPodcasts();
 
         for (String podcastRecommendation : podcastRecommendations) {
             this.io.print(podcastRecommendation);
         }
+    }
+
+    public void listTags() {
+        Map<String, Integer> tagsCount = new HashMap<>();
+
+        recommendationApp.listTags().forEach(tag -> tagsCount.put(tag, tagsCount.getOrDefault(tag, 0) + 1));
+
+        List<Map.Entry<String, Integer>> tags = new ArrayList<>(tagsCount.entrySet());
+        tags.sort(Map.Entry.comparingByValue(Collections.reverseOrder()));
+
+        for (var entry : tags) {
+            io.print("\t" + String.format("%-" + 10 + "s", entry.getKey()) + " (used " + entry.getValue() + " times)");
+        }
+    }
+
+    public void searchByTag() {
+
+        io.print("Which tag do you want to search?");
+        io.print(recommendationApp.listTagString());
+        String tag = io.nextLine();
+
+        searchTagsWithType(tag);
+    }
+
+    public void searchTagsWithType(String tag) {
+        io.print("");
+        io.print("[1] All, [2] Books, [3] Videos, [4] Blogs, [5] Podcasts");
+        io.print("");
+        String type = io.nextLine();
+        List<String> recommendations = new ArrayList<>();
+        switch (type) {
+            case "1":
+                recommendations = recommendationApp.listBooks(recommendationApp.getBooksWithTag(tag));
+                recommendations.addAll(recommendationApp.listVideos(recommendationApp.getVideosWithTag(tag)));
+                recommendations.addAll(recommendationApp.listBlogs(recommendationApp.getBlogsWithTag(tag)));
+                recommendations.addAll(recommendationApp.listPodcasts(recommendationApp.getPodcastsWithTag(tag)));
+                break;
+            case "2":
+                recommendations = recommendationApp.listBooks(recommendationApp.getBooksWithTag(tag));
+                break;
+            case "3":
+                recommendations = recommendationApp.listVideos(recommendationApp.getVideosWithTag(tag));
+                break;
+            case "4":
+                recommendations = recommendationApp.listBlogs(recommendationApp.getBlogsWithTag(tag));
+                break;
+            case "5":
+                recommendations = recommendationApp.listPodcasts(recommendationApp.getPodcastsWithTag(tag));
+                break;
+        }
+
+        recommendations.forEach(io::print);
     }
 
     /**
@@ -382,63 +457,71 @@ public class UserInterface {
         listBlogs();
         listPodcasts();
     }
-    
+
     public void editBook() {
-        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5", "6");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allBookTitles = recommendationApp.listBookTitles();
         for (String title : allBookTitles) {
             this.io.print(title);
         };
-        
+
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.bookAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
+            this.io.print("Choose a field to edit \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count, [6] Add a tag");
             String fieldToEdit = String.valueOf(io.nextLine());
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
+                this.io.print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count, [6] Add a tag");
                 fieldToEdit = String.valueOf(io.nextLine());
             }
 
-            this.io.print("Enter a new value to insert into the selected field");
-            String newValue = String.valueOf(io.nextLine());
-        
-            switch(fieldToEdit){
-                case "1": 
-                    fieldToEdit = "author";
-                    break;
-                case "2": 
-                    fieldToEdit = "title";
-                    break;
-                case "3": 
-                    fieldToEdit = "description";
-                    break;
-                case "4": 
-                    fieldToEdit = "isbn";
-                    break;
-                case "5": 
-                    fieldToEdit = "pagecount";
-                    break;
-                default:
-                    this.io.print("Unknown command");
-            }
-            
-            if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+            if (fieldToEdit.equals("6")) {
+                this.io.print("Enter a new tag");
+                String newTag = String.valueOf(io.nextLine());
+                if (recommendationApp.addTagToBook(titleToEdit, newTag)) {
+                    this.io.print("A new tag " + newTag + " added!");
+                } else {
+                    this.io.print("Failed!");
+                }
             } else {
-                this.io.print("Failed!");
-            }
+                this.io.print("Enter a new value to insert into the selected field");
+                String newValue = String.valueOf(io.nextLine());
 
+                switch (fieldToEdit) {
+                    case "1":
+                        fieldToEdit = "author";
+                        break;
+                    case "2":
+                        fieldToEdit = "title";
+                        break;
+                    case "3":
+                        fieldToEdit = "description";
+                        break;
+                    case "4":
+                        fieldToEdit = "isbn";
+                        break;
+                    case "5":
+                        fieldToEdit = "pagecount";
+                        break;
+                    default:
+                        this.io.print("Unknown command");
+                }
+                if (recommendationApp.editBook(titleToEdit, fieldToEdit, newValue)) {
+                    this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                } else {
+                    this.io.print("Failed!");
+                }
+            }
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
 
     public void editVideo() {
-        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5");
         List<String> stringFieldsTimestamp = Arrays.asList("1", "2");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
@@ -450,87 +533,158 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.videoAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
+            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Timestamp, [5] Add a tag");
             String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
+                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp, [5] Add a tag");
                 fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
-            
-            switch(fieldToEdit){
-                case "1": 
-                    fieldToEdit = "title";
-                    break;
-                case "2": 
-                    fieldToEdit = "url";
-                    break;
-                case "3": 
-                    fieldToEdit = "description";
-                    break;    
-                
-                case "4":
-                    this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to edit:\nTimestamps of this recommendation:");
-                    List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
-                    for (String stamp : allVideoTimestamps) {
-                        this.io.print(stamp);
-                    }
-                    ;
-                    String time_HH_MM_SS = this.io.nextLine();
-                    while(!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
-                        this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
-                        time_HH_MM_SS = this.io.nextLine();
-                        if(time_HH_MM_SS.equals("e"))
-                            return;
-                    }
-                    
-                    this.io.print("Choose a field to edit \n[1] Time, [2] Comment");
-                    fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
-                    while (!stringFieldsTimestamp.contains(fieldToEdit)) {
-                        this.io.print("Invalid input! \n[1] Time, [2] Comment");
-                        fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
-                    }
-                    
-                    switch(fieldToEdit) {
-                        case "1":
-                            fieldToEdit = "timestamp";
-                            break;
-                        case "2":
-                            fieldToEdit = "comment";
-                            break;
-                        default:
-                            this.io.print("Unknown command");
-                    }
-                    
-                    this.io.print("Enter a new value to insert into the selected field");
-                    String newValue = String.valueOf(io.nextLine());
-                    if(recommendationApp.editTimestampForVideo(titleToEdit, time_HH_MM_SS, fieldToEdit, newValue)) {
-                        this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
-                        return;
-                    } else {
-                        this.io.print("Failed!");                        
-                    };
-                
-                default:
-                    this.io.print("Unknown command");
-            }
-            
-            this.io.print("Enter a new value to insert into the selected field");
-            String newValue = String.valueOf(io.nextLine());
- 
-            if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
-            } else {
-                this.io.print("Failed!");
-            }
 
+            if (fieldToEdit.equals("5")) {
+                this.io.print("Enter a new tag");
+                String newTag = String.valueOf(io.nextLine());
+                if (recommendationApp.addTagToVideo(titleToEdit, newTag)) {
+                    this.io.print("A new tag " + newTag + " added!");
+                } else {
+                    this.io.print("Failed!");
+                }
+            } else {
+                switch (fieldToEdit) {
+                    case "1":
+                        fieldToEdit = "title";
+                        break;
+                    case "2":
+                        fieldToEdit = "url";
+                        break;
+                    case "3":
+                        fieldToEdit = "description";
+                        break;
+
+                    case "4":
+
+                        this.io.print("[1] Add timestamp, [2] Edit timestamp, [3] Delete timestamp");
+                        String input = io.nextLine();
+
+                        if (input.equals("1")) {
+
+                            this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to add:\nTimestamps of this recommendation:");
+
+                            List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
+                            for (String stamp : allVideoTimestamps) {
+                                this.io.print(stamp);
+                            }
+
+                            String time_HH_MM_SS = this.io.nextLine();
+
+                            while (recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
+                                this.io.print("Given timestamp already exists! Try again or enter [e] to exit");
+                                time_HH_MM_SS = this.io.nextLine();
+                                if (time_HH_MM_SS.equals("e")) {
+                                    return;
+                                }
+                            }
+
+                            this.io.print("Enter comment for your timestamp");
+
+                            String comment = this.io.nextLine();
+
+                            if (recommendationApp.addTimeStampToVideo(time_HH_MM_SS, comment, titleToEdit)) {
+                                this.io.print("Added successfully");
+                                return;
+                            } else {
+                                this.io.print("Failed");
+                            }
+
+                        } else if (input.equals("2")) {
+
+                            this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to edit:\nTimestamps of this recommendation:");
+                            List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
+                            for (String stamp : allVideoTimestamps) {
+                                this.io.print(stamp);
+                            }
+                            ;
+                            String time_HH_MM_SS = this.io.nextLine();
+                            while (!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
+                                this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
+                                time_HH_MM_SS = this.io.nextLine();
+                                if (time_HH_MM_SS.equals("e")) {
+                                    return;
+                                }
+                            }
+
+                            this.io.print("Choose a field to edit \n[1] Time, [2] Comment");
+                            fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+                            while (!stringFieldsTimestamp.contains(fieldToEdit)) {
+                                this.io.print("Invalid input! \n[1] Time, [2] Comment");
+                                fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
+                            }
+
+                            switch (fieldToEdit) {
+                                case "1":
+                                    fieldToEdit = "timestamp";
+                                    break;
+                                case "2":
+                                    fieldToEdit = "comment";
+                                    break;
+                                default:
+                                    this.io.print("Unknown command");
+                            }
+
+                            this.io.print("Enter a new value to insert into the selected field");
+                            String newValue = String.valueOf(io.nextLine());
+                            if (recommendationApp.editTimestampForVideo(titleToEdit, time_HH_MM_SS, fieldToEdit, newValue)) {
+                                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                                return;
+                            } else {
+                                this.io.print("Failed!");
+                            };
+                        } else if (input.equals("3")) {
+
+                            this.io.print("Enter the time [HH:MM:SS] of the timestamp you wish to delete:\nTimestamps of this recommendation:");
+                            List<String> allVideoTimestamps = recommendationApp.listTimestampsForVideo(titleToEdit);
+                            for (String stamp : allVideoTimestamps) {
+                                this.io.print(stamp);
+                            }
+
+                            String time_HH_MM_SS = this.io.nextLine();
+                            while (!recommendationApp.timeStampAlreadyExists(titleToEdit, time_HH_MM_SS)) {
+                                this.io.print("Given timestamp doesn't exist! Try again or enter [e] to exit");
+                                time_HH_MM_SS = this.io.nextLine();
+                                if (time_HH_MM_SS.equals("e")) {
+                                    return;
+                                }
+                            }
+
+                            if (recommendationApp.deleteTimeStampFromVideo(time_HH_MM_SS, titleToEdit)) {
+                                this.io.print("Deleted successfully");
+                                return;
+                            } else {
+                                this.io.print("Failed");
+                            }
+
+                        }
+
+                    default:
+                        this.io.print("Unknown command");
+                }
+
+                this.io.print("Enter a new value to insert into the selected field");
+                String newValue = String.valueOf(io.nextLine());
+
+                if (recommendationApp.editVideo(titleToEdit, fieldToEdit, newValue)) {
+                    this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                } else {
+                    this.io.print("Failed!");
+                }
+            }
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-    
+
     public void editBlog() {
-        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allBlogTitles = recommendationApp.listBlogTitles();
@@ -541,46 +695,57 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.blogAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Author");
+            this.io.print("Choose a field to edit \n[1] Title, [2] URL, [3] Description, [4] Author, [5] Add a tag");
             String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Author");
+                this.io.print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Author, [5] Add a tag");
                 fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
 
-            this.io.print("Enter a new value to insert into the selected field");
-            String newValue = String.valueOf(io.nextLine());
-
-            switch(fieldToEdit){
-                case "1": 
-                    fieldToEdit = "title";
-                    break;
-                case "2": 
-                    fieldToEdit = "url";
-                    break;
-                case "3": 
-                    fieldToEdit = "description";
-                    break;    
-                case "4":
-                    fieldToEdit = "author";
-                    break;
-                default:
-                    this.io.print("Unknown command");
-            }
-            
-            if (recommendationApp.editBlog(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+            if (fieldToEdit.equals("5")) {
+                this.io.print("Enter a new tag");
+                String newTag = String.valueOf(io.nextLine());
+                if (recommendationApp.addTagToBlog(titleToEdit, newTag)) {
+                    this.io.print("A new tag " + newTag + " added!");
+                } else {
+                    this.io.print("Failed!");
+                }
             } else {
-                this.io.print("Failed!");
-            }
 
+                this.io.print("Enter a new value to insert into the selected field");
+                String newValue = String.valueOf(io.nextLine());
+
+                switch (fieldToEdit) {
+                    case "1":
+                        fieldToEdit = "title";
+                        break;
+                    case "2":
+                        fieldToEdit = "url";
+                        break;
+                    case "3":
+                        fieldToEdit = "description";
+                        break;
+                    case "4":
+                        fieldToEdit = "author";
+                        break;
+                    default:
+                        this.io.print("Unknown command");
+                }
+
+                if (recommendationApp.editBlog(titleToEdit, fieldToEdit, newValue)) {
+                    this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                } else {
+                    this.io.print("Failed!");
+                }
+            }
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
+
     public void editPodcast() {
-        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4");
+        List<String> stringFieldNames = Arrays.asList("1", "2", "3", "4", "5");
 
         this.io.print("Enter the title of the recommendation you wish to edit:\nTitles in your library:");
         List<String> allPodcastTitles = recommendationApp.listPodcastTitles();
@@ -591,45 +756,53 @@ public class UserInterface {
         String titleToEdit = String.valueOf(io.nextLine());
 
         if (recommendationApp.podcastAlreadyExists(titleToEdit)) {
-            this.io.print("Choose a field to edit \n[1] Title, [2] Author, [3] Description, [4] Podcast name");
+            this.io.print("Choose a field to edit \n[1] Title, [2] Author, [3] Description, [4] Podcast name, [5] Add a tag");
             String fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
 
             while (!stringFieldNames.contains(fieldToEdit)) {
-                this.io.print("Invalid input! \n[1] Title, [2] Author, [3] Description, [4] Podcast name");
+                this.io.print("Invalid input! \n[1] Title, [2] Author, [3] Description, [4] Podcast name, [5] Add a tag");
                 fieldToEdit = String.valueOf(io.nextLine()).toLowerCase();
             }
 
-            this.io.print("Enter a new value to insert into the selected field");
-            String newValue = String.valueOf(io.nextLine());
-
-            switch(fieldToEdit){
-                case "1": 
-                    fieldToEdit = "title";
-                    break;
-                case "2": 
-                    fieldToEdit = "author";
-                    break;
-                case "3": 
-                    fieldToEdit = "description";
-                    break;
-                case "4":
-                    fieldToEdit = "name";
-                    break;
-                default:
-                    this.io.print("Unknown command");
-            }
-            
-            if (recommendationApp.editPodcast(titleToEdit, fieldToEdit, newValue)) {
-                this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+            if (fieldToEdit.equals("5")) {
+                this.io.print("Enter a new tag");
+                String newTag = String.valueOf(io.nextLine());
+                if (recommendationApp.addTagToPodcast(titleToEdit, newTag)) {
+                    this.io.print("A new tag " + newTag + " added!");
+                } else {
+                    this.io.print("Failed!");
+                }
             } else {
-                this.io.print("Failed!");
-            }
+                this.io.print("Enter a new value to insert into the selected field");
+                String newValue = String.valueOf(io.nextLine());
 
+                switch (fieldToEdit) {
+                    case "1":
+                        fieldToEdit = "title";
+                        break;
+                    case "2":
+                        fieldToEdit = "author";
+                        break;
+                    case "3":
+                        fieldToEdit = "description";
+                        break;
+                    case "4":
+                        fieldToEdit = "name";
+                        break;
+                    default:
+                        this.io.print("Unknown command");
+                }
+
+                if (recommendationApp.editPodcast(titleToEdit, fieldToEdit, newValue)) {
+                    this.io.print("Field " + fieldToEdit + " successfully changed to " + newValue + "!");
+                } else {
+                    this.io.print("Failed!");
+                }
+            }
         } else {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-
 
     public void deleteBook() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
@@ -662,7 +835,7 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-    
+
     public void deleteBlog() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
         List<String> allBlogTitles = recommendationApp.listBlogTitles();
@@ -678,7 +851,7 @@ public class UserInterface {
             this.io.print("Recommendation with the given title doesn't exist! Try again: ");
         }
     }
-    
+
     public void deletePodcast() {
         this.io.print("Enter the title of the recommendation you wish to delete:\nTitles in your library:");
         List<String> allPodcastTitles = recommendationApp.listPodcastTitles();

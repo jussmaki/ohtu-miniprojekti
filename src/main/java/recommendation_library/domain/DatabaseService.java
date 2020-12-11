@@ -124,7 +124,7 @@ public class DatabaseService {
             if (!tagAlreadyExists(tagText)) {
                 dao.createTag(tagText);
             }
-            dao.addTagToBook(videoId, tagText);
+            dao.addTagToVideo(videoId, tagText);
         }
         return true;
     }
@@ -150,7 +150,7 @@ public class DatabaseService {
             if (!tagAlreadyExists(tagText)) {
                 dao.createTag(tagText);
             }
-            dao.addTagToBook(blogId, tagText);
+            dao.addTagToBlog(blogId, tagText);
         }
         return true;
     }
@@ -176,7 +176,7 @@ public class DatabaseService {
             if (!tagAlreadyExists(tagText)) {
                 dao.createTag(tagText);
             }
-            dao.addTagToBook(podcastId, tagText);
+            dao.addTagToPodcast(podcastId, tagText);
         }
         return true;
     }
@@ -321,25 +321,58 @@ public class DatabaseService {
     public boolean addTagToBook(String bookTitle, String tagText) {
         int bookId = dao.getBookIdByTitle(bookTitle);
         dao.addTagToBook(bookId, tagText);
-        return checkIdForZero(bookId);
+        return !checkIdForZero(bookId);
     }
     
     public boolean addTagToVideo(String videoTitle, String tagText) {
         int videoId = dao.getVideoIdByTitle(videoTitle);
-        dao.addTagToBook(videoId, tagText);
-        return checkIdForZero(videoId);
+        dao.addTagToVideo(videoId, tagText);
+        return !checkIdForZero(videoId);
     }
     
     public boolean addTagToBlog(String blogTitle, String tagText) {
         int blogId = dao.getBlogIdByTitle(blogTitle);
-        dao.addTagToBook(blogId, tagText);
-        return checkIdForZero(blogId);
+        dao.addTagToBlog(blogId, tagText);
+        return !checkIdForZero(blogId);
     }
     
     public boolean addTagToPodcast(String podcastTitle, String tagText) {
         int podcastId = dao.getPodcastIdByTitle(podcastTitle);
-        dao.addTagToBook(podcastId, tagText);
-        return checkIdForZero(podcastId);
+        dao.addTagToPodcast(podcastId, tagText);
+        return !checkIdForZero(podcastId);
+    }
+    
+    public List<Tag> getAllTags() {
+        return dao.getAllTags();
+    }
+
+    public List<Recommendation> getRecommendationsWithTag(String tag) {
+        ArrayList<Recommendation> list = new ArrayList<>();
+
+        list.addAll(getBooksWithTag(tag));
+        list.addAll(getVideosWithTag(tag));
+        list.addAll(getPodcastsWithTag(tag));
+        list.addAll(getBlogsWithTag(tag));
+        return list;
+    }
+
+    public List<BookRecommendation> getBooksWithTag(String tag) {
+        return dao.getBooksWithTag(tag);
+    }
+
+    public List<VideoRecommendation> getVideosWithTag(String tag) {
+
+        return dao.getVideosWithTag(tag);
+    }
+
+    public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
+
+        return dao.getPodcastsWithTag(tag);
+    }
+
+    public List<BlogRecommendation> getBlogsWithTag(String tag) {
+
+        return dao.getBlogsWithTag(tag);
     }
     
 }

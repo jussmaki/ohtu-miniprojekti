@@ -6,12 +6,12 @@
 package recommendation_library.dao;
 
 import recommendation_library.domain.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author anadis
  */
 public class DatabaseRecommendationDao implements RecommendationDao {
@@ -48,14 +48,14 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createBookTable() {
         String sql = "CREATE TABLE IF NOT EXISTS books (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " author TEXT NOT NULL,\n"
-                + " title TEXT NOT NULL UNIQUE,\n"
-                + " description TEXT,\n"
-                + " isbn TEXT,\n"
-                + " pageCount integer,\n"
-                + " created TEXT"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " author TEXT NOT NULL,\n"
+            + " title TEXT NOT NULL UNIQUE,\n"
+            + " description TEXT,\n"
+            + " isbn TEXT,\n"
+            + " pageCount integer,\n"
+            + " created TEXT"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -69,12 +69,12 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createVideoTable() {
         String sql = "CREATE TABLE IF NOT EXISTS videos (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " url TEXT NOT NULL,\n"
-                + " title TEXT NOT NULL UNIQUE,\n"
-                + " description TEXT,\n"
-                + " created TEXT"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " url TEXT NOT NULL,\n"
+            + " title TEXT NOT NULL UNIQUE,\n"
+            + " description TEXT,\n"
+            + " created TEXT"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -88,11 +88,11 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createTimeStampTable() {
         String sql = "CREATE TABLE IF NOT EXISTS timestamps (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " timestamp TEXT NOT NULL,\n"
-                + " comment TEXT,\n"
-                + " video_id INTEGER REFERENCES videos"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " timestamp TEXT NOT NULL,\n"
+            + " comment TEXT,\n"
+            + " video_id INTEGER REFERENCES videos"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -106,13 +106,13 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createPodcastTable() {
         String sql = "CREATE TABLE IF NOT EXISTS podcasts (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " author TEXT NOT NULL,\n"
-                + " title TEXT NOT NULL UNIQUE,\n"
-                + " description TEXT,\n"
-                + " name TEXT,\n"
-                + " created TEXT"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " author TEXT NOT NULL,\n"
+            + " title TEXT NOT NULL UNIQUE,\n"
+            + " description TEXT,\n"
+            + " name TEXT,\n"
+            + " created TEXT"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -125,13 +125,13 @@ public class DatabaseRecommendationDao implements RecommendationDao {
 
     private void createBlogTable() {
         String sql = "CREATE TABLE IF NOT EXISTS blogs (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " url TEXT NOT NULL,\n"
-                + " author TEXT NOT NULL,\n"
-                + " title TEXT NOT NULL UNIQUE,\n"
-                + " description TEXT,\n"
-                + " created TEXT"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " url TEXT NOT NULL,\n"
+            + " author TEXT NOT NULL,\n"
+            + " title TEXT NOT NULL UNIQUE,\n"
+            + " description TEXT,\n"
+            + " created TEXT"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -141,12 +141,12 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     private void createTagTable() {
         String sql = "CREATE TABLE IF NOT EXISTS tags (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " tagText TEXT NOT NULL"
-                + ");";
+            + " id integer PRIMARY KEY,\n"
+            + " tagText TEXT NOT NULL"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -156,19 +156,19 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     private void createConnectionTables() {
         createBookConnectionTable();
         createVideoConnectionTable();
         createBlogConnectionTable();
         createPodcastConnectionTable();
     }
-    
+
     private void createBookConnectionTable() {
         String booksTags = "CREATE TABLE IF NOT EXISTS booksTags (\n"
-                + " books_id INTEGER REFERENCES books,\n"
-                + " tags_id INTEGER REFERENCES tags"
-                + ");";
+            + " books_id INTEGER REFERENCES books,\n"
+            + " tags_id INTEGER REFERENCES tags"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -176,14 +176,14 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
-    
+
     private void createVideoConnectionTable() {
         String videosTags = "CREATE TABLE IF NOT EXISTS videosTags (\n"
-             + " books_id INTEGER REFERENCES videos,\n"
-             + " tags_id INTEGER REFERENCES tags"
-             + ");";
+            + " videos_id INTEGER REFERENCES videos,\n"
+            + " tags_id INTEGER REFERENCES tags"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -191,14 +191,14 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
-    
+
     private void createBlogConnectionTable() {
         String blogsTags = "CREATE TABLE IF NOT EXISTS blogsTags (\n"
-                + " books_id INTEGER REFERENCES blogs,\n"
-                + " tags_id INTEGER REFERENCES tags"
-                + ");";
+            + " blogs_id INTEGER REFERENCES blogs,\n"
+            + " tags_id INTEGER REFERENCES tags"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -206,14 +206,14 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
-    
-    private void createPodcastConnectionTable() {        
+
+    private void createPodcastConnectionTable() {
         String podcastsTags = "CREATE TABLE IF NOT EXISTS podcastsTags (\n"
-                + " books_id INTEGER REFERENCES podcasts,\n"
-                + " tags_id INTEGER REFERENCES tags"
-                + ");";
+            + " podcasts_id INTEGER REFERENCES podcasts,\n"
+            + " tags_id INTEGER REFERENCES tags"
+            + ");";
         try {
             Connection connection = connect();
             Statement stmt = connection.createStatement();
@@ -221,7 +221,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
 
 
@@ -236,7 +236,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createBookRecommendation(String author, String title, String description, String isbn, int pageCount) {
         String sql = "INSERT INTO books (author, title, description, isbn, pageCount, created) "
-                + "VALUES (?,?,?,?,?,?)";
+            + "VALUES (?,?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -263,7 +263,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createVideoRecommendation(String url, String title, String description) {
         String sql = "INSERT INTO videos (url, title, description, created) "
-                + "VALUES (?,?,?,?)";
+            + "VALUES (?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -288,7 +288,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void addTimeStampToVideo(int videoId, String timestamp, String comment) {
         String sql = "INSERT INTO timestamps (timestamp, comment, video_id) "
-                + "VALUES (?,?,?)";
+            + "VALUES (?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -302,7 +302,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
 
     }
-    
+
     /**
      * Insert a new recommendation into the database
      *
@@ -314,13 +314,13 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createBlogRecommendation(String url, String title, String author, String description) {
         String sql = "INSERT INTO blogs (url, title, author, description, created) "
-                + "VALUES (?,?,?,?,?)";
+            + "VALUES (?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, url);
             statement.setString(2, title);
-            statement.setString(3, author);            
+            statement.setString(3, author);
             statement.setString(4, description);
             statement.setString(5, java.time.LocalDate.now().toString());
             statement.executeUpdate();
@@ -329,7 +329,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     /**
      * Insert a new recommendation into the database
      *
@@ -341,7 +341,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void createPodcastRecommendation(String author, String title, String description, String name) {
         String sql = "INSERT INTO podcasts (author, title, description, name, created) "
-                + "VALUES (?,?,?,?,?)";
+            + "VALUES (?,?,?,?,?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -371,8 +371,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = statement.executeQuery("SELECT * FROM books");
             while (result.next()) {
                 books.add(new BookRecommendation(result.getInt("id"), result.getString("author"),
-                        result.getString("title"), result.getString("description"),
-                        result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
+                    result.getString("title"), result.getString("description"),
+                    result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
@@ -390,8 +390,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = statement.executeQuery("SELECT * FROM videos");
             while (result.next()) {
                 videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
-                        result.getString("title"), result.getString("description"),
-                        result.getString("created")));
+                    result.getString("title"), result.getString("description"),
+                    result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
@@ -409,8 +409,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = statement.executeQuery("SELECT * FROM blogs");
             while (result.next()) {
                 blogs.add(new BlogRecommendation(result.getInt("id"), result.getString("author"),
-                        result.getString("url"), result.getString("title"), 
-                        result.getString("description"), result.getString("created")));
+                    result.getString("url"), result.getString("title"),
+                    result.getString("description"), result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
@@ -418,7 +418,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return blogs;
     }
-    
+
     @Override
     public List<PodcastRecommendation> getAllPodcastRecommendations() {
         ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
@@ -428,8 +428,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = statement.executeQuery("SELECT * FROM podcasts");
             while (result.next()) {
                 podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
-                        result.getString("title"), result.getString("description"),
-                        result.getString("name"), result.getString("created")));
+                    result.getString("title"), result.getString("description"),
+                    result.getString("name"), result.getString("created")));
             }
             connection.close();
         } catch (SQLException e) {
@@ -437,7 +437,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return podcasts;
     }
-    
+
     @Override
     public List<TimeMemory> getAllTimestampsForVideo(int videId) {
         ArrayList<TimeMemory> timestamps = new ArrayList<>();
@@ -449,7 +449,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             ResultSet result = pstatement.executeQuery();
             while (result.next()) {
                 timestamps.add(new TimeMemory(result.getInt("id"), result.getString("timestamp"),
-                        result.getString("comment"), result.getInt("video_id")));
+                    result.getString("comment"), result.getInt("video_id")));
             }
             connection.close();
         } catch (SQLException e) {
@@ -561,7 +561,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             System.out.println(e.getMessage());
         }
     }
-    
+
     @Override
     public int getVideoIdByTitle(String title) {
         String sql = "SELECT id FROM videos WHERE title = ?";
@@ -580,7 +580,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
-    
+
     @Override
     public int getBookIdByTitle(String title) {
         String sql = "SELECT id FROM books WHERE title = ?";
@@ -599,7 +599,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
-    
+
     @Override
     public int getBlogIdByTitle(String title) {
         String sql = "SELECT id FROM blogs WHERE title = ?";
@@ -618,7 +618,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
-    
+
     @Override
     public int getPodcastIdByTitle(String title) {
         String sql = "SELECT id FROM podcasts WHERE title = ?";
@@ -637,7 +637,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         }
         return id;
     }
-    
+
     @Override
     public int getTimestampIdByTitle(int videoId, String timestamp) {
         String sql = "SELECT id FROM timestamps WHERE video_id = ? AND timestamp = ?";
@@ -670,7 +670,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }    }
+        }
+    }
 
     @Override
     public void editPodcastRecommendation(String title, String fieldToBeEdited, String newValue) {
@@ -684,7 +685,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }    }
+        }
+    }
 
     @Override
     public void deleteBlogByTitle(String title) {
@@ -711,7 +713,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }    }
+        }
+    }
 
     @Override
     public List<Tag> getAllTagsForBook(int bookId) {
@@ -735,7 +738,9 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForVideo(int videoId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT id, tagText FROM tags INNER JOIN videosTags ON tags.id = videosTags.tags_id WHERE videosTags.videos_id = ?";
+        
+        String sql = "SELECT * FROM tags INNER JOIN videosTags ON tags.id = videosTags.tags_id WHERE videosTags.books_id = ?";
+
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -754,7 +759,8 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForBlog(int blogId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT id, tagText FROM tags INNER JOIN blogsTags ON tags.id = blogsTags.tags_id WHERE blogsTags.blogs_id = ?";
+        String sql = "SELECT * FROM tags INNER JOIN blogsTags ON tags.id = blogsTags.tags_id WHERE blogsTags.books_id = ?";
+
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -773,7 +779,9 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public List<Tag> getAllTagsForPodcast(int podcastId) {
         ArrayList<Tag> tags = new ArrayList<>();
-        String sql = "SELECT id, tagText FROM tags INNER JOIN pogcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.blogs_id = ?";
+
+        String sql = "SELECT * FROM tags INNER JOIN podcastsTags ON tags.id = podcastsTags.tags_id WHERE podcastsTags.books_id = ?";
+
         try {
             Connection connection = this.connect();
             PreparedStatement pstatement = connection.prepareStatement(sql);
@@ -792,79 +800,90 @@ public class DatabaseRecommendationDao implements RecommendationDao {
     @Override
     public void addTagToBook(int bookId, String tagText) {
         int tagId = getTagId(tagText);
+        if (tagId == 0) {
+            createTag(tagText);
+            tagId = getTagId(tagText);
+        }
         String booksTags = "INSERT INTO booksTags(books_id, tags_id) VALUES(?,?)";
-        if (tagId != 0) {
-            try {
-                Connection conn = this.connect();
-                PreparedStatement statement = conn.prepareStatement(booksTags);
-                statement.setInt(1, bookId);
-                statement.setInt(2, tagId);
-                statement.executeUpdate();
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }          
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(booksTags);
+            statement.setInt(1, bookId);
+            statement.setInt(2, tagId);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     @Override
     public void addTagToVideo(int videoId, String tagText) {
         int tagId = getTagId(tagText);
+        if (tagId == 0) {
+            createTag(tagText);
+            tagId = getTagId(tagText);
+        }
         String booksTags = "INSERT INTO videosTags(videos_id, tags_id) VALUES(?,?)";
-        if (tagId != 0) {
-            try {
-                Connection conn = this.connect();
-                PreparedStatement statement = conn.prepareStatement(booksTags);
-                statement.setInt(1, videoId);
-                statement.setInt(2, tagId);
-                statement.executeUpdate();
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }          
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(booksTags);
+            statement.setInt(1, videoId);
+            statement.setInt(2, tagId);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
         }
     }
 
     @Override
     public void addTagToBlog(int blogId, String tagText) {
         int tagId = getTagId(tagText);
-        String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
-        if (tagId != 0) {
-            try {
-                Connection conn = this.connect();
-                PreparedStatement statement = conn.prepareStatement(booksTags);
-                statement.setInt(1, blogId);
-                statement.setInt(2, tagId);
-                statement.executeUpdate();
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }          
+        if (tagId == 0) {
+            createTag(tagText);
+            tagId = getTagId(tagText);
         }
+        String booksTags = "INSERT INTO blogsTags(blogs_id, tags_id) VALUES(?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(booksTags);
+            statement.setInt(1, blogId);
+            statement.setInt(2, tagId);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override
     public void addTagToPodcast(int podcastId, String tagText) {
         int tagId = getTagId(tagText);
-        String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
-        if (tagId != 0) {
-            try {
-                Connection conn = this.connect();
-                PreparedStatement statement = conn.prepareStatement(booksTags);
-                statement.setInt(1, podcastId);
-                statement.setInt(2, tagId);
-                statement.executeUpdate();
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }          
+        if (tagId == 0) {
+            createTag(tagText);
+            tagId = getTagId(tagText);
         }
+        String booksTags = "INSERT INTO podcastsTags(podcasts_id, tags_id) VALUES(?,?)";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement statement = conn.prepareStatement(booksTags);
+            statement.setInt(1, podcastId);
+            statement.setInt(2, tagId);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
-    
+
     @Override
     public void createTag(String tagText) {
         String tag = "INSERT INTO tags(tagText) "
-                + "VALUES(?)";
+            + "VALUES(?)";
         try {
             Connection conn = this.connect();
             PreparedStatement statement = conn.prepareStatement(tag);
@@ -873,7 +892,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
             conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
 
     @Override
@@ -891,7 +910,7 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return tagId;  
+        return tagId;
     }
 
     @Override
@@ -912,4 +931,114 @@ public class DatabaseRecommendationDao implements RecommendationDao {
         return tags;
     }
 
+    @Override
+    public List<Recommendation> getRecommendationsWithTag(String tag) {
+        ArrayList<Recommendation> list = new ArrayList<>();
+
+        list.addAll(getBooksWithTag(tag));
+        list.addAll(getVideosWithTag(tag));
+        list.addAll(getPodcastsWithTag(tag));
+        list.addAll(getBlogsWithTag(tag));
+        return list;
+    }
+
+    public List<BookRecommendation> getBooksWithTag(String tag) {
+        String sql = "SELECT Books.id, author, title, description, isbn, pagecount, created" +
+            " from Books" +
+            " join BooksTags on Books.id = BooksTags.books_id" +
+            " join Tags on tags_id = Tags.id " +
+            " where tagText = ?";
+
+        ArrayList<BookRecommendation> books = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
+        try {
+            while (result.next()) {
+                books.add(new BookRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("isbn"), result.getInt("pageCount"), result.getString("created")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    public List<VideoRecommendation> getVideosWithTag(String tag) {
+        String sql = "SELECT Videos.id, url, title, description, created" +
+            " from Videos" +
+            " join VideosTags on Videos.id = VideosTags.videos_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+
+        ArrayList<VideoRecommendation> videos = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
+        try {
+            while (result.next()) {
+                videos.add(new VideoRecommendation(result.getInt("id"), result.getString("url"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("created")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
+
+    public List<PodcastRecommendation> getPodcastsWithTag(String tag) {
+        String sql = "SELECT Podcasts.id, author, title, description, name, created" +
+            " from Podcasts" +
+            " join PodcastsTags on Podcasts.id = PodcastsTags.podcasts_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+        ArrayList<PodcastRecommendation> podcasts = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
+        try {
+            while (result.next()) {
+                podcasts.add(new PodcastRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("title"), result.getString("description"),
+                    result.getString("name"), result.getString("created")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return podcasts;
+    }
+
+
+    public List<BlogRecommendation> getBlogsWithTag(String tag) {
+        String sql = "SELECT Blogs.id, url, author, title, description, created" +
+            " from Blogs" +
+            " join BlogsTags on Blogs.id = BlogsTags.blogs_id" +
+            " join tags on tags_id = tags.id " +
+            " where tags.tagText = ?";
+        ArrayList<BlogRecommendation> blogs = new ArrayList<>();
+        Connection connection = this.connect();
+        ResultSet result = getResultsForTagSearch(tag, sql, connection);
+        try {
+            while (result.next()) {
+                blogs.add(new BlogRecommendation(result.getInt("id"), result.getString("author"),
+                    result.getString("url"), result.getString("title"),
+                    result.getString("description"), result.getString("created")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return blogs;
+    }
+
+    private ResultSet getResultsForTagSearch(String tag, String sql, Connection connection) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, tag);
+
+            ResultSet result = statement.executeQuery();
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

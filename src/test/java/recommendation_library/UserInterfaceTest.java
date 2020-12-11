@@ -222,7 +222,7 @@ public class UserInterfaceTest {
 
         ui.editBook();
 
-        verify(input).print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count");
+        verify(input).print("Invalid input! \n[1] Author, [2] Title, [3] Description, [4] Isbn, [5] Page count, [6] Add a tag");
     }
 
     @Test
@@ -274,7 +274,7 @@ public class UserInterfaceTest {
 
         ui.editVideo();
 
-        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp");
+        verify(input).print("Invalid input! \n[1] Title, [2] URL, [3] Description, [4] Timestamp, [5] Add a tag");
     }
 
     @Test
@@ -323,13 +323,44 @@ public class UserInterfaceTest {
         assertTrue(db_io.getPrints().contains("Recommendation added"));
 
         assertTrue(db_io.getPrints().contains(System.lineSeparator() + "Book 1"
-            + System.lineSeparator()
-            + "Author: Jeff VanderMeer" + System.lineSeparator()
-            + "Title: Annihilation" + System.lineSeparator()
-            + "Description: Good book" + System.lineSeparator()
-            + "ISBN: ABCD" + System.lineSeparator()
-            + "Page count: 777" + System.lineSeparator()
-            + "Added: " + java.time.LocalDate.now().toString()));
+                + System.lineSeparator()
+                + "Author: Jeff VanderMeer" + System.lineSeparator()
+                + "Title: Annihilation" + System.lineSeparator()
+                + "Description: Good book" + System.lineSeparator()
+                + "ISBN: ABCD" + System.lineSeparator()
+                + "Page count: 777" + System.lineSeparator()
+                + "Added: " + java.time.LocalDate.now().toString()));
+    }
+
+    @Test
+    public void searchRecommendationsByTagWorks() {
+        List<String> inputLines = Arrays.asList("1", "3", "BlogTitle", "BlogAuthor", "BlogDesc", "BlogUrl", "Tagi1", "0", "10", "Tagi1", "1");
+
+        db_io = new StubIO(inputLines);
+        db_ui = new UserInterface(db_io, db_dao);
+        db_ui.run();
+
+        assertTrue(db_io.getPrints().contains("Recommendation added"));
+
+        assertTrue(db_io.getPrints().contains(System.lineSeparator() + "Blog 1"
+                + System.lineSeparator()
+                + "Author: BlogAuthor" + System.lineSeparator()
+                + "Title: BlogTitle" + System.lineSeparator()
+                + "Description: BlogDesc" + System.lineSeparator()
+                + "URL: BlogUrl" + System.lineSeparator()
+                + "Added: " + java.time.LocalDate.now().toString()));
+    }
+
+    @Test
+    public void editRecommendationAddTagWorks() {
+        List<String> inputLines = Arrays.asList("1", "3", "BlogTitle", "BlogAuthor", "BlogDesc", "BlogUrl", "Tagi1", "0", "3", "3", "BlogTitle", "5", "Tagi2");
+
+        db_io = new StubIO(inputLines);
+        db_ui = new UserInterface(db_io, db_dao);
+        db_ui.run();
+
+        assertTrue(db_io.getPrints().contains("A new tag Tagi2 added!"));
+
     }
 
 }
