@@ -412,6 +412,7 @@ public class UserInterface {
     public void searchByTag() {
 
         io.print("Which tag do you want to search?");
+        io.print(recommendationApp.listTagString());
         String tag = io.nextLine();
 
         searchTagsWithType(tag);
