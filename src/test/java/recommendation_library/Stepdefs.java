@@ -64,6 +64,11 @@ public class Stepdefs {
         inputLines.add("1");
     }
 
+    @When("command search tags is selected")
+    public void commandSearchTagsSelected() {
+        inputLines.add("10");
+    }
+
     @When("command list all is selected")
     public void commandAllListingSelected() {
         inputLines.add("1");
@@ -208,9 +213,21 @@ public class Stepdefs {
 
     @Then("app lists a recommendation with author {string}, title {string}, description {string}, isbn {string}, and page count {string}")
     public void listingAddedBookRecommendation(String author, String title, String description, String isbn, String pageCount) {
+        System.err.println(author);
+        System.err.println(title);
+        System.err.println(description);
+        System.err.println(isbn);
+        System.err.println(pageCount);
+        System.err.println(String.join("\n", inputLines));
         io = new StubIO(inputLines);
+        System.err.println(io);
+
         dao = new InMemoryRecommendationDao();
+        System.err.println(dao);
+
         ui = new UserInterface(io, dao);
+        System.err.println(ui);
+        
         ui.run();
 
         String addDate = java.time.LocalDate.now().toString();
