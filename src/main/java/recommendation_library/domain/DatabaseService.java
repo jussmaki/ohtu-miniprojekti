@@ -326,19 +326,19 @@ public class DatabaseService {
     
     public boolean addTagToVideo(String videoTitle, String tagText) {
         int videoId = dao.getVideoIdByTitle(videoTitle);
-        dao.addTagToBook(videoId, tagText);
+        dao.addTagToVideo(videoId, tagText);
         return !checkIdForZero(videoId);
     }
     
     public boolean addTagToBlog(String blogTitle, String tagText) {
         int blogId = dao.getBlogIdByTitle(blogTitle);
-        dao.addTagToBook(blogId, tagText);
+        dao.addTagToBlog(blogId, tagText);
         return !checkIdForZero(blogId);
     }
     
     public boolean addTagToPodcast(String podcastTitle, String tagText) {
         int podcastId = dao.getPodcastIdByTitle(podcastTitle);
-        dao.addTagToBook(podcastId, tagText);
+        dao.addTagToPodcast(podcastId, tagText);
         return !checkIdForZero(podcastId);
     }
     
