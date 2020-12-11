@@ -172,6 +172,11 @@ public class Stepdefs {
         inputLines.add(title);
     }
 
+    @When("tag {string} is entered")
+    public void tagIsEntered(String title) {
+        inputLines.add(title);
+    }
+
     @When("field to edit {string} is entered")
     public void fieldToEditIsEntered(String fieldToEdit) {
         inputLines.add(fieldToEdit);
@@ -211,12 +216,12 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Book 1" + System.lineSeparator()
-                + "Author: " + author + System.lineSeparator()
-                + "Title: " + title + System.lineSeparator()
-                + "Description: " + description + System.lineSeparator()
-                + "ISBN: " + isbn + System.lineSeparator()
-                + "Page count: " + pageCount + System.lineSeparator()
-                + "Added: " + addDate));
+            + "Author: " + author + System.lineSeparator()
+            + "Title: " + title + System.lineSeparator()
+            + "Description: " + description + System.lineSeparator()
+            + "ISBN: " + isbn + System.lineSeparator()
+            + "Page count: " + pageCount + System.lineSeparator()
+            + "Added: " + addDate));
     }
 
     @Then("app lists a recommendation with title {string}, description {string} and url {string}")
@@ -229,12 +234,12 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Video 1" + System.lineSeparator()
-                + "Title: " + title + System.lineSeparator()
-                + "URL: " + url + System.lineSeparator()
-                + "Timestamps: " + System.lineSeparator()
-                + "[]" + System.lineSeparator()
-                + "Description: " + description + System.lineSeparator()
-                + "Added: " + addDate));
+            + "Title: " + title + System.lineSeparator()
+            + "URL: " + url + System.lineSeparator()
+            + "Timestamps: " + System.lineSeparator()
+            + "[]" + System.lineSeparator()
+            + "Description: " + description + System.lineSeparator()
+            + "Added: " + addDate));
     }
 
     @Then("app lists a recommendation with title {string}, timestamp {string} and comment {string}")
@@ -247,12 +252,12 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Video 1" + System.lineSeparator()
-                + "Title: " + title + System.lineSeparator()
-                + "URL: default url" + System.lineSeparator()
-                + "Timestamps: " + System.lineSeparator()
-                + "[Time: "+ timestamp +", Comment: "+ comment +"]" + System.lineSeparator()
-                + "Description: default description" + System.lineSeparator()
-                + "Added: " + addDate));
+            + "Title: " + title + System.lineSeparator()
+            + "URL: default url" + System.lineSeparator()
+            + "Timestamps: " + System.lineSeparator()
+            + "[Time: " + timestamp + ", Comment: " + comment + "]" + System.lineSeparator()
+            + "Description: default description" + System.lineSeparator()
+            + "Added: " + addDate));
     }
 
     @Then("app lists a recommendation with title {string}, author {string}, description {string} and url {string}")
@@ -265,11 +270,11 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Blog 1" + System.lineSeparator()
-                + "Author: " + author + System.lineSeparator()
-                + "Title: " + title + System.lineSeparator()
-                + "Description: " + description + System.lineSeparator()
-                + "URL: " + url + System.lineSeparator()
-                + "Added: " + addDate));
+            + "Author: " + author + System.lineSeparator()
+            + "Title: " + title + System.lineSeparator()
+            + "Description: " + description + System.lineSeparator()
+            + "URL: " + url + System.lineSeparator()
+            + "Added: " + addDate));
     }
 
     @Then("app lists a podcast recommendation with title {string}, name {string}, author {string} and description {string}")
@@ -282,11 +287,11 @@ public class Stepdefs {
         String addDate = java.time.LocalDate.now().toString();
 
         assertTrue(io.getPrints().contains(System.lineSeparator() + "Podcast 1" + System.lineSeparator()
-                + "Podcast name: " + name + System.lineSeparator()
-                + "Author: " + author + System.lineSeparator()
-                + "Title: " + title + System.lineSeparator()
-                + "Description: " + description + System.lineSeparator()
-                + "Added: " + addDate));
+            + "Podcast name: " + name + System.lineSeparator()
+            + "Author: " + author + System.lineSeparator()
+            + "Title: " + title + System.lineSeparator()
+            + "Description: " + description + System.lineSeparator()
+            + "Added: " + addDate));
     }
 
     @Then("app deletes a recommendation with the title {string}")
