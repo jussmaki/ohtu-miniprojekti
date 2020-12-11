@@ -126,7 +126,7 @@ public class RecommendationApp {
         return false;
     }
     
-    public boolean addTagToPodcastok(String title, String tagText) {
+    public boolean addTagToPodcast(String title, String tagText) {
         try {
             return service.addTagToPodcast(title, tagText);
         } catch (Exception e) {

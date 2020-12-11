@@ -7,13 +7,8 @@ package recommendation_library;
 
 import java.util.*;
 
-import recommendation_library.domain.Recommendation;
 import recommendation_library.io.IO;
 import recommendation_library.dao.RecommendationDao;
-import recommendation_library.domain.BookRecommendation;
-
-import recommendation_library.domain.DatabaseService;
-import recommendation_library.RecommendationApp;
 
 /**
  * @author jhku
@@ -771,7 +766,7 @@ public class UserInterface {
             if (fieldToEdit.equals("5")) {
                 this.io.print("Enter a new tag");
                 String newTag = String.valueOf(io.nextLine());
-                if (recommendationApp.addTagToBlog(titleToEdit, newTag)) {
+                if (recommendationApp.addTagToPodcast(titleToEdit, newTag)) {
                     this.io.print("A new tag " + newTag + " added!");
                 } else {
                     this.io.print("Failed!");
